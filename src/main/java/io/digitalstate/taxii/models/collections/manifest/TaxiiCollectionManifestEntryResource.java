@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
 import io.digitalstate.stix.helpers.StixDataFormats;
-import io.digitalstate.taxii.models.TaxiiCollectionManifestEntry;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;

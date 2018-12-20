@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.digitalstate.taxii.models.TaxiiCollection;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;

@@ -3,8 +3,6 @@ package io.digitalstate.taxii.models.collections.manifest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.digitalstate.taxii.models.TaxiiCollectionManifest;
-import io.digitalstate.taxii.models.TaxiiCollectionManifestEntry;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;
@@ -17,7 +15,7 @@ public interface TaxiiCollectionManifestResource {
 
     @NotBlank
     @JsonProperty("objects")
-    Set<TaxiiCollectionManifestEntry> getObjects();
+    Set<TaxiiCollectionManifestEntryResource> getObjects();
 
 
 }

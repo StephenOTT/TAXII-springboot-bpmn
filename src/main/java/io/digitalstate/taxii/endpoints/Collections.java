@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.digitalstate.stix.bundle.Bundle;
 import io.digitalstate.stix.sdo.objects.AttackPattern;
-import io.digitalstate.taxii.models.TaxiiCollection;
+import io.digitalstate.taxii.models.collections.TaxiiCollection;
+import io.digitalstate.taxii.models.status.TaxiiStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -103,7 +103,41 @@ public class Collections {
         successHeaders.add("verison", "2.0");
 
         String successResponseString = bundle.toJsonString();
-        System.out.println(apiRoot);
+
+        return ResponseEntity.ok()
+                .headers(successHeaders)
+                .body(successResponseString);
+    }
+
+    @PostMapping("/{id}/objects")
+    @ResponseBody
+    public ResponseEntity<String> addCollectionObjects( @RequestHeader HttpHeaders headers,
+                                                        @PathVariable("id") String id,
+                                                        @PathVariable("apiRoot") String apiRoot,
+                                                        @RequestBody Bundle requestBody) throws JsonProcessingException {
+        // Create alternate handling option where Bundle is not pre-parsed and then sent into Camunda.
+        // This alternate handling is interesting for use cases where manual adjustments are required.
+        // Use a query param to use the proper end point
+
+        //@TODO send bundle into BPMN instance for processing. Use Sync processing to push enough of the data
+        // in order to perform the required secondary query.  Also consider having Camunda return all of the required variables? (likely not)
+
+        //@TODO Run query on Camunda History DB to get Status
+        // Return a taxii status based on Camunda DB info
+        TaxiiStatus taxiiStatus = TaxiiStatus.builder()
+                .id("some status id")
+                .status("pending")
+                .totalCount(2)
+                .successCount(1)
+                .failureCount(0)
+                .pendingCount(1)
+                .build();
+
+        HttpHeaders successHeaders = new HttpHeaders();
+        successHeaders.add("content-type", "application/vnd.oasis.taxii+json");
+        successHeaders.add("verison", "2.0");
+
+        String successResponseString = objectMapper.writeValueAsString(taxiiStatus);
 
         return ResponseEntity.ok()
                 .headers(successHeaders)
