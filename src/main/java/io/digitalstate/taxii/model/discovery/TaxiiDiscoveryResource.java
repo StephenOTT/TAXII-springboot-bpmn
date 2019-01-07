@@ -1,4 +1,4 @@
-package io.digitalstate.taxii.models.discovery;
+package io.digitalstate.taxii.model.discovery;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.json.views.AdminView;
 import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
-import io.digitalstate.taxii.models.TaxiiModel;
+import io.digitalstate.taxii.model.TaxiiModel;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;
@@ -40,7 +40,7 @@ public interface TaxiiDiscoveryResource extends TaxiiModel {
 
     /**
      * This has been left as a Set of Strings rather than a sub object
-     * of {@link io.digitalstate.taxii.models.TaxiiApiRoot} for future flexibility reasons.
+     * of {@link io.digitalstate.taxii.model.TaxiiApiRoot} for future flexibility reasons.
      * In practice there would be a search for roots and converted into a set of strings and then that set used
      * to populate the set of roots in this field.
      * @return

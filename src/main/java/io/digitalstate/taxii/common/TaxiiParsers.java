@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.digitalstate.stix.helpers.StixDataFormats;
 import io.digitalstate.stix.json.StixParsers;
+import io.digitalstate.taxii.mongo.model.document.*;
 import io.digitalstate.taxii.mongo.serialization.InstantMongoDeserializer;
 import io.digitalstate.taxii.mongo.serialization.InstantMongoSerializer;
-import io.digitalstate.taxii.mongo.model.*;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;

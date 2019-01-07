@@ -1,4 +1,4 @@
-package io.digitalstate.taxii.models.collection.manifest;
+package io.digitalstate.taxii.model.collection.manifest;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

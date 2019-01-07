@@ -1,6 +1,6 @@
 package io.digitalstate.taxii.mongo;
 
-import io.digitalstate.taxii.mongo.model.*;
+import io.digitalstate.taxii.mongo.model.document.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;

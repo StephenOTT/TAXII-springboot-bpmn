@@ -1,8 +1,11 @@
 package io.digitalstate.taxii.mongo;
 
 
-import io.digitalstate.taxii.models.apiroot.TaxiiApiRoot;
-import io.digitalstate.taxii.mongo.model.*;
+import io.digitalstate.taxii.model.apiroot.TaxiiApiRoot;
+import io.digitalstate.taxii.mongo.model.document.ImmutableTenantDocument;
+import io.digitalstate.taxii.mongo.model.document.ImmutableUserDocument;
+import io.digitalstate.taxii.mongo.model.document.TenantDocument;
+import io.digitalstate.taxii.mongo.model.document.UserDocument;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import io.digitalstate.taxii.mongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +61,8 @@ public class SetupTenants  {
         Optional<UserDocument> userDoc1 = userRepository.findById(user1.id());
         System.out.println(userDoc1.get().toMongoJson());
         System.out.println(userDoc1.get().toJson());
+        System.out.println(returnedDoc.get().toMongoJson());
+        System.out.println(returnedDoc.get().toJson());
 
     }
 }

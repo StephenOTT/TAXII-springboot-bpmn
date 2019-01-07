@@ -1,4 +1,4 @@
-package io.digitalstate.taxii.mongo.model;
+package io.digitalstate.taxii.mongo.model.document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -6,16 +6,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.stix.bundle.BundleObject;
 import io.digitalstate.taxii.common.TaxiiParsers;
+import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
 import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.util.UUID;
 
 @Value.Immutable
 @JsonSerialize(as=ImmutableCollectionObjectDocument.class) @JsonDeserialize(builder = ImmutableCollectionObjectDocument.Builder.class)

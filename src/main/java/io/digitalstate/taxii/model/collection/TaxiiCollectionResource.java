@@ -1,4 +1,4 @@
-package io.digitalstate.taxii.models.collection;
+package io.digitalstate.taxii.model.collection;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.json.views.AdminView;
 import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
-import io.digitalstate.taxii.models.TaxiiModel;
+import io.digitalstate.taxii.model.TaxiiModel;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;
