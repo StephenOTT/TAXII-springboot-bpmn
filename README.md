@@ -26,6 +26,8 @@ Additional processes can be enacted as needed for the specific implementation.
 
 ![email ioc](./docs/bpmn/event_process_email_ioc.png)
 
+![create tenant](./docs/bpmn/create_tenant.png)
+
 
 ## Example Sub-Implementations
 
