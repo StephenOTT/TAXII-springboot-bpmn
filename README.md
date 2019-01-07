@@ -169,3 +169,8 @@ Any scripting engine that can integrate with JVM can be used, such as:
    1. Groovy
    1. Ruby
    1. JavaScript
+   
+   
+# Adding Custom REST Endpoints
+
+...
