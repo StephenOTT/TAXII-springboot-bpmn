@@ -2,6 +2,7 @@ package io.digitalstate.taxii.model.status;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -23,6 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @Value.Immutable
 @Value.Style(typeImmutable = "TaxiiStatus")
 @JsonSerialize(as = TaxiiStatus.class) @JsonDeserialize(builder = TaxiiStatus.Builder.class)
+@JsonPropertyOrder({"id", "status", "request_timestamp", "total_count", "success_count", "successes", "failure_count",
+        "failures", "failure_count", "pending_count", "pendings" })
 public interface TaxiiStatusResource extends TaxiiModel {
 
     @NotBlank

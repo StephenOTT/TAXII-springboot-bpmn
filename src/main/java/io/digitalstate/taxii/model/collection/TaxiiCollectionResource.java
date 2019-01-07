@@ -2,12 +2,14 @@ package io.digitalstate.taxii.model.collection;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.json.views.AdminView;
 import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
 import io.digitalstate.taxii.model.TaxiiModel;
+import io.digitalstate.taxii.mongo.annotation.Indexed;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;
@@ -15,18 +17,23 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 @Value.Immutable
 @Value.Style(typeImmutable = "TaxiiCollection")
 @JsonSerialize(as = TaxiiCollection.class) @JsonDeserialize(builder = TaxiiCollection.Builder.class)
+@JsonPropertyOrder({"id", "title", "description", "can_read", "can_write", "media_types"})
 public interface TaxiiCollectionResource extends TaxiiModel {
 
     @NotBlank
     @JsonProperty("id")
     @JsonView({TaxiiSpecView.class, AdminView.class})
-    String getId();
+    @Value.Default
+    default String getId(){
+        return UUID.randomUUID().toString();
+    }
 
     @NotBlank
     @JsonProperty("title")

@@ -2,6 +2,7 @@ package io.digitalstate.taxii.model.discovery;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -19,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @Value.Immutable
 @Value.Style(typeImmutable = "TaxiiDiscovery")
 @JsonSerialize(as = TaxiiDiscovery.class) @JsonDeserialize(builder = TaxiiDiscovery.Builder.class)
+@JsonPropertyOrder({"title", "description", "contact", "default", "api_roots"})
 public interface TaxiiDiscoveryResource extends TaxiiModel {
 
     @NotBlank

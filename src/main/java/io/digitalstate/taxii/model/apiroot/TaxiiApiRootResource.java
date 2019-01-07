@@ -2,12 +2,14 @@ package io.digitalstate.taxii.model.apiroot;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.json.views.AdminView;
 import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
 import io.digitalstate.taxii.model.TaxiiModel;
+import io.digitalstate.taxii.mongo.annotation.Indexed;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.Min;
@@ -24,6 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @Value.Immutable
 @Value.Style(typeImmutable = "TaxiiApiRoot")
 @JsonSerialize(as = TaxiiApiRoot.class) @JsonDeserialize(builder = TaxiiApiRoot.Builder.class)
+@JsonPropertyOrder({"tenant_id", "tenant_slug", "title", "description", "versions", "max_content_length"})
 public interface TaxiiApiRootResource extends TaxiiModel {
 
     @NotBlank

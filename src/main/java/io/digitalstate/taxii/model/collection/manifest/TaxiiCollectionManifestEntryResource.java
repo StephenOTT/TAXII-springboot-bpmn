@@ -1,9 +1,6 @@
 package io.digitalstate.taxii.model.collection.manifest;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
@@ -22,6 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @Value.Immutable
 @Value.Style(typeImmutable = "TaxiiCollectionManifestEntry")
 @JsonSerialize(as = TaxiiCollectionManifestEntry.class) @JsonDeserialize(builder = TaxiiCollectionManifestEntry.Builder.class)
+@JsonPropertyOrder({"id", "date_added", "versions", "media_types"})
 public interface TaxiiCollectionManifestEntryResource {
 
     @NotBlank

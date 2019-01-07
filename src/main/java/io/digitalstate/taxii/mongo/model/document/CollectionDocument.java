@@ -1,6 +1,7 @@
 package io.digitalstate.taxii.mongo.model.document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -11,14 +12,21 @@ import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.IOException;
 
 @Value.Immutable
+@Value.Style(passAnnotations = {Document.class, CompoundIndexes.class})
 @JsonSerialize(as=ImmutableCollectionDocument.class) @JsonDeserialize(builder = ImmutableCollectionDocument.Builder.class)
 @Document(collection = "collections")
 @JsonTypeName("collection")
+@CompoundIndexes({
+        @CompoundIndex(name = "collection_id", def = "{ 'collection.id': 1 }", unique = true)
+})
+@JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "collection" })
 public interface CollectionDocument extends TaxiiMongoModel {
 
     @Override
@@ -45,7 +53,7 @@ public interface CollectionDocument extends TaxiiMongoModel {
     public class MongoReaderConverter implements Converter<org.bson.Document, CollectionDocument> {
         public CollectionDocument convert(final org.bson.Document object) {
             try {
-                return TaxiiParsers.getJsonMapper().readValue(object.toJson(), CollectionDocument.class);
+                return TaxiiParsers.getMongoMapper().readValue(object.toJson(), CollectionDocument.class);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

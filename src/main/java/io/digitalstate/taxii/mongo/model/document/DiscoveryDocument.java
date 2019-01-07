@@ -1,6 +1,7 @@
 package io.digitalstate.taxii.mongo.model.document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -12,14 +13,18 @@ import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.IOException;
 
 @Value.Immutable
+@Value.Style(passAnnotations = {Document.class, CompoundIndexes.class})
 @JsonSerialize(as=ImmutableDiscoveryDocument.class) @JsonDeserialize(builder = ImmutableDiscoveryDocument.Builder.class)
 @Document(collection = "discovery")
 @JsonTypeName("discovery")
+@JsonPropertyOrder({"_id", "type", "created_at", "modified_at", "server_info" })
 public interface DiscoveryDocument extends TaxiiMongoModel {
 
     @Override
@@ -30,7 +35,6 @@ public interface DiscoveryDocument extends TaxiiMongoModel {
 
     @JsonProperty("server_info")
     TaxiiDiscoveryResource serverInfo();
-
 
     @WritingConverter
     public class MongoWriterConverter implements Converter<DiscoveryDocument, org.bson.Document> {
@@ -44,7 +48,7 @@ public interface DiscoveryDocument extends TaxiiMongoModel {
     public class MongoReaderConverter implements Converter<org.bson.Document, DiscoveryDocument> {
         public DiscoveryDocument convert(final org.bson.Document object) {
             try {
-                return TaxiiParsers.getJsonMapper().readValue(object.toJson(), DiscoveryDocument.class);
+                return TaxiiParsers.getMongoMapper().readValue(object.toJson(), DiscoveryDocument.class);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

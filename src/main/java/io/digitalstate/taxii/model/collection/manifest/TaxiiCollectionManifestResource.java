@@ -1,6 +1,7 @@
 package io.digitalstate.taxii.model.collection.manifest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Value.Immutable
 @Value.Style(typeImmutable = "TaxiiCollectionManifest")
 @JsonSerialize(as = TaxiiCollectionManifest.class) @JsonDeserialize(builder = TaxiiCollectionManifest.Builder.class)
+@JsonPropertyOrder({"objects"})
 public interface TaxiiCollectionManifestResource extends TaxiiModel {
 
     @NotBlank
