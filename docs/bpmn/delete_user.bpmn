@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1xmw1b0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.14.0">
+  <bpmn:process id="Process_1" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Delete User">
+      <bpmn:outgoing>SequenceFlow_0ibgkq5</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_033sjr8">
+      <bpmn:incoming>SequenceFlow_0ibgkq5</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1syiehh</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="SequenceFlow_0ibgkq5" sourceRef="StartEvent_1" targetRef="Task_033sjr8" />
+    <bpmn:task id="Task_0ib2712" name="Delete User">
+      <bpmn:incoming>SequenceFlow_1syiehh</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_02ti3xj</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="SequenceFlow_1syiehh" sourceRef="Task_033sjr8" targetRef="Task_0ib2712" />
+    <bpmn:endEvent id="EndEvent_12qybtg">
+      <bpmn:incoming>SequenceFlow_02ti3xj</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_02ti3xj" sourceRef="Task_0ib2712" targetRef="EndEvent_12qybtg" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="162" y="138" width="59" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_033sjr8_di" bpmnElement="Task_033sjr8">
+        <dc:Bounds x="285" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ibgkq5_di" bpmnElement="SequenceFlow_0ibgkq5">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="285" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="247" y="98" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_0ib2712_di" bpmnElement="Task_0ib2712">
+        <dc:Bounds x="470" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1syiehh_di" bpmnElement="SequenceFlow_1syiehh">
+        <di:waypoint x="385" y="120" />
+        <di:waypoint x="470" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="427.5" y="98" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_12qybtg_di" bpmnElement="EndEvent_12qybtg">
+        <dc:Bounds x="642" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="660" y="141" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_02ti3xj_di" bpmnElement="SequenceFlow_02ti3xj">
+        <di:waypoint x="570" y="120" />
+        <di:waypoint x="642" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="606" y="98" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
