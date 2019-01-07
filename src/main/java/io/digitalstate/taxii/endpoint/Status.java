@@ -1,7 +1,8 @@
-package io.digitalstate.taxii.endpoints;
+package io.digitalstate.taxii.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
 import io.digitalstate.taxii.models.status.TaxiiStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequestMapping("{apiRoot}/status")
+@RequestMapping("/taxii/tenant/{tenantId}/status")
 public class Status {
 
     @Autowired
@@ -20,7 +21,7 @@ public class Status {
     @GetMapping("/{statusId}")
     @ResponseBody
     public ResponseEntity<String> getStatus(@RequestHeader HttpHeaders headers,
-                                                 @PathVariable("apiRoot") String apiRoot,
+                                                 @PathVariable("tenantId") String tenantId,
                                                  @PathVariable("statusId") String statusId) throws JsonProcessingException {
 
         TaxiiStatus taxiiStatus = TaxiiStatus.builder()
@@ -32,7 +33,7 @@ public class Status {
                 .pendingCount(1)
                 .build();
 
-        String response  = objectMapper.writeValueAsString(taxiiStatus);
+        String response  = objectMapper.writerWithView(TaxiiSpecView.class).writeValueAsString(taxiiStatus);
 
         //@TODO look up data from Camunda
         //@TODO add caching to reduce repeated requests against Camunda engine

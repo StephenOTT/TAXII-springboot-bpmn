@@ -1,10 +1,11 @@
-package io.digitalstate.taxii.endpoints;
+package io.digitalstate.taxii.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.digitalstate.stix.bundle.Bundle;
 import io.digitalstate.stix.sdo.objects.AttackPattern;
-import io.digitalstate.taxii.models.collections.TaxiiCollection;
+import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
+import io.digitalstate.taxii.models.collection.TaxiiCollection;
 import io.digitalstate.taxii.models.status.TaxiiStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-@RequestMapping("{apiRoot}/collections")
+@RequestMapping("{tenantId}/collections")
 public class Collections {
 
     @Autowired
@@ -27,7 +28,7 @@ public class Collections {
     @GetMapping("/")
     @ResponseBody
     public ResponseEntity<String> getCollections( @RequestHeader HttpHeaders headers,
-                                                  @PathVariable("apiRoot") String apiRoot) throws JsonProcessingException {
+                                                  @PathVariable("tenantId") String tenantId) throws JsonProcessingException {
 
         TaxiiCollection collection1 = TaxiiCollection.builder()
                 .id("123")
@@ -50,7 +51,7 @@ public class Collections {
         Map<String, Object> map = new HashMap<>();
         map.put("collections", taxiiCollections );
 
-        String response = objectMapper.writeValueAsString(map);
+        String response = objectMapper.writerWithView(TaxiiSpecView.class).writeValueAsString(map);
 
         HttpHeaders successHeaders = new HttpHeaders();
         successHeaders.add("content-type", "application/vnd.oasis.taxii+json");
@@ -66,7 +67,7 @@ public class Collections {
     @ResponseBody
     public ResponseEntity<String> getCollection( @RequestHeader HttpHeaders headers,
                                                  @PathVariable("id") String id,
-                                                 @PathVariable("apiRoot") String apiRoot) throws JsonProcessingException {
+                                                 @PathVariable("tenantId") String tenantId) throws JsonProcessingException {
 
         TaxiiCollection collection1 = TaxiiCollection.builder()
                 .id(id)
@@ -74,7 +75,7 @@ public class Collections {
                 .canRead(true)
                 .canWrite(false)
                 .build();
-        String response = objectMapper.writeValueAsString(collection1);
+        String response = objectMapper.writerWithView(TaxiiSpecView.class).writeValueAsString(collection1);
 
         HttpHeaders successHeaders = new HttpHeaders();
         successHeaders.add("content-type", "application/vnd.oasis.taxii+json");
@@ -89,7 +90,7 @@ public class Collections {
     @ResponseBody
     public ResponseEntity<String> getCollectionObjects( @RequestHeader HttpHeaders headers,
                                                  @PathVariable("id") String id,
-                                                 @PathVariable("apiRoot") String apiRoot) {
+                                                 @PathVariable("tenantId") String tenantId) {
 
         AttackPattern attackPattern = AttackPattern.builder()
                 .name("my attack pattern")
@@ -113,7 +114,7 @@ public class Collections {
     @ResponseBody
     public ResponseEntity<String> addCollectionObjects( @RequestHeader HttpHeaders headers,
                                                         @PathVariable("id") String id,
-                                                        @PathVariable("apiRoot") String apiRoot,
+                                                        @PathVariable("tenantId") String tenantId,
                                                         @RequestBody Bundle requestBody) throws JsonProcessingException {
         // Create alternate handling option where Bundle is not pre-parsed and then sent into Camunda.
         // This alternate handling is interesting for use cases where manual adjustments are required.
@@ -137,7 +138,7 @@ public class Collections {
         successHeaders.add("content-type", "application/vnd.oasis.taxii+json");
         successHeaders.add("verison", "2.0");
 
-        String successResponseString = objectMapper.writeValueAsString(taxiiStatus);
+        String successResponseString = objectMapper.writerWithView(TaxiiSpecView.class).writeValueAsString(taxiiStatus);
 
         return ResponseEntity.ok()
                 .headers(successHeaders)

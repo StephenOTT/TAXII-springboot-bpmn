@@ -2,8 +2,12 @@ package io.digitalstate.taxii.models.discovery;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.digitalstate.taxii.common.json.views.AdminView;
+import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
+import io.digitalstate.taxii.models.TaxiiModel;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;
@@ -15,19 +19,23 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @Value.Immutable
 @Value.Style(typeImmutable = "TaxiiDiscovery")
 @JsonSerialize(as = TaxiiDiscovery.class) @JsonDeserialize(builder = TaxiiDiscovery.Builder.class)
-public interface TaxiiDiscoveryResource {
+public interface TaxiiDiscoveryResource extends TaxiiModel {
 
     @NotBlank
     @JsonProperty("title")
+    @JsonView({TaxiiSpecView.class, AdminView.class})
     String getTitle();
 
     @JsonProperty("description") @JsonInclude(value = NON_EMPTY, content= NON_EMPTY)
+    @JsonView({TaxiiSpecView.class, AdminView.class})
     Optional<String> getDescription();
 
     @JsonProperty("contact") @JsonInclude(value = NON_EMPTY, content= NON_EMPTY)
+    @JsonView({TaxiiSpecView.class, AdminView.class})
     Optional<String> getContact();
 
     @JsonProperty("default") @JsonInclude(value = NON_EMPTY, content= NON_EMPTY)
+    @JsonView({TaxiiSpecView.class, AdminView.class})
     Optional<String> getDefaultApiRoot();
 
     /**
@@ -38,6 +46,7 @@ public interface TaxiiDiscoveryResource {
      * @return
      */
     @JsonProperty("api_roots") @JsonInclude(value = NON_EMPTY, content= NON_EMPTY)
+    @JsonView({TaxiiSpecView.class, AdminView.class})
     Set<String> getApiRoots();
 
 }

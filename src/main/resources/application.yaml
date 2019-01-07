@@ -1,6 +1,13 @@
 server:
   port: 8090
 
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: taxii
+
 camunda:
   bpm:
     admin-user:
