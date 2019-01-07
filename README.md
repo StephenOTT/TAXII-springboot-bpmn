@@ -18,7 +18,7 @@ Additional processes can be enacted as needed for the specific implementation.
 
 ![POST collection objects](./docs/bpmn/add_collection_objects.png)
 
-![harvester example](./docs/bpmn/harvester_example.bpmn)
+![harvester example](./docs/bpmn/harvester_example.png)
 
 ![create user](./docs/bpmn/create_user.png)
 
