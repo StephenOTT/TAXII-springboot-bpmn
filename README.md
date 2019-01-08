@@ -176,3 +176,48 @@ Any scripting engine that can integrate with JVM can be used, such as:
 # Adding Custom REST Endpoints
 
 ...
+
+
+# Endpoints
+
+The default endpoints for Taxii + administrative endpoints that are beyond the core Taxii spec.
+
+:exclamation: endpoints are subject to change without notice at this time. 
+
+## Discovery
+
+### `/taxii`
+
+## Tenants (API-Roots)
+
+...
+
+### GET `/taxii/tanant/:tenant_slug`
+
+...
+
+## Users
+
+...
+
+### GET `/taxii/tanant/:tenant_slug/users`
+
+...
+
+### GET `/taxii/tanant/:tenant_slug/users/user_id`
+
+...
+
+## Collections
+
+...
+
+
+### GET `/taxii/tanant/:tenant_slug/collections`
+
+...
+
+
+### GET `/taxii/tanant/:tenant_slug/collections/collection_id
+
+...
