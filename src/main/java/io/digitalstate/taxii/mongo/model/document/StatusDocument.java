@@ -12,6 +12,7 @@ import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -23,6 +24,10 @@ import java.io.IOException;
 @Document(collection = "statuses")
 @JsonTypeName("status")
 @JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "process_instance_id", "last_reported_status" })
+@CompoundIndexes({
+        @CompoundIndex(name = "tenant_id", def = "{ 'tenant_id': 1 }"),
+        @CompoundIndex(name = "process_instance_id", def = "{ 'process_instance_id': 1 }", unique = true)
+})
 public interface StatusDocument extends TaxiiMongoModel {
 
     @Override

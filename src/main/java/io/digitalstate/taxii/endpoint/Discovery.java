@@ -1,79 +1,37 @@
 package io.digitalstate.taxii.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
-import io.digitalstate.taxii.model.apiroot.TaxiiApiRoot;
-import io.digitalstate.taxii.model.discovery.TaxiiDiscovery;
+import io.digitalstate.taxii.common.Headers;
+import io.digitalstate.taxii.exception.DiscoveryDoesNotExistException;
+import io.digitalstate.taxii.mongo.model.document.DiscoveryDocument;
+import io.digitalstate.taxii.mongo.repository.DiscoveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/taxii")
-public class Discovery {
+@RequestMapping("/")
+public class Discovery{
 
     @Autowired
-    private ObjectMapper objectMapper;
+    DiscoveryRepository discoveryRepository;
 
-    @GetMapping
+    @GetMapping("/taxii")
     @ResponseBody
-    public ResponseEntity<String> getDiscovery(@RequestHeader HttpHeaders headers) throws JsonProcessingException {
+    public ResponseEntity<String> getDiscovery(@RequestHeader HttpHeaders headers)
+            throws JsonProcessingException {
 
-        TaxiiApiRoot root1 = TaxiiApiRoot.builder()
-                .tenantId("123")
-                .tenantSlug("root1")
-                .title("some root 1")
-                .addVersions("taxii-2.0")
-                .maxContentLength(1234567890)
-                .build();
-
-        TaxiiApiRoot root2 = TaxiiApiRoot.builder()
-                .tenantId("1234")
-                .tenantSlug("root2")
-                .title("some root 2")
-                .addVersions("taxii-2.0")
-                .maxContentLength(1234567890)
-                .build();
-
-        TaxiiApiRoot root3 = TaxiiApiRoot.builder()
-                .tenantId("12345")
-                .tenantSlug("root3")
-                .title("some root 3")
-                .addVersions("taxii-2.0")
-                .maxContentLength(1234567890)
-                .build();
-
-        Set<TaxiiApiRoot> roots = new HashSet<>();
-        roots.add(root1);
-        roots.add(root2);
-        roots.add(root3);
-
-        Set<String> rootStrings = roots.stream().map(TaxiiApiRoot::getTenantSlug).collect(Collectors.toSet());
-        String defaultRoot = root1.getTenantSlug(); // Consider adding a "default" flag to a root to mark that it should be used as a default.  Could also be setup as a config in application.yaml
-
-        TaxiiDiscovery discovery = TaxiiDiscovery.builder()
-                .title("Some Taxi Server")
-                .description("some description")
-                .defaultApiRoot(defaultRoot)
-                .addAllApiRoots(rootStrings)
-                .build();
-
-        String response = objectMapper.writerWithView(TaxiiSpecView.class).writeValueAsString(discovery);
-
-        HttpHeaders successHeaders = new HttpHeaders();
-        successHeaders.add("content-type", "application/vnd.oasis.taxii+json");
-        successHeaders.add("version", "2.0");
+        DiscoveryDocument discoveryDocument = discoveryRepository.findDiscovery()
+                .orElseThrow(DiscoveryDoesNotExistException::new);
 
         return ResponseEntity.ok()
-                .headers(successHeaders)
-                .body(response);
+                .headers(Headers.getSuccessHeaders())
+                .body(discoveryDocument.toJson());
     }
 
 }

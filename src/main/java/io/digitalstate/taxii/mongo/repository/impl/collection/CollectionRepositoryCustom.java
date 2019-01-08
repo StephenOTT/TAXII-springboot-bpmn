@@ -8,5 +8,7 @@ import java.util.Optional;
 
 public interface CollectionRepositoryCustom {
 
-    List<CollectionDocument> findAllCollectionsByTenantSlug(String slug);
+    List<CollectionDocument> findAllCollectionsByTenantId(String tenantId);
+
+    Optional<CollectionDocument> findCollectionById(String collectionId, String tenantId);
 }

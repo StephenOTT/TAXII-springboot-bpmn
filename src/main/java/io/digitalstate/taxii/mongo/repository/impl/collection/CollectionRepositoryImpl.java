@@ -12,7 +12,9 @@ import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.lang.Nullable;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,17 +29,20 @@ public class CollectionRepositoryImpl implements CollectionRepositoryCustom {
         this.template = mongoTemplate;
     }
 
-    @Autowired
-    private TenantRepository tenantRepository;
+    @Override
+    public List<CollectionDocument> findAllCollectionsByTenantId(@NotNull String tenantId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("tenant_id").is(tenantId));
+        return template.find(query, CollectionDocument.class);
+    }
 
     @Override
-    public List<CollectionDocument> findAllCollectionsByTenantSlug(String slug) {
-
-        TenantDocument tenant = tenantRepository.findTenantBySlug(slug)
-                .orElseThrow(()->new IllegalStateException("Cannot find tenant with slug: " + slug));
-
+    public Optional<CollectionDocument> findCollectionById(@NotNull String collectionId, @Nullable String tenantId) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("tenant_id").is(tenant.id()));
-        return template.find(query, CollectionDocument.class);
+        query.addCriteria(Criteria.where("collection.id").is(collectionId));
+        if (tenantId != null){
+            query.addCriteria(Criteria.where("tenant_id").is(tenantId));
+        }
+        return Optional.ofNullable(template.findOne(query, CollectionDocument.class));
     }
 }

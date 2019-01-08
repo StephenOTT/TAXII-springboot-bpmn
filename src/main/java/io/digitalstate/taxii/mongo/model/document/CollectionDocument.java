@@ -23,10 +23,11 @@ import java.io.IOException;
 @JsonSerialize(as=ImmutableCollectionDocument.class) @JsonDeserialize(builder = ImmutableCollectionDocument.Builder.class)
 @Document(collection = "collections")
 @JsonTypeName("collection")
+@JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "collection" })
 @CompoundIndexes({
+        @CompoundIndex(name = "tenant_id", def = "{ 'tenant_id': 1 }"),
         @CompoundIndex(name = "collection_id", def = "{ 'collection.id': 1 }", unique = true)
 })
-@JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "collection" })
 public interface CollectionDocument extends TaxiiMongoModel {
 
     @Override
@@ -38,6 +39,7 @@ public interface CollectionDocument extends TaxiiMongoModel {
     @JsonProperty("tenant_id")
     String tenantId();
 
+    @JsonProperty("collection")
     TaxiiCollectionResource collection();
 
 

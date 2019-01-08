@@ -1,16 +1,16 @@
-package io.digitalstate.taxii.mongo.repository.impl.discovery.collection;
+package io.digitalstate.taxii.mongo.repository.impl.discovery;
 
-import io.digitalstate.taxii.mongo.model.document.CollectionDocument;
 import io.digitalstate.taxii.mongo.model.document.DiscoveryDocument;
-import io.digitalstate.taxii.mongo.model.document.TenantDocument;
+import io.digitalstate.taxii.mongo.model.document.UserDocument;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.lang.Nullable;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 public class DiscoveryRepositoryImpl implements DiscoveryRepositoryCustom {
 
@@ -25,13 +25,12 @@ public class DiscoveryRepositoryImpl implements DiscoveryRepositoryCustom {
     private TenantRepository tenantRepository;
 
     @Override
-    public DiscoveryDocument getDiscoveryInfo() {
-
-        //@TODO add aggregation projection that only returns the tenant_slug value
-//        TenantDocument tenant = tenantRepository.findAll(slug)
-//                .orElseThrow(()->new IllegalStateException("Cannot find tenant with slug: " + slug));
-
+    public Optional<DiscoveryDocument> findDiscovery() {
         Query query = new Query();
-        return template.findOne(query, DiscoveryDocument.class);
+//        query.addCriteria(Criteria.where("_id").is(id));
+//        if (tenantId != null){
+//            query.addCriteria(Criteria.where("tenant_id").is(tenantId));
+//        }
+        return Optional.ofNullable(template.findOne(query, DiscoveryDocument.class));
     }
 }

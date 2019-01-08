@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.digitalstate.stix.bundle.BundleObject;
 import io.digitalstate.stix.bundle.BundleableObject;
 import io.digitalstate.taxii.common.TaxiiParsers;
 import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
@@ -13,17 +12,25 @@ import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.IOException;
+import java.time.Instant;
 
 @Value.Immutable
 @Value.Style(passAnnotations = {Document.class, CompoundIndexes.class})
 @JsonSerialize(as=ImmutableCollectionObjectDocument.class) @JsonDeserialize(builder = ImmutableCollectionObjectDocument.Builder.class)
 @Document(collection = "objects")
 @JsonTypeName("collection_object")
-@JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "collection_id", "objects" })
+@JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "collection_id", "object" })
+@CompoundIndexes({
+        @CompoundIndex(name = "tenant_id", def = "{ 'tenant_id': 1 }"),
+        @CompoundIndex(name = "collection_id", def = "{ 'collection_id': 1 }"),
+        @CompoundIndex(name = "object_id", def = "{ 'object.id': 1 }"),
+        @CompoundIndex(name = "object_type", def = "{ 'object.type': 1 }")
+})
 public interface CollectionObjectDocument extends TaxiiMongoModel {
 
     @Override
@@ -38,8 +45,8 @@ public interface CollectionObjectDocument extends TaxiiMongoModel {
     @JsonProperty("collection_id")
     String collectionId();
 
-    @JsonProperty("objects")
-    BundleableObject bundle();
+    @JsonProperty("object")
+    BundleableObject object();
 
 
     @WritingConverter

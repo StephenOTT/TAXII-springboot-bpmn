@@ -12,6 +12,7 @@ import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -23,6 +24,10 @@ import java.io.IOException;
 @Document(collection = "users")
 @JsonTypeName("user")
 @JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "username" })
+@CompoundIndexes({
+        @CompoundIndex(name = "tenant_id", def = "{ 'tenant_id': 1 }"),
+        @CompoundIndex(name = "username", def = "{ 'username': 1 }", unique = true)
+})
 public interface UserDocument extends TaxiiMongoModel {
 
     @Override

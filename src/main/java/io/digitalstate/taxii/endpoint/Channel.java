@@ -1,4 +1,4 @@
 package io.digitalstate.taxii.endpoint;
 
-public class Channels {
+public class Channel {
 }
