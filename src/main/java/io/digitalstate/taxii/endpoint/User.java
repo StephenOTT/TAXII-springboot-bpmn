@@ -1,8 +1,8 @@
 package io.digitalstate.taxii.endpoint;
 
 import io.digitalstate.taxii.common.Headers;
-import io.digitalstate.taxii.exception.TenantDoesNotExistException;
-import io.digitalstate.taxii.exception.UserDoesNotExistException;
+import io.digitalstate.taxii.mongo.exception.TenantDoesNotExistException;
+import io.digitalstate.taxii.mongo.exception.UserDoesNotExistException;
 import io.digitalstate.taxii.mongo.JsonUtils;
 import io.digitalstate.taxii.mongo.model.document.TenantDocument;
 import io.digitalstate.taxii.mongo.model.document.UserDocument;

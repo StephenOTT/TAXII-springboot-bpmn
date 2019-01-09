@@ -2,7 +2,7 @@ package io.digitalstate.taxii.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.digitalstate.taxii.common.Headers;
-import io.digitalstate.taxii.exception.DiscoveryDoesNotExistException;
+import io.digitalstate.taxii.mongo.exception.DiscoveryDoesNotExistException;
 import io.digitalstate.taxii.mongo.model.document.DiscoveryDocument;
 import io.digitalstate.taxii.mongo.repository.DiscoveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

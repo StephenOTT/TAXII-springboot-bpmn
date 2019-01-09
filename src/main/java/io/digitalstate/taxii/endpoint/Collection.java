@@ -1,15 +1,9 @@
 package io.digitalstate.taxii.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.digitalstate.stix.bundle.Bundle;
-import io.digitalstate.stix.sdo.objects.AttackPattern;
 import io.digitalstate.taxii.common.Headers;
-import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
-import io.digitalstate.taxii.exception.CollectionDoesNotExistException;
-import io.digitalstate.taxii.exception.TenantDoesNotExistException;
-import io.digitalstate.taxii.model.collection.TaxiiCollection;
-import io.digitalstate.taxii.model.status.TaxiiStatus;
+import io.digitalstate.taxii.mongo.exception.CollectionDoesNotExistException;
+import io.digitalstate.taxii.mongo.exception.TenantDoesNotExistException;
 import io.digitalstate.taxii.mongo.JsonUtils;
 import io.digitalstate.taxii.mongo.model.document.CollectionDocument;
 import io.digitalstate.taxii.mongo.model.document.CollectionObjectDocument;

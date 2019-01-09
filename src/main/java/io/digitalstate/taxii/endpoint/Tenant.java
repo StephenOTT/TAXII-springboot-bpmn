@@ -1,7 +1,7 @@
 package io.digitalstate.taxii.endpoint;
 
 import io.digitalstate.taxii.common.Headers;
-import io.digitalstate.taxii.exception.TenantDoesNotExistException;
+import io.digitalstate.taxii.mongo.exception.TenantDoesNotExistException;
 import io.digitalstate.taxii.mongo.model.document.TenantDocument;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
