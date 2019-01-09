@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Configuration
 public class ConfigCollections {
@@ -62,5 +63,16 @@ public class ConfigCollections {
                 .build();
 
         collectionObjectRepository.save(collectionObjectDocument);
+
+        CollectionObjectDocument collectionObjectDocumentWithDiffModified =
+                ImmutableCollectionObjectDocument.copyOf(collectionObjectDocument)
+                        .withId(UUID.randomUUID().toString())
+                        .withObject(
+                                AttackPattern.copyOf(attackPatternSdo)
+                                .withModified(Instant.now().plusSeconds(500000)));
+
+
+        collectionObjectRepository.save(collectionObjectDocumentWithDiffModified);
+
     }
 }

@@ -1,15 +1,23 @@
 package io.digitalstate.taxii.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.digitalstate.stix.bundle.BundleObject;
+import io.digitalstate.stix.bundle.BundleableObject;
+import io.digitalstate.stix.json.StixParsers;
 import io.digitalstate.taxii.common.Headers;
+import io.digitalstate.taxii.common.TaxiiParsers;
+import io.digitalstate.taxii.exception.CannotParseBundleStringException;
+import io.digitalstate.taxii.model.status.TaxiiStatus;
+import io.digitalstate.taxii.model.status.TaxiiStatusResource;
+import io.digitalstate.taxii.mongo.exception.CannotCreateStatusDocumentException;
 import io.digitalstate.taxii.mongo.exception.CollectionDoesNotExistException;
+import io.digitalstate.taxii.mongo.exception.CollectionObjectDoesNotExistException;
 import io.digitalstate.taxii.mongo.exception.TenantDoesNotExistException;
 import io.digitalstate.taxii.mongo.JsonUtils;
-import io.digitalstate.taxii.mongo.model.document.CollectionDocument;
-import io.digitalstate.taxii.mongo.model.document.CollectionObjectDocument;
-import io.digitalstate.taxii.mongo.model.document.TenantDocument;
+import io.digitalstate.taxii.mongo.model.document.*;
 import io.digitalstate.taxii.mongo.repository.CollectionObjectRepository;
 import io.digitalstate.taxii.mongo.repository.CollectionRepository;
+import io.digitalstate.taxii.mongo.repository.StatusRepository;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +26,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 
 @Controller
@@ -29,6 +39,9 @@ public class Collection {
 
     @Autowired
     private CollectionObjectRepository collectionObjectRepository;
+
+    @Autowired
+    private StatusRepository statusRepository;
 
     @Autowired
     private TenantRepository tenantRepository;
@@ -89,41 +102,85 @@ public class Collection {
                 .headers(Headers.getSuccessHeaders())
                 .body(JsonUtils.ListToJson(objects));
     }
-//
-//    @PostMapping("/{id}/objects")
-//    @ResponseBody
-//    public ResponseEntity<String> addCollectionObjects( @RequestHeader HttpHeaders headers,
-//                                                        @PathVariable("id") String id,
-//                                                        @PathVariable("tenantId") String tenantId,
-//                                                        @RequestBody Bundle requestBody) throws JsonProcessingException {
-//        // Create alternate handling option where Bundle is not pre-parsed and then sent into Camunda.
-//        // This alternate handling is interesting for use cases where manual adjustments are required.
-//        // Use a query param to use the proper end point
-//
-//        //@TODO send bundle into BPMN instance for processing. Use Sync processing to push enough of the data
-//        // in order to perform the required secondary query.  Also consider having Camunda return all of the required variables? (likely not)
-//
-//        //@TODO Run query on Camunda History DB to get Status
-//        // Return a taxii status based on Camunda DB info
-//        TaxiiStatus taxiiStatus = TaxiiStatus.builder()
-//                .id("some status id")
-//                .status("pending")
-//                .totalCount(2)
-//                .successCount(1)
-//                .failureCount(0)
-//                .pendingCount(1)
-//                .build();
-//
-//        HttpHeaders successHeaders = new HttpHeaders();
-//        successHeaders.add("content-type", "application/vnd.oasis.taxii+json");
-//        successHeaders.add("verison", "2.0");
-//
-//        String successResponseString = objectMapper.writerWithView(TaxiiSpecView.class).writeValueAsString(taxiiStatus);
-//
-//        return ResponseEntity.ok()
-//                .headers(successHeaders)
-//                .body(successResponseString);
-//    }
 
+
+    @GetMapping("/collections/{collectionId}/objects/{objectId}")
+    @ResponseBody
+    public ResponseEntity<String> getCollectionObject(@RequestHeader HttpHeaders headers,
+                                                       @PathVariable("collectionId") String collectionId,
+                                                       @PathVariable("tenantSlug") String tenantSlug,
+                                                       @PathVariable("objectId") String objectId) {
+
+        TenantDocument tenant = tenantRepository.findTenantBySlug(tenantSlug)
+                .orElseThrow(() -> new TenantDoesNotExistException(tenantSlug));
+
+        CollectionDocument collection = collectionRepository.findCollectionById(collectionId, tenant.tenant().getTenantId())
+                .orElseThrow(() -> new CollectionDoesNotExistException(collectionId));
+
+        //@TODO setup .map to only return the inner objects which is the spec.
+        List<CollectionObjectDocument> objects =
+                collectionObjectRepository.findObjectByObjectId(objectId, collection.collection().getId(), tenant.tenant().getTenantId());
+
+        if (objects.size() == 0){
+            throw new CollectionObjectDoesNotExistException(collectionId, objectId);
+        } else {
+            return ResponseEntity.ok()
+                    .headers(Headers.getSuccessHeaders())
+                    .body(JsonUtils.ListToJson(objects));
+        }
+    }
+
+
+    @PostMapping("/collections/{collectionId}/objects")
+    @ResponseBody
+    public ResponseEntity<String> addCollectionObjects( @RequestHeader HttpHeaders headers,
+                                                        @PathVariable("collectionId") String collectionId,
+                                                        @PathVariable("tenantSlug") String tenantSlug,
+                                                        @RequestBody String requestBody) {
+
+
+        TenantDocument tenant = tenantRepository.findTenantBySlug(tenantSlug)
+                .orElseThrow(() -> new TenantDoesNotExistException(tenantSlug));
+
+        CollectionDocument collection = collectionRepository.findCollectionById(collectionId, tenant.tenant().getTenantId())
+                .orElseThrow(() -> new CollectionDoesNotExistException(collectionId));
+
+        BundleObject bundle;
+        try {
+            bundle = StixParsers.parseBundle(requestBody);
+        } catch (IOException e) {
+            throw new CannotParseBundleStringException(e);
+        }
+
+        try {
+            //@TODO update counts to become lazy set through lookup into Camunda
+            TaxiiStatusResource taxiiStatusResource = TaxiiStatus.builder()
+                    .status("pending")
+                    .requestTimestamp(Instant.now())
+                    .totalCount(bundle.getObjects().size())
+                    .successCount(0)
+                    .failureCount(0)
+                    .pendingCount(bundle.getObjects().size())
+                    .build();
+
+            StatusDocument statusDocument = ImmutableStatusDocument.builder()
+                    .modifiedAt(Instant.now())
+                    .tenantId(tenant.tenant().getTenantId())
+                    .collectionId(collection.collection().getId())
+                    .processInstanceId("1234-123-123-123-123")
+                    .lastReportedStatus("active")
+                    .statusResource(taxiiStatusResource)
+                    .build();
+
+            statusRepository.save(statusDocument);
+
+            return ResponseEntity.ok()
+                    .headers(Headers.getSuccessHeaders())
+                    .body(statusDocument.toJson());
+
+        }catch (Exception e){
+            throw new CannotCreateStatusDocumentException(e);
+        }
+    }
 
 }

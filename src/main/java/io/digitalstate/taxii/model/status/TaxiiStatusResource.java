@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -30,8 +31,11 @@ public interface TaxiiStatusResource extends TaxiiModel {
 
     @NotBlank
     @JsonProperty("id")
+    @Value.Default
     @JsonView({TaxiiSpecView.class, AdminView.class})
-    String getId();
+    default String getId(){
+        return UUID.randomUUID().toString();
+    }
 
     @NotBlank
     @JsonProperty("status")

@@ -9,14 +9,14 @@ public class DiscoveryDoesNotExistException extends TaxiiException {
     private static String DEFAULT_HTTP_STATUS = String.valueOf(HttpStatus.BAD_REQUEST.value());
 
     public DiscoveryDoesNotExistException() {
-        super(DEFAULT_TITLE,
+        super(null, DEFAULT_TITLE,
                 null, null, null,
                 DEFAULT_HTTP_STATUS,
                 null, null);
     }
 
     public DiscoveryDoesNotExistException(String description) {
-        super(DEFAULT_TITLE,
+        super(null, DEFAULT_TITLE,
                 description, null, null,
                 DEFAULT_HTTP_STATUS,
                 null, null);

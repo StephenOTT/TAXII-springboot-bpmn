@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.TaxiiParsers;
 import io.digitalstate.taxii.model.apiroot.TaxiiApiRoot;
+import io.digitalstate.taxii.model.status.TaxiiStatusResource;
 import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
 import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
@@ -39,11 +40,18 @@ public interface StatusDocument extends TaxiiMongoModel {
     @JsonProperty("tenant_id")
     String tenantId();
 
+    @JsonProperty("collection_id")
+    String collectionId();
+
     @JsonProperty("process_instance_id")
     String processInstanceId();
 
     @JsonProperty("last_reported_status")
     String lastReportedStatus();
+
+    @JsonProperty("status_resource")
+    TaxiiStatusResource statusResource();
+
 
     @WritingConverter
     public class MongoWriterConverter implements Converter<StatusDocument, org.bson.Document> {

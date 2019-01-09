@@ -29,7 +29,8 @@ import java.time.Instant;
         @CompoundIndex(name = "tenant_id", def = "{ 'tenant_id': 1 }"),
         @CompoundIndex(name = "collection_id", def = "{ 'collection_id': 1 }"),
         @CompoundIndex(name = "object_id", def = "{ 'object.id': 1 }"),
-        @CompoundIndex(name = "object_type", def = "{ 'object.type': 1 }")
+        @CompoundIndex(name = "object_type", def = "{ 'object.type': 1 }"),
+        @CompoundIndex(name = "object_modified", def = "{ 'object.modified': 1 }"),
 })
 public interface CollectionObjectDocument extends TaxiiMongoModel {
 

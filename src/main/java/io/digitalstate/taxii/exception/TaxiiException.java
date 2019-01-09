@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.digitalstate.taxii.common.TaxiiParsers;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 
@@ -41,8 +42,11 @@ public class TaxiiException extends RuntimeException {
     @JsonProperty("details")
     private String details;
 
-    public TaxiiException(@NotNull String title, String description, String errorId, String errorCode, String httpStatus, String externalDetails, String details) {
-        super(title);
+    public TaxiiException(@Nullable Throwable cause, @NotNull String title, String description, String errorId, String errorCode, String httpStatus, String externalDetails, String details) {
+        super(title, cause);
+        if (cause != null){
+            cause.printStackTrace();
+        }
         this.title = title;
         this.description = description;
         this.errorId = errorId;
