@@ -42,16 +42,13 @@ public class CollectionObjectRepositoryImpl implements CollectionObjectRepositor
     public <S extends CollectionObjectDocument> S save(S entity) throws CollectionObjectAlreadyExistsException {
 
         Class<? extends BundleableObject> bundleableObjectClass = entity.object().getClass();
-        System.out.println(bundleableObjectClass.getCanonicalName());
         String MODIFIED_METHOD_NAME = "getModified";
 
         Optional<Instant> modified;
         try {
             Method hasModified = bundleableObjectClass.getMethod(MODIFIED_METHOD_NAME);
-            System.out.println(hasModified.toGenericString());
             modified = Optional.of((Instant) hasModified.invoke(entity.object()));
         } catch (NoSuchMethodException ignore) {
-            System.out.println("COULD NOT FIND hasMethod METHOD");
             modified = Optional.empty();
         } catch (IllegalAccessException e) {
             throw new IllegalStateException("Unable to save mongo doc because cannot access hasModified field");
@@ -111,7 +108,6 @@ public class CollectionObjectRepositoryImpl implements CollectionObjectRepositor
         query.addCriteria(Criteria.where("object.id").is(objectId));
 
         Optional.ofNullable(modified).ifPresent(m -> {
-            System.out.println(formatter.format(modified));
             query.addCriteria(Criteria.where("object.modified").is(formatter.format(modified)));
         });
 
