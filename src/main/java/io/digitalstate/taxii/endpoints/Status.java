@@ -1,9 +1,9 @@
 package io.digitalstate.taxii.endpoints;
 
 import io.digitalstate.taxii.common.Headers;
-import io.digitalstate.taxii.exception.CannotParseStatusUpdateParamsException;
-import io.digitalstate.taxii.mongo.exception.StatusDoesNotExistException;
-import io.digitalstate.taxii.mongo.exception.TenantDoesNotExistException;
+import io.digitalstate.taxii.exception.exceptions.CannotParseStatusUpdateParamsException;
+import io.digitalstate.taxii.mongo.exceptions.StatusDoesNotExistException;
+import io.digitalstate.taxii.mongo.exceptions.TenantDoesNotExistException;
 import io.digitalstate.taxii.mongo.model.document.StatusDocument;
 import io.digitalstate.taxii.mongo.model.document.TenantDocument;
 import io.digitalstate.taxii.mongo.repository.CollectionRepository;

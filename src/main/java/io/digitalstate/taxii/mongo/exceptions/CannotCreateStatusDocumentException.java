@@ -1,4 +1,4 @@
-package io.digitalstate.taxii.mongo.exception;
+package io.digitalstate.taxii.mongo.exceptions;
 
 import io.digitalstate.taxii.exception.TaxiiException;
 import org.springframework.http.HttpStatus;

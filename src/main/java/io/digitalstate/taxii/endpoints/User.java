@@ -1,9 +1,9 @@
 package io.digitalstate.taxii.endpoints;
 
 import io.digitalstate.taxii.common.Headers;
-import io.digitalstate.taxii.mongo.exception.TenantDoesNotExistException;
-import io.digitalstate.taxii.mongo.exception.UserDoesNotExistException;
-import io.digitalstate.taxii.mongo.JsonUtils;
+import io.digitalstate.taxii.mongo.exceptions.TenantDoesNotExistException;
+import io.digitalstate.taxii.mongo.exceptions.UserDoesNotExistException;
+import io.digitalstate.taxii.mongo.JsonUtil;
 import io.digitalstate.taxii.mongo.model.document.TenantDocument;
 import io.digitalstate.taxii.mongo.model.document.UserDocument;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
@@ -45,7 +45,7 @@ public class User {
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(JsonUtils.ListToJson(users.getContent()));
+                .body(JsonUtil.ListToJson(users.getContent()));
     }
 
     @GetMapping("/users/{userId}")

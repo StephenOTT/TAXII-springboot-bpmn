@@ -1,7 +1,6 @@
 package io.digitalstate.taxii.mongo.repository.impl.status;
 
-import io.digitalstate.taxii.mongo.exception.CannotUpdateStatusException;
-import io.digitalstate.taxii.mongo.model.document.CollectionDocument;
+import io.digitalstate.taxii.mongo.exceptions.CannotUpdateStatusException;
 import io.digitalstate.taxii.mongo.model.document.StatusDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Optional;
 
 public class StatusRepositoryImpl implements StatusRepositoryCustom {

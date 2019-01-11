@@ -6,20 +6,17 @@ import io.digitalstate.stix.json.StixParsers;
 import io.digitalstate.taxii.camunda.exception.VariablesReturnedByProcessInstanceException;
 import io.digitalstate.taxii.camunda.utils.TaxiiWorkflowService;
 import io.digitalstate.taxii.common.Headers;
-import io.digitalstate.taxii.exception.CannotParseBundleStringException;
-import io.digitalstate.taxii.model.status.TaxiiStatus;
-import io.digitalstate.taxii.model.status.TaxiiStatusResource;
-import io.digitalstate.taxii.mongo.exception.CannotCreateStatusDocumentException;
-import io.digitalstate.taxii.mongo.exception.CollectionDoesNotExistException;
-import io.digitalstate.taxii.mongo.exception.CollectionObjectDoesNotExistException;
-import io.digitalstate.taxii.mongo.exception.TenantDoesNotExistException;
-import io.digitalstate.taxii.mongo.JsonUtils;
+import io.digitalstate.taxii.exception.exceptions.CannotParseBundleStringException;
+import io.digitalstate.taxii.mongo.exceptions.CannotCreateStatusDocumentException;
+import io.digitalstate.taxii.mongo.exceptions.CollectionDoesNotExistException;
+import io.digitalstate.taxii.mongo.exceptions.CollectionObjectDoesNotExistException;
+import io.digitalstate.taxii.mongo.exceptions.TenantDoesNotExistException;
+import io.digitalstate.taxii.mongo.JsonUtil;
 import io.digitalstate.taxii.mongo.model.document.*;
 import io.digitalstate.taxii.mongo.repository.CollectionObjectRepository;
 import io.digitalstate.taxii.mongo.repository.CollectionRepository;
 import io.digitalstate.taxii.mongo.repository.StatusRepository;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
-import org.camunda.bpm.engine.rest.mapper.JacksonConfigurator;
 import org.camunda.bpm.engine.runtime.ProcessInstanceWithVariables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +26,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.*;
 
 @Controller
@@ -63,7 +59,7 @@ public class Collection {
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(JsonUtils.ListToJson(collections));
+                .body(JsonUtil.ListToJson(collections));
     }
 
 
@@ -105,7 +101,7 @@ public class Collection {
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(JsonUtils.ListToJson(objects));
+                .body(JsonUtil.ListToJson(objects));
     }
 
 
@@ -131,7 +127,7 @@ public class Collection {
         } else {
             return ResponseEntity.ok()
                     .headers(Headers.getSuccessHeaders())
-                    .body(JsonUtils.ListToJson(objects));
+                    .body(JsonUtil.ListToJson(objects));
         }
     }
 

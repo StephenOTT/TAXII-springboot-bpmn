@@ -1,6 +1,10 @@
 package io.digitalstate.taxii.exception;
 
-import io.digitalstate.taxii.mongo.exception.*;
+import io.digitalstate.taxii.camunda.exception.CannotStartProcessInstanceException;
+import io.digitalstate.taxii.camunda.exception.VariablesReturnedByProcessInstanceException;
+import io.digitalstate.taxii.exception.exceptions.CannotParseBundleStringException;
+import io.digitalstate.taxii.exception.exceptions.CannotParseStatusUpdateParamsException;
+import io.digitalstate.taxii.mongo.exceptions.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -82,6 +86,20 @@ public class GlobalErrorHandler {
 
     @ExceptionHandler(CannotParseStatusUpdateParamsException.class)
     public final ResponseEntity<String> processCannotParseStatusUpdateParamsException(CannotParseStatusUpdateParamsException ex) {
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
+                .headers(errorHeaders())
+                .body(ex.toJson());
+    }
+
+    @ExceptionHandler(CannotStartProcessInstanceException.class)
+    public final ResponseEntity<String> processCannotStartProcessInstanceException(CannotStartProcessInstanceException ex) {
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
+                .headers(errorHeaders())
+                .body(ex.toJson());
+    }
+
+    @ExceptionHandler(VariablesReturnedByProcessInstanceException.class)
+    public final ResponseEntity<String> processVariablesReturnedByProcessInstanceException(VariablesReturnedByProcessInstanceException ex) {
         return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());

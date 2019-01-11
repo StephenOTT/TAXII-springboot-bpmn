@@ -1,5 +1,6 @@
-package io.digitalstate.taxii.exception;
+package io.digitalstate.taxii.exception.exceptions;
 
+import io.digitalstate.taxii.exception.TaxiiException;
 import org.springframework.http.HttpStatus;
 
 public class CannotParseStatusUpdateParamsException extends TaxiiException {

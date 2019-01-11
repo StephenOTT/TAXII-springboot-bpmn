@@ -1,9 +1,8 @@
 package io.digitalstate.taxii.mongo.repository.impl.collectionobject;
 
-import com.mongodb.MongoException;
 import io.digitalstate.stix.bundle.BundleableObject;
 import io.digitalstate.stix.helpers.StixDataFormats;
-import io.digitalstate.taxii.mongo.exception.CollectionObjectAlreadyExistsException;
+import io.digitalstate.taxii.mongo.exceptions.CollectionObjectAlreadyExistsException;
 import io.digitalstate.taxii.mongo.model.document.CollectionObjectDocument;
 import io.digitalstate.taxii.mongo.repository.CollectionObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ import java.lang.reflect.Method;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
