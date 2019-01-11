@@ -69,12 +69,17 @@
       </bpmn:endEvent>
       <bpmn:sequenceFlow id="SequenceFlow_0u8xg8l" sourceRef="Task_1jd365y" targetRef="EndEvent_1fqam85" />
     </bpmn:subProcess>
-    <bpmn:sequenceFlow id="SequenceFlow_1rlcjun" sourceRef="SubProcess_082vf08" targetRef="Task_0a23bek" />
+    <bpmn:sequenceFlow id="SequenceFlow_1rlcjun" sourceRef="SubProcess_082vf08" targetRef="Task_18j00nj" />
     <bpmn:sequenceFlow id="SequenceFlow_0ruoxrt" sourceRef="Task_0a23bek" targetRef="EndEvent_0dxe6sl" />
     <bpmn:userTask id="Task_0a23bek" name="placeholder">
-      <bpmn:incoming>SequenceFlow_1rlcjun</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_09z4pw1</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0ruoxrt</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_09z4pw1" sourceRef="Task_18j00nj" targetRef="Task_0a23bek" />
+    <bpmn:manualTask id="Task_18j00nj" name="Update Status for Completion Result">
+      <bpmn:incoming>SequenceFlow_1rlcjun</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_09z4pw1</bpmn:outgoing>
+    </bpmn:manualTask>
     <bpmn:textAnnotation id="TextAnnotation_0adweqf">
       <bpmn:text>Async After</bpmn:text>
     </bpmn:textAnnotation>
@@ -97,9 +102,9 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_0dxe6sl_di" bpmnElement="EndEvent_0dxe6sl">
-        <dc:Bounds x="1348" y="219" width="36" height="36" />
+        <dc:Bounds x="1506" y="219" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1321" y="258" width="90" height="13" />
+          <dc:Bounds x="1479" y="258" width="90" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0b01eeg_di" bpmnElement="SequenceFlow_0b01eeg">
@@ -119,7 +124,7 @@
         <di:waypoint x="1155" y="237" />
         <di:waypoint x="1211" y="237" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1183" y="215.5" width="0" height="13" />
+          <dc:Bounds x="1138" y="215.5" width="90" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="StartEvent_0lr2rvs_di" bpmnElement="StartEvent_0lr2rvs">
@@ -176,17 +181,17 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0ruoxrt_di" bpmnElement="SequenceFlow_0ruoxrt">
-        <di:waypoint x="1311" y="237" />
-        <di:waypoint x="1348" y="237" />
+        <di:waypoint x="1466" y="237" />
+        <di:waypoint x="1506" y="237" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1329.5" y="215.5" width="0" height="13" />
+          <dc:Bounds x="1441" y="215.5" width="90" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="UserTask_1ovtpn4_di" bpmnElement="Task_1ty8tvq">
         <dc:Bounds x="931" y="151" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="UserTask_04l98vk_di" bpmnElement="Task_0a23bek">
-        <dc:Bounds x="1211" y="197" width="100" height="80" />
+        <dc:Bounds x="1366" y="197" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_0wdlm4a_di" bpmnElement="ExclusiveGateway_0wdlm4a" isMarkerVisible="true">
         <dc:Bounds x="775.25" y="166" width="50" height="50" />
@@ -237,6 +242,16 @@
           <dc:Bounds x="1054" y="283" width="0" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_09z4pw1_di" bpmnElement="SequenceFlow_09z4pw1">
+        <di:waypoint x="1311" y="237" />
+        <di:waypoint x="1366" y="237" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1338.5" y="215.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ManualTask_1s8zffv_di" bpmnElement="Task_18j00nj">
+        <dc:Bounds x="1211" y="197" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
