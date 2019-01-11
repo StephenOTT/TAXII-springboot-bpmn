@@ -218,6 +218,55 @@ The default endpoints for Taxii + administrative endpoints that are beyond the c
 ...
 
 
-### GET `/taxii/tanant/:tenant_slug/collections/collection_id
+### GET `/taxii/tanant/:tenant_slug/collections/collection_id`
 
 ...
+
+
+### GET `/taxii/tanant/:tenant_slug/collections/collection_id/objects`
+
+...
+
+
+### POST `/taxii/tanant/:tenant_slug/collections/collection_id/objects`
+
+...
+
+
+## Status
+
+...
+
+
+### GET `/taxii/tanant/:tenant_slug/status/:statusId`
+
+...
+
+
+### PUT /taxii/tanant/:tenant_slug/status/:statusId/operations
+
+An adminstrative endpoint.  Subject to change without notice.  Not part of the Taxii Spec.
+
+...
+
+Query Params:
+
+All three params are required.
+
+1. `operator`: `add`, `subtract`
+1. `property`: 
+    1. `up_success_count_down_failure_count`
+    1. `up_success_count_down_pending_count`
+    1. `up_pending_count_down_failure_count`
+    1. `up_failure_count_down_pending_count`
+    1. `failure_count`
+    1. `pending_count`
+    1. `successes`
+    1. `failures`
+    1. `pendings`
+    1. `failure_count`
+    1. `pending_count`
+    1. `failures`
+    1. `pending`
+    
+1. `value`: count properties require Number >= 1.  Internally converted to Long / int64.  non-count properties are converted to String and will enforce UUID formats.
