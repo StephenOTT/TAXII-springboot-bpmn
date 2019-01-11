@@ -1,11 +1,11 @@
-package io.digitalstate.taxii.endpoint;
+package io.digitalstate.taxii.endpoints;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.digitalstate.stix.bundle.BundleObject;
-import io.digitalstate.stix.bundle.BundleableObject;
 import io.digitalstate.stix.json.StixParsers;
+import io.digitalstate.taxii.camunda.exception.VariablesReturnedByProcessInstanceException;
+import io.digitalstate.taxii.camunda.utils.TaxiiWorkflowService;
 import io.digitalstate.taxii.common.Headers;
-import io.digitalstate.taxii.common.TaxiiParsers;
 import io.digitalstate.taxii.exception.CannotParseBundleStringException;
 import io.digitalstate.taxii.model.status.TaxiiStatus;
 import io.digitalstate.taxii.model.status.TaxiiStatusResource;
@@ -19,6 +19,8 @@ import io.digitalstate.taxii.mongo.repository.CollectionObjectRepository;
 import io.digitalstate.taxii.mongo.repository.CollectionRepository;
 import io.digitalstate.taxii.mongo.repository.StatusRepository;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
+import org.camunda.bpm.engine.rest.mapper.JacksonConfigurator;
+import org.camunda.bpm.engine.runtime.ProcessInstanceWithVariables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
@@ -45,6 +47,9 @@ public class Collection {
 
     @Autowired
     private TenantRepository tenantRepository;
+
+    @Autowired
+    private TaxiiWorkflowService workflowService;
 
     @GetMapping("/collections")
     @ResponseBody
@@ -138,13 +143,13 @@ public class Collection {
                                                         @PathVariable("tenantSlug") String tenantSlug,
                                                         @RequestBody String requestBody) {
 
-
         TenantDocument tenant = tenantRepository.findTenantBySlug(tenantSlug)
                 .orElseThrow(() -> new TenantDoesNotExistException(tenantSlug));
 
         CollectionDocument collection = collectionRepository.findCollectionById(collectionId, tenant.tenant().getTenantId())
                 .orElseThrow(() -> new CollectionDoesNotExistException(collectionId));
 
+        //@TODO Review for using a stream and async as processing could be large sets of data.
         BundleObject bundle;
         try {
             bundle = StixParsers.parseBundle(requestBody);
@@ -152,29 +157,20 @@ public class Collection {
             throw new CannotParseBundleStringException(e);
         }
 
+        //@TODO Review for using a stream and async as processing could be large sets of data.
+        ProcessInstanceWithVariables workflowSubmission = workflowService.createObjectsSubmission(bundle.toJsonString(),
+                tenant.tenant().getTenantId(), collection.collection().getId());
+
+        StatusDocument statusDocument = Optional.ofNullable(workflowSubmission.getVariables()
+                .getValue("original_status_document", StatusDocument.class))
+                .orElseThrow(()-> new VariablesReturnedByProcessInstanceException(null, "original_status_document variable was null or did not exist in the variables returned by process instance start."));
+
         try {
             //@TODO update counts to become lazy set through lookup into Camunda
-            TaxiiStatusResource taxiiStatusResource = TaxiiStatus.builder()
-                    .status("pending")
-                    .requestTimestamp(Instant.now())
-                    .totalCount(bundle.getObjects().size())
-                    .successCount(0)
-                    .failureCount(0)
-                    .pendingCount(bundle.getObjects().size())
-                    .build();
-
-            StatusDocument statusDocument = ImmutableStatusDocument.builder()
-                    .modifiedAt(Instant.now())
-                    .tenantId(tenant.tenant().getTenantId())
-                    .collectionId(collection.collection().getId())
-                    .processInstanceId("1234-123-123-123-123")
-                    .lastReportedStatus("active")
-                    .statusResource(taxiiStatusResource)
-                    .build();
-
+            //@TODO Add error handling that will remove the ProcessInstance if Save Document Fails
             statusRepository.save(statusDocument);
 
-            return ResponseEntity.ok()
+            return ResponseEntity.accepted()
                     .headers(Headers.getSuccessHeaders())
                     .body(statusDocument.toJson());
 
@@ -182,5 +178,4 @@ public class Collection {
             throw new CannotCreateStatusDocumentException(e);
         }
     }
-
 }

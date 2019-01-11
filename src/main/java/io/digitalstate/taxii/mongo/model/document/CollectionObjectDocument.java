@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.stix.bundle.BundleableObject;
 import io.digitalstate.taxii.common.TaxiiParsers;
 import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
+import org.immutables.serial.Serial;
 import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
@@ -19,7 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.IOException;
 import java.time.Instant;
 
-@Value.Immutable
+@Value.Immutable @Serial.Version(1L)
 @Value.Style(passAnnotations = {Document.class, CompoundIndexes.class})
 @JsonSerialize(as=ImmutableCollectionObjectDocument.class) @JsonDeserialize(builder = ImmutableCollectionObjectDocument.Builder.class)
 @Document(collection = "objects")

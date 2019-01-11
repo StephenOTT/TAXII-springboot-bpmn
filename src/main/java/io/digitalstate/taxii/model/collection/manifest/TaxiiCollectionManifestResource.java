@@ -8,12 +8,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.json.views.AdminView;
 import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
 import io.digitalstate.taxii.model.TaxiiModel;
+import org.immutables.serial.Serial;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
-@Value.Immutable
+@Value.Immutable @Serial.Version(1L)
 @Value.Style(typeImmutable = "TaxiiCollectionManifest")
 @JsonSerialize(as = TaxiiCollectionManifest.class) @JsonDeserialize(builder = TaxiiCollectionManifest.Builder.class)
 @JsonPropertyOrder({"objects"})

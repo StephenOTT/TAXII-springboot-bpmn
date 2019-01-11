@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1svwzqh" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.14.0">
+  <bpmn:signal id="Signal_0j31vuz" name="sdo_indicator_received" />
+  <bpmn:collaboration id="Collaboration_0qridi5">
+    <bpmn:participant id="Participant_0js349d" name="Generic Indicator Processing" processRef="SdoIndicatorPocessing" />
+    <bpmn:participant id="Participant_152zdfp" name="Special Indicator Processing" processRef="SpecialSdoIndicatorProcessing" />
+  </bpmn:collaboration>
+  <bpmn:process id="SdoIndicatorPocessing" name="SDO Indicator Processing" isExecutable="true" camunda:versionTag="v0.1">
+    <bpmn:endEvent id="EndEvent_03gdgpp">
+      <bpmn:incoming>SequenceFlow_0sn6vr8</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_093tz5i" name="Indicator placeholder">
+      <bpmn:incoming>SequenceFlow_000jpco</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0sn6vr8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="StartEvent_1iue4qi" name="SDO Indicator Received">
+      <bpmn:outgoing>SequenceFlow_000jpco</bpmn:outgoing>
+      <bpmn:signalEventDefinition signalRef="Signal_0j31vuz" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0sn6vr8" sourceRef="Task_093tz5i" targetRef="EndEvent_03gdgpp" />
+    <bpmn:sequenceFlow id="SequenceFlow_000jpco" sourceRef="StartEvent_1iue4qi" targetRef="Task_093tz5i" />
+  </bpmn:process>
+  <bpmn:process id="SpecialSdoIndicatorProcessing" name="Special SDO Indicator Processing" isExecutable="true" camunda:versionTag="v0.1">
+    <bpmn:endEvent id="EndEvent_1awnn95">
+      <bpmn:incoming>SequenceFlow_03h1cic</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="UserTask_0ii2r1j" name="Special Indicator placeholder">
+      <bpmn:incoming>SequenceFlow_14cnokc</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_03h1cic</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="StartEvent_1vooj1q" name="SDO Indicator Received">
+      <bpmn:outgoing>SequenceFlow_14cnokc</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_1wrcny0" signalRef="Signal_0j31vuz" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_03h1cic" sourceRef="UserTask_0ii2r1j" targetRef="EndEvent_1awnn95" />
+    <bpmn:sequenceFlow id="SequenceFlow_14cnokc" sourceRef="StartEvent_1vooj1q" targetRef="UserTask_0ii2r1j" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0qridi5">
+      <bpmndi:BPMNShape id="Participant_0js349d_di" bpmnElement="Participant_0js349d">
+        <dc:Bounds x="116" y="32" width="600" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_03gdgpp_di" bpmnElement="EndEvent_03gdgpp">
+        <dc:Bounds x="531" y="123" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="549" y="162" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1lk3cup_di" bpmnElement="Task_093tz5i">
+        <dc:Bounds x="299" y="101" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0ccgdpc_di" bpmnElement="StartEvent_1iue4qi">
+        <dc:Bounds x="168" y="123" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="152" y="162" width="70" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0sn6vr8_di" bpmnElement="SequenceFlow_0sn6vr8">
+        <di:waypoint x="399" y="141" />
+        <di:waypoint x="531" y="141" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="465" y="119.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_000jpco_di" bpmnElement="SequenceFlow_000jpco">
+        <di:waypoint x="204" y="141" />
+        <di:waypoint x="299" y="141" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="251.5" y="119.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_152zdfp_di" bpmnElement="Participant_152zdfp">
+        <dc:Bounds x="117" y="356" width="600" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1awnn95_di" bpmnElement="EndEvent_1awnn95">
+        <dc:Bounds x="532" y="447" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="550" y="486" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0ii2r1j_di" bpmnElement="UserTask_0ii2r1j">
+        <dc:Bounds x="300" y="425" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1vooj1q_di" bpmnElement="StartEvent_1vooj1q">
+        <dc:Bounds x="169" y="447" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="486" width="70" height="24" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_03h1cic_di" bpmnElement="SequenceFlow_03h1cic">
+        <di:waypoint x="400" y="465" />
+        <di:waypoint x="532" y="465" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="466" y="444" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_14cnokc_di" bpmnElement="SequenceFlow_14cnokc">
+        <di:waypoint x="205" y="465" />
+        <di:waypoint x="300" y="465" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="252.5" y="444" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

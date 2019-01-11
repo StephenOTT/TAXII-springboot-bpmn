@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 public class CollectionObjectAlreadyExistsException extends TaxiiException {
 
     private static String DEFAULT_TITLE = "Duplicated detected: Collection Object already exists.";
-    private static String DEFAULT_HTTP_STATUS = String.valueOf(HttpStatus.BAD_REQUEST.value());
+    private static String DEFAULT_HTTP_STATUS = String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value());
 
     public CollectionObjectAlreadyExistsException(String collectionId, String objectId) {
         super(null, DEFAULT_TITLE,

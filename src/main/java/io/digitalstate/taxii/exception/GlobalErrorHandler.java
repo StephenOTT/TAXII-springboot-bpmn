@@ -19,56 +19,70 @@ public class GlobalErrorHandler {
 
     @ExceptionHandler(TenantDoesNotExistException.class)
     public final ResponseEntity<String> processTenantDoesNotExistException(TenantDoesNotExistException ex) {
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());
     }
 
     @ExceptionHandler(UserDoesNotExistException.class)
     public final ResponseEntity<String> processUserDoesNotExistException(UserDoesNotExistException ex) {
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());
     }
 
     @ExceptionHandler(DiscoveryDoesNotExistException.class)
     public final ResponseEntity<String> processDiscoveryDoesNotExistException(DiscoveryDoesNotExistException ex) {
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());
     }
 
     @ExceptionHandler(CollectionDoesNotExistException.class)
     public final ResponseEntity<String> processCollectionDoesNotExistException(CollectionDoesNotExistException ex) {
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());
     }
 
     @ExceptionHandler(CollectionObjectDoesNotExistException.class)
     public final ResponseEntity<String> processCollectionObjectDoesNotExistException(CollectionObjectDoesNotExistException ex) {
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());
     }
 
     @ExceptionHandler(CollectionObjectAlreadyExistsException.class)
     public final ResponseEntity<String> processCollectionObjectAlreadyExistsException(CollectionObjectAlreadyExistsException ex) {
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());
     }
 
     @ExceptionHandler(CannotParseBundleStringException.class)
     public final ResponseEntity<String> processCannotParseBundleStringException(CannotParseBundleStringException ex) {
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());
     }
 
     @ExceptionHandler(CannotCreateStatusDocumentException.class)
     public final ResponseEntity<String> processCannotCreateStatusDocumentException(CannotCreateStatusDocumentException ex) {
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
+                .headers(errorHeaders())
+                .body(ex.toJson());
+    }
+
+    @ExceptionHandler(StatusDoesNotExistException.class)
+    public final ResponseEntity<String> processStatusDoesNotExistException(StatusDoesNotExistException ex) {
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
+                .headers(errorHeaders())
+                .body(ex.toJson());
+    }
+
+    @ExceptionHandler(CannotParseStatusUpdateParamsException.class)
+    public final ResponseEntity<String> processCannotParseStatusUpdateParamsException(CannotParseStatusUpdateParamsException ex) {
+        return ResponseEntity.status((int)Integer.valueOf(ex.getHttpStatus()))
                 .headers(errorHeaders())
                 .body(ex.toJson());
     }

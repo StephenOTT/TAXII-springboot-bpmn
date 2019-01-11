@@ -10,6 +10,7 @@ import io.digitalstate.stix.bundle.BundleableObject;
 import io.digitalstate.taxii.common.json.views.AdminView;
 import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
 import io.digitalstate.taxii.model.TaxiiModel;
+import org.immutables.serial.Serial;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.Min;
@@ -22,7 +23,7 @@ import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
-@Value.Immutable
+@Value.Immutable @Serial.Version(1L)
 @Value.Style(typeImmutable = "TaxiiStatus")
 @JsonSerialize(as = TaxiiStatus.class) @JsonDeserialize(builder = TaxiiStatus.Builder.class)
 @JsonPropertyOrder({"id", "status", "request_timestamp", "total_count", "success_count", "successes", "failure_count",
@@ -49,12 +50,12 @@ public interface TaxiiStatusResource extends TaxiiModel {
     @NotNull @Min(0)
     @JsonProperty("total_count")
     @JsonView({TaxiiSpecView.class, AdminView.class})
-    long getTotalCount();
+    Long getTotalCount();
 
     @NotNull @Min(0)
     @JsonProperty("success_count")
     @JsonView({TaxiiSpecView.class, AdminView.class})
-    long getSuccessCount();
+    Long getSuccessCount();
 
     @NotNull
     @JsonProperty("successes")
@@ -64,7 +65,7 @@ public interface TaxiiStatusResource extends TaxiiModel {
     @NotNull @Min(0)
     @JsonProperty("failure_count")
     @JsonView({TaxiiSpecView.class, AdminView.class})
-    long getFailureCount();
+    Long getFailureCount();
 
     @NotNull
     @JsonProperty("failures")
@@ -74,7 +75,7 @@ public interface TaxiiStatusResource extends TaxiiModel {
     @NotNull @Min(0)
     @JsonProperty("pending_count")
     @JsonView({TaxiiSpecView.class, AdminView.class})
-    long getPendingCount();
+    Long getPendingCount();
 
     @NotNull
     @JsonProperty("pendings")

@@ -10,6 +10,7 @@ import io.digitalstate.taxii.common.json.views.AdminView;
 import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
 import io.digitalstate.taxii.model.TaxiiModel;
 import io.digitalstate.taxii.mongo.annotation.Indexed;
+import org.immutables.serial.Serial;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
-@Value.Immutable
+@Value.Immutable @Serial.Version(1L)
 @Value.Style(typeImmutable = "TaxiiCollection")
 @JsonSerialize(as = TaxiiCollection.class) @JsonDeserialize(builder = TaxiiCollection.Builder.class)
 @JsonPropertyOrder({"id", "title", "description", "can_read", "can_write", "media_types"})

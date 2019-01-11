@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 public class UserDoesNotExistException extends TaxiiException {
 
     private static String DEFAULT_TITLE = "User cannot be found or cannot be accessed.";
-    private static String DEFAULT_HTTP_STATUS = String.valueOf(HttpStatus.BAD_REQUEST.value());
+    private static String DEFAULT_HTTP_STATUS = String.valueOf(HttpStatus.FORBIDDEN.value());
 
     public UserDoesNotExistException(String userId) {
         super(null, DEFAULT_TITLE,

@@ -8,12 +8,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.json.views.AdminView;
 import io.digitalstate.taxii.common.json.views.TaxiiSpecView;
 import io.digitalstate.taxii.model.TaxiiModel;
+import org.immutables.serial.Serial;
 import org.immutables.value.Value;
 
 import javax.validation.constraints.NotBlank;
 
 
-@Value.Immutable
+@Value.Immutable @Serial.Version(1L)
 @Value.Style(typeImmutable = "TaxiiStatusFailure")
 @JsonSerialize(as = TaxiiStatusFailure.class) @JsonDeserialize(builder = TaxiiStatusFailure.Builder.class)
 @JsonPropertyOrder({"id", "message"})

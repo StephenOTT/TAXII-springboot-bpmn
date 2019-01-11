@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 public class CollectionObjectDoesNotExistException extends TaxiiException {
 
     private static String DEFAULT_TITLE = "Collection Object cannot be found or cannot be accessed.";
-    private static String DEFAULT_HTTP_STATUS = String.valueOf(HttpStatus.BAD_REQUEST.value());
+    private static String DEFAULT_HTTP_STATUS = String.valueOf(HttpStatus.FORBIDDEN.value());
 
     public CollectionObjectDoesNotExistException(String collectionId, String objectId) {
         super(null, DEFAULT_TITLE,

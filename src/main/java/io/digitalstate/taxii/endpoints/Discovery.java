@@ -1,4 +1,4 @@
-package io.digitalstate.taxii.endpoint;
+package io.digitalstate.taxii.endpoints;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.digitalstate.taxii.common.Headers;

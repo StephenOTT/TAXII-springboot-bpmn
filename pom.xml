@@ -19,6 +19,7 @@
         <java.version>1.8</java.version>
         <camunda.version>7.10.0</camunda.version>
         <camunda.springboot.version>3.2.0</camunda.springboot.version>
+        <camunda.spin.version>1.6.4</camunda.spin.version>
     </properties>
 
     <dependencyManagement>
@@ -38,6 +39,13 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+            <dependency>
+                <groupId>org.camunda.spin</groupId>
+                <artifactId>camunda-spin-bom</artifactId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${camunda.spin.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -54,7 +62,7 @@
         <dependency>
             <groupId>com.github.StephenOTT</groupId>
             <artifactId>STIX-Java</artifactId>
-            <version>0.5.1</version>
+            <version>0.5.4</version>
         </dependency>
 
         <dependency>
@@ -73,6 +81,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-engine-plugin-spin</artifactId>
+            <version>${camunda.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.camunda.spin</groupId>
+            <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
+            <version>${camunda.spin.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
@@ -86,6 +106,12 @@
         <dependency>
             <groupId>org.immutables</groupId>
             <artifactId>annotate</artifactId>
+            <version>2.7.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.immutables</groupId>
+            <artifactId>serial</artifactId>
             <version>2.7.3</version>
             <scope>provided</scope>
         </dependency>

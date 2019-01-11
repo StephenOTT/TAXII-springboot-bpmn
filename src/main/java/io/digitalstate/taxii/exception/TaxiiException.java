@@ -47,6 +47,8 @@ public class TaxiiException extends RuntimeException {
         if (cause != null){
             cause.printStackTrace();
         }
+        //@TODO update the logging to be proper!!!
+        System.out.println("TAXII EXCEPTION: " + title);
         this.title = title;
         this.description = description;
         this.errorId = errorId;

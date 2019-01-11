@@ -7,6 +7,8 @@ import io.digitalstate.stix.json.StixParsers;
 import io.digitalstate.taxii.mongo.model.document.*;
 import io.digitalstate.taxii.mongo.serialization.InstantMongoDeserializer;
 import io.digitalstate.taxii.mongo.serialization.InstantMongoSerializer;
+import io.digitalstate.taxii.mongo.serialization.LongMongoDeserializer;
+import io.digitalstate.taxii.mongo.serialization.LongMongoSerializer;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -28,6 +30,7 @@ public class TaxiiParsers {
         ObjectMapper mapper = StixParsers.getJsonMapper(true).copy();
         registerSubTypes(mapper);
         mapper.registerModule(generateMongoInstantModule());
+        mapper.registerModule(generateMongoLongModule());
         return mapper;
     }
 
@@ -51,6 +54,13 @@ public class TaxiiParsers {
         SimpleModule module = new SimpleModule();
         module.addSerializer(Instant.class, new InstantMongoSerializer());
         module.addDeserializer(Instant.class, new InstantMongoDeserializer());
+        return module;
+    }
+
+    public static SimpleModule generateMongoLongModule(){
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Long.class, new LongMongoSerializer());
+        module.addDeserializer(Long.class, new LongMongoDeserializer());
         return module;
     }
 }

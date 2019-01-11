@@ -1,4 +1,4 @@
-package io.digitalstate.taxii.endpoint;
+package io.digitalstate.taxii.endpoints;
 
 import io.digitalstate.taxii.common.Headers;
 import io.digitalstate.taxii.mongo.exception.TenantDoesNotExistException;

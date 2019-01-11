@@ -1,9 +1,11 @@
 package io.digitalstate.taxii.mongo;
 
+import com.mongodb.WriteConcern;
 import io.digitalstate.taxii.mongo.model.document.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.mongodb.core.WriteConcernResolver;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
@@ -32,6 +34,11 @@ public class MongoConfig {
         converters.add(new CollectionDocument.MongoWriterConverter());
 
         return new MongoCustomConversions(converters);
+    }
+
+    @Bean
+    public WriteConcernResolver writeConcernResolver() {
+        return action -> WriteConcern.ACKNOWLEDGED;
     }
 
 }

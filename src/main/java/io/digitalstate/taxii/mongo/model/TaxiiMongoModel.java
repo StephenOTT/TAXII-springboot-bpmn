@@ -7,11 +7,12 @@ import io.digitalstate.taxii.common.TaxiiParsers;
 import org.immutables.value.Value;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
 @Value.Style(additionalJsonAnnotations = {JsonTypeName.class})
-public interface TaxiiMongoModel {
+public interface TaxiiMongoModel extends Serializable {
 
     @JsonProperty("type")
     String type();

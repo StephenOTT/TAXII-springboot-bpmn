@@ -1,4 +1,6 @@
 package io.digitalstate.taxii.model;
 
-public interface TaxiiModel {
+import java.io.Serializable;
+
+public interface TaxiiModel extends Serializable {
 }
