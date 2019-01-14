@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TenantRepositoryImpl implements TenantRepositoryCustom {
@@ -22,5 +23,12 @@ public class TenantRepositoryImpl implements TenantRepositoryCustom {
         Query query = new Query();
         query.addCriteria(Criteria.where("tenant.tenant_slug").is(slug));
         return Optional.ofNullable(template.findOne(query, TenantDocument.class));
+    }
+
+    @Override
+    public List<TenantDocument> findAllTenantsByFilter(String futureFilterGoesHere) {
+        Query query = new Query();
+        //@TODO add criteria based on the filter to be added
+        return template.find(query, TenantDocument.class);
     }
 }

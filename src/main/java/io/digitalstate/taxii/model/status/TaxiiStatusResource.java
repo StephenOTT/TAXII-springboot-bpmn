@@ -80,6 +80,6 @@ public interface TaxiiStatusResource extends TaxiiModel {
     @NotNull
     @JsonProperty("pendings")
     @JsonView({TaxiiSpecView.class, AdminView.class})
-    Set<BundleableObject> getPendings();
+    Set<String> getPendings();
 
 }

@@ -1,6 +1,6 @@
 package io.digitalstate.taxii.mongo.initialization;
 
-import io.digitalstate.taxii.model.apiroot.TaxiiApiRootResource;
+import io.digitalstate.taxii.model.tenant.TaxiiTenantResource;
 import io.digitalstate.taxii.model.discovery.TaxiiDiscovery;
 import io.digitalstate.taxii.model.discovery.TaxiiDiscoveryResource;
 import io.digitalstate.taxii.mongo.model.document.DiscoveryDocument;
@@ -34,21 +34,19 @@ public class ConfigDiscovery {
     @DependsOn("setupTenants")
     public void setupDiscoveryBean() {
 
-        TenantDocument tenantDocument = tenantRepository.findTenantBySlug("tenant123")
-                .orElseThrow(()-> new IllegalStateException("Cant find tenant123"));
+//        Set<TaxiiTenantResource> roots = new HashSet<>();
+//        roots.add(tenantDocument.tenant());
+//
+//        Set<String> rootStrings = roots.stream().map(TaxiiTenantResource::getTenantSlug).collect(Collectors.toSet());
 
-        Set<TaxiiApiRootResource> roots = new HashSet<>();
-        roots.add(tenantDocument.tenant());
-
-        Set<String> rootStrings = roots.stream().map(TaxiiApiRootResource::getTenantSlug).collect(Collectors.toSet());
-
-        String defaultRoot = tenantDocument.tenant().getTenantSlug(); // Consider adding a "default" flag to a root to mark that it should be used as a default.  Could also be setup as a config in application.yaml
+        //@TODO Add global config for this
+//        String defaultRoot = "tenant123"; // Consider adding a "default" flag to a root to mark that it should be used as a default.  Could also be setup as a config in application.yaml
 
         TaxiiDiscoveryResource discovery = TaxiiDiscovery.builder()
                 .title("Some Taxi Server")
                 .description("some taxii server description")
-                .defaultApiRoot(defaultRoot)
-                .addAllApiRoots(rootStrings)
+//                .defaultApiRoot(defaultRoot)
+//                .addAllApiRoots(rootStrings)
                 .build();
 
         DiscoveryDocument discoveryDocument = ImmutableDiscoveryDocument.builder()

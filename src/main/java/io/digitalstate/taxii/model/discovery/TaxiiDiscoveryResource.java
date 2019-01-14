@@ -16,8 +16,12 @@ import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
+/**
+ * Note: has been setup in such a way that Discovery can be Tenantable in the future.
+ */
 @Value.Immutable @Serial.Version(1L)
 @Value.Style(typeImmutable = "TaxiiDiscovery")
 @JsonSerialize(as = TaxiiDiscovery.class) @JsonDeserialize(builder = TaxiiDiscovery.Builder.class)
@@ -43,12 +47,12 @@ public interface TaxiiDiscoveryResource extends TaxiiModel {
 
     /**
      * This has been left as a Set of Strings rather than a sub object
-     * of {@link io.digitalstate.taxii.model.TaxiiApiRoot} for future flexibility reasons.
+     * of {@link io.digitalstate.taxii.model.tenant.TaxiiTenantResource} for future flexibility reasons.
      * In practice there would be a search for roots and converted into a set of strings and then that set used
      * to populate the set of roots in this field.
      * @return
      */
-    @JsonProperty("api_roots") @JsonInclude(value = NON_EMPTY, content= NON_EMPTY)
+    @JsonProperty("api_roots") @JsonInclude(value = ALWAYS, content= ALWAYS)
     @JsonView({TaxiiSpecView.class, AdminView.class})
     Set<String> getApiRoots();
 

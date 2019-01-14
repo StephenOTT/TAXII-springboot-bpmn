@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.TaxiiParsers;
-import io.digitalstate.taxii.model.apiroot.TaxiiApiRoot;
 import io.digitalstate.taxii.model.status.TaxiiStatusResource;
 import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
 import org.immutables.serial.Serial;

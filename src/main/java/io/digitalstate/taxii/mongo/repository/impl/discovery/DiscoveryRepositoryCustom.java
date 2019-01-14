@@ -4,6 +4,9 @@ import io.digitalstate.taxii.mongo.model.document.DiscoveryDocument;
 
 import java.util.Optional;
 
+/**
+ * Implements with {@link DiscoveryRepositoryImpl} through auto-detection
+ */
 public interface DiscoveryRepositoryCustom {
 
     Optional<DiscoveryDocument> findDiscovery();

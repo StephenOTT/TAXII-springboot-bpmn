@@ -1,5 +1,6 @@
 package io.digitalstate.taxii.mongo.repository.impl.status;
 
+import io.digitalstate.taxii.model.status.TaxiiStatusFailureResource;
 import io.digitalstate.taxii.mongo.exceptions.CannotUpdateStatusException;
 import io.digitalstate.taxii.mongo.model.document.StatusDocument;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,7 +167,7 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
 
     @Override
     @Transactional
-    public Optional<StatusDocument> addFailure(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId) {
+    public Optional<StatusDocument> addFailure(@NotNull TaxiiStatusFailureResource failureResource, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
 
@@ -175,7 +176,7 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
         }
 
         Update update = new Update();
-        update.push("status_resource.failures", objectId);
+        update.push("status_resource.failures", failureResource);
 
         boolean updateSuccess = template.updateFirst(query, update, StatusDocument.class).wasAcknowledged();
         if (updateSuccess){

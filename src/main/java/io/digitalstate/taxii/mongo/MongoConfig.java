@@ -32,6 +32,8 @@ public class MongoConfig {
         converters.add(new CollectionObjectDocument.MongoWriterConverter());
         converters.add(new CollectionDocument.MongoReaderConverter());
         converters.add(new CollectionDocument.MongoWriterConverter());
+        converters.add(new StatusFailureDocument.MongoReaderConverter());
+        converters.add(new StatusFailureDocument.MongoWriterConverter());
 
         return new MongoCustomConversions(converters);
     }

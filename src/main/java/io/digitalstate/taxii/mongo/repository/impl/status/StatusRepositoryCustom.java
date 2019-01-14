@@ -1,5 +1,6 @@
 package io.digitalstate.taxii.mongo.repository.impl.status;
 
+import io.digitalstate.taxii.model.status.TaxiiStatusFailureResource;
 import io.digitalstate.taxii.mongo.model.document.StatusDocument;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public interface StatusRepositoryCustom {
     Optional<StatusDocument> addSuccess(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId);
 
     @Transactional
-    Optional<StatusDocument> addFailure(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> addFailure(@NotNull TaxiiStatusFailureResource failureResource, @NotNull String statusId, @Nullable String tenantId);
 
     @Transactional
     Optional<StatusDocument> removeFailure(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId);

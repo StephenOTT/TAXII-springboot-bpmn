@@ -28,6 +28,6 @@ public interface TaxiiStatusFailureResource extends TaxiiModel {
     @NotBlank
     @JsonProperty("message")
     @JsonView({TaxiiSpecView.class, AdminView.class})
-    String getMessage(); // Add Vocab restriction
+    String getMessage();
 
 }

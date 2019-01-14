@@ -112,10 +112,12 @@ public class Status {
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
-                case "failures":
-                    status = statusRepository.addFailure(value, statusId, tenant.tenant().getTenantId())
-                            .orElseThrow(() -> new StatusDoesNotExistException(statusId));
-                    break;
+                // Removed because failures has a special sub-object
+                // Further work is required if this endpoint is to remain
+//                case "failures":
+//                    status = statusRepository.addFailure(value, statusId, tenant.tenant().getTenantId())
+//                            .orElseThrow(() -> new StatusDoesNotExistException(statusId));
+//                    break;
 
                 case "pendings":
                     status = statusRepository.addPending(value, statusId, tenant.tenant().getTenantId())

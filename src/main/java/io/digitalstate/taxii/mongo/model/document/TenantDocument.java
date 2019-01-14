@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.TaxiiParsers;
-import io.digitalstate.taxii.model.apiroot.TaxiiApiRootResource;
+import io.digitalstate.taxii.model.tenant.TaxiiTenantResource;
 import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
 import org.immutables.serial.Serial;
 import org.immutables.value.Value;
@@ -18,7 +18,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 @Value.Immutable @Serial.Version(1L)
 @Value.Style(passAnnotations = {Document.class, CompoundIndexes.class})
@@ -39,7 +38,7 @@ public interface TenantDocument extends TaxiiMongoModel {
     }
 
     @JsonProperty("tenant")
-    TaxiiApiRootResource tenant();
+    TaxiiTenantResource tenant();
 
 
     @WritingConverter
