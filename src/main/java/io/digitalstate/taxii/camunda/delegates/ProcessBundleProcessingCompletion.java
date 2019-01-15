@@ -19,9 +19,6 @@ public class ProcessBundleProcessingCompletion implements JavaDelegate {
 
     public void execute(DelegateExecution execution) throws Exception {
 
-        BundleableObject bundleableObject = Optional.ofNullable((BundleableObject) execution.getVariable("object"))
-                .orElseThrow(()-> new IllegalStateException("object variable returned null"));
-
         String collectionId = execution.getVariable("collection_id").toString();
         String tenantId = execution.getVariable("tenant_id").toString();
         String statusId = execution.getVariable("status_id").toString();
