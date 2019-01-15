@@ -285,15 +285,15 @@ with a JSON body of:
   "id": "bundle--123-123-123-123",
   "objects": [
     {
-		"type" : "attack-pattern",
+        "type" : "attack-pattern",
         "id" : "attack-pattern--111-111-111-111",
         "created" : "2019-01-09T20:26:11.978Z",
         "modified" : "2019-01-15T15:19:33.564Z",
         "revoked" : false,
         "name" : "some AttackPattern generated through POST"
     },
-        {
-		"type" : "indicator",
+    {
+        "type" : "indicator",
         "id" : "indicator--111-111-111-111",
         "created" : "2019-01-09T20:26:11.978Z",
         "modified" : "2019-01-15T15:19:33.564Z",
