@@ -38,7 +38,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> incrementSuccessCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
 
@@ -61,7 +60,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> incrementFailureCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -82,7 +80,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> decrementFailureCount(@NotNull @Min(0) long subtractAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -103,7 +100,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> incrementPendingCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -124,7 +120,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> decrementPendingCount(@NotNull @Min(0) long subtractAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -145,7 +140,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> addSuccess(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -166,7 +160,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> addFailure(@NotNull TaxiiStatusFailureResource failureResource, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -187,7 +180,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> removeFailure(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -208,7 +200,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> addPending(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -229,7 +220,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> removePending(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
@@ -250,7 +240,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> incrementSuccessCountWithPendingCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
 
@@ -273,7 +262,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> incrementSuccessCountWithFailureCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
 
@@ -296,7 +284,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Optional<StatusDocument> incrementFailureCountWithPendingCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
 
@@ -335,7 +322,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
      *
      */
     @Override
-    @Transactional
     public Optional<StatusDocument> incrementPendingCountWithFailureCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
 
@@ -357,8 +343,23 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
         }
     }
 
+    @Override
+    public boolean updateStatusValue(@NotNull String newStatus, @NotNull String statusId, String tenantId) {
+        Query query = new Query();
 
-    //@TODO
+        query.addCriteria(Criteria.where("status_resource.id").is(statusId));
+
+        if (tenantId != null){
+            query.addCriteria(Criteria.where("tenant_id").is(tenantId));
+        }
+
+        Update update = new Update();
+        update.set("status_resource.status", newStatus);
+
+        return template.updateFirst(query, update, StatusDocument.class).wasAcknowledged();
+    }
+
+//@TODO
 //    public StatusDocument updateStatusById(@NotNull String statusId, @Nullable String tenantId){
 //
 //    }

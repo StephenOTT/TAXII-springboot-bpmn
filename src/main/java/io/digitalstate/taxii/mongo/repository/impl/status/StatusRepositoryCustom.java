@@ -59,4 +59,8 @@ public interface StatusRepositoryCustom {
 
     @Transactional
     Optional<StatusDocument> incrementPendingCountWithFailureCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
+
+    @Transactional
+    boolean updateStatusValue(@NotNull String newStatus, @NotNull String statusId, @Nullable String tenantId);
+
 }
