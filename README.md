@@ -270,3 +270,154 @@ All three params are required.
     1. `pending`
     
 1. `value`: count properties require Number >= 1.  Internally converted to Long / int64.  non-count properties are converted to String and will enforce UUID formats.
+
+
+
+# Example Usage
+
+Given a request such as **POST** `http://localhost:8090/taxii/tenant/tenant123/collections/1c4bf1bc-71e6-40fc-b11a-708ec341e4ce/objects`
+
+with a JSON body of:
+
+```json
+{  
+  "type": "bundle",
+  "id": "bundle--123-123-123-123",
+  "objects": [
+    {
+		"type" : "attack-pattern",
+        "id" : "attack-pattern--111-111-111-111",
+        "created" : "2019-01-09T20:26:11.978Z",
+        "modified" : "2019-01-15T15:19:33.564Z",
+        "revoked" : false,
+        "name" : "some AttackPattern generated through POST"
+    },
+        {
+		"type" : "indicator",
+        "id" : "indicator--111-111-111-111",
+        "created" : "2019-01-09T20:26:11.978Z",
+        "modified" : "2019-01-15T15:19:33.564Z",
+        "revoked" : false,
+        "name" : "Some Indicator",
+        "labels": ["anomalous-activity"],
+        "pattern": "some pattern goes here",
+        "valid_from":"2019-01-01T09:00:00.000Z"
+    }
+  ]
+}
+```
+
+The reponse is:
+
+```json
+{
+    "id": "9afc285f-7134-48e0-88c1-548f9c439f89",
+    "status": "pending",
+    "request_timestamp": "2019-01-15T17:05:06.910Z",
+    "total_count": 2,
+    "success_count": 0,
+    "successes": [],
+    "failure_count": 0,
+    "failures": [],
+    "pending_count": 2,
+    "pendings": []
+}
+```
+
+This default response acknowledges the POST and does a count of the number of objects that the bundle contains.
+
+Within the Taxii Server, the workflow has executed to begin processing the bundle:
+
+We can review the state of the workflow and inspect its progress:
+
+![processing 1](./docs/images/processing1.png)
+
+We can see the process has two active parallel tokens (executions).
+
+Each STIX object within the bundle is a execution within the parent process isntance.  Therefore we have 2 executions because we submitted a bundle with two objects.
+
+We can review the BPMN to see some of the specific configurations that were made:
+
+![config 1](./docs/images/bpmn-contains-config.png)
+
+![config 2](./docs/images/bpmn-equals-config.png)
+
+Notice that we are able to interact with the JSON/STIX Objects in a native type-safe java object using Java Expressions.
+This gives us the full power of scripting and Java Expression Language to create powerful logic controls on how to process STIX data.
+
+If we look at the Status through HTTP we can see the results of the BPMN processing: 
+
+**GET** `http://localhost:8090/taxii/tenant/tenant123/status/b28e2ed1-26eb-4cc1-a1d6-e6bdecc72dae`
+
+```json
+{
+    "id": "9afc285f-7134-48e0-88c1-548f9c439f89",
+    "status": "pending",
+    "request_timestamp": "2019-01-15T17:05:06.910Z",
+    "total_count": 2,
+    "success_count": 1,
+    "successes": [
+        "attack-pattern--111-111-111-111"
+    ],
+    "failure_count": 1,
+    "failures": [
+        {
+            "id": "indicator--111-111-111-111",
+            "message": "Anomalous Activity is not currently accepted"
+        }
+    ],
+    "pending_count": 0,
+    "pendings": []
+}
+```
+
+Note the `failures` property which has the message that was defined in the BPMN configuration.
+
+We use modeler templates that are configured for the expected inputs of the executing code.
+For Failure Processing we have a expected input of `message` which is the message that should be provided for a STIX object that cannot be processed.
+
+The configuration is:
+
+![failure template](./docs/images/failureProcessingTemplate.png)
+
+Templates provide a json configurable way to setup Analyst-friendly interfaces that can be configured without having to understand underlying complexities.
+
+
+In the example we have "placeholder" Human Tasks in the BPMN which are used for demonstration purposes.
+Once we complete those human tasks, the Update Status service task executes to update the Status with a `completed` status.
+
+If an error occurs in the BPMN processing, the engine will provide full details and notifications about the incident:
+
+![incident](./docs/images/processingError1.png)
+
+If no errors then the resulting BPMN would look like:
+
+![completion](./docs/images/processingCompletion1.png)
+
+and the resulting JSON would be:
+
+**GET** `http://localhost:8090/taxii/tenant/tenant123/status/9afc285f-7134-48e0-88c1-548f9c439f89`
+
+```json
+ {
+    "id": "9afc285f-7134-48e0-88c1-548f9c439f89",
+    "status": "completed",
+    "request_timestamp": "2019-01-15T17:05:06.910Z",
+    "total_count": 2,
+    "success_count": 1,
+    "successes": [
+        "attack-pattern--111-111-111-111"
+    ],
+    "failure_count": 1,
+    "failures": [
+        {
+            "id": "indicator--111-111-111-111",
+            "message": "Anomalous Activity is not currently accepted"
+        }
+    ],
+    "pending_count": 0,
+    "pendings": []
+}
+```
+
+Note the change in the `status` property.
