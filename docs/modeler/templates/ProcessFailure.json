@@ -1,0 +1,30 @@
+{
+  "name": "STIX Object Processing Failure",
+  "id": "io.digitalstate.taxii.camunda.delegates.ProcessFailure",
+  "appliesTo": [
+    "bpmn:ServiceTask"
+  ],
+  "properties": [
+    {
+      "label": "Implementation Type",
+      "type": "String",
+      "value": "io.digitalstate.taxii.camunda.delegates.ProcessFailure",
+      "editable": false,
+      "binding": {
+        "type": "property",
+        "name": "camunda:class"
+      }
+    },
+    {
+      "label": "Failure Message",
+      "type": "String",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "message"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    }
+  ]
+}
