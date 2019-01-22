@@ -1,11 +1,9 @@
 package io.digitalstate.taxii.mongo.initialization;
 
-import io.digitalstate.taxii.model.tenant.TaxiiTenantResource;
 import io.digitalstate.taxii.model.discovery.TaxiiDiscovery;
 import io.digitalstate.taxii.model.discovery.TaxiiDiscoveryResource;
 import io.digitalstate.taxii.mongo.model.document.DiscoveryDocument;
 import io.digitalstate.taxii.mongo.model.document.ImmutableDiscoveryDocument;
-import io.digitalstate.taxii.mongo.model.document.TenantDocument;
 import io.digitalstate.taxii.mongo.repository.DiscoveryRepository;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Initialize Mongo with basic Discovery info as defined by configuration
