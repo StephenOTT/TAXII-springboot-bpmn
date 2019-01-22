@@ -10,6 +10,11 @@ engine (Camunda), and Spring Security configurations.
 
 This TAXII server is designed to be used as a configurable microservice that can scale and configure for simple and complex processing requirements.
 
+# Related Projects
+
+1. See [TAXII-Worker](https://github.com/StephenOTT/TAXII-Worker) for a Vertx based polymophic External Task worker that is non-blocking, scalable and cluster ready.  This lib can be used as a base to build a customized workers or can be used as a Main Verticle to deploy other verticles and establish a central Vertx hub. 
+2. See [STIX-Java](https://github.com/StephenOTT/STIX-Java) for the STIX library that this TAXII server is based on.
+
 # BPMN Usage examples
 
 Base processes that loaded into the engine to handle typical processing.
