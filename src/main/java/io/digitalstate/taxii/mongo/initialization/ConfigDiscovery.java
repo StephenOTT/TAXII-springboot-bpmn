@@ -7,6 +7,7 @@ import io.digitalstate.taxii.mongo.model.document.ImmutableDiscoveryDocument;
 import io.digitalstate.taxii.mongo.repository.DiscoveryRepository;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -18,6 +19,12 @@ import java.time.Instant;
  */
 @Configuration
 public class ConfigDiscovery {
+
+    @Value("${taxii.discovery.title : Default Taxii Server}")
+    private String defaultTitle;
+
+    @Value("${taxii.discovery.description : The default Taxii Server}")
+    private String defaultDescription;
 
     @Autowired
     private DiscoveryRepository discoveryRepository;
@@ -38,8 +45,8 @@ public class ConfigDiscovery {
 //        String defaultRoot = "tenant123"; // Consider adding a "default" flag to a root to mark that it should be used as a default.  Could also be setup as a config in application.yaml
 
         TaxiiDiscoveryResource discovery = TaxiiDiscovery.builder()
-                .title("Some Taxi Server")
-                .description("some taxii server description")
+                .title(defaultTitle)
+                .description(defaultDescription)
 //                .defaultApiRoot(defaultRoot)
 //                .addAllApiRoots(rootStrings)
                 .build();

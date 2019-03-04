@@ -15,6 +15,44 @@ This TAXII server is designed to be used as a configurable microservice that can
 1. See [TAXII-Worker](https://github.com/StephenOTT/TAXII-Worker) for a Vertx based polymophic External Task worker that is non-blocking, scalable and cluster ready.  This lib can be used as a base to build a customized workers or can be used as a Main Verticle to deploy other verticles and establish a central Vertx hub. 
 2. See [STIX-Java](https://github.com/StephenOTT/STIX-Java) for the STIX library that this TAXII server is based on.
 
+# Configuration
+
+Configuration is part of the Springboot application.yaml:
+
+```yaml
+server:
+  port: 8090
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: taxii
+
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: admin
+      firstName: Admin
+
+taxii:
+  tenant:
+    slug: "admin"
+    title: "administration tenant"
+    description: "The admin tenant for overall management of the taxii server"
+
+  discovery:
+    title: "My default Discovery"
+    description: "The default discovery"
+
+  user:
+    username: "admin"
+    password: "admin"
+
+```
+
 # BPMN Usage examples
 
 Base processes that loaded into the engine to handle typical processing.
@@ -54,70 +92,6 @@ Additional processes can be enacted as needed for the specific implementation.
 
 1. Process submitted data into third-party systems that are non-TAXII servers (servers, files, csv, file systems, RPC, HTTP, etc).
 
-
-# Sample Json
-
-Here are some examples of JSON and Mongo JSON generation.
-
-```json
-{
-  "type": "tenant",
-  "tenant": {
-    "tenant_id": "1234567890",
-    "tenant_slug": "tenant123",
-    "title": "Some Title",
-    "description": "some description",
-    "versions": [
-      "taxii-2.0"
-    ],
-    "max_content_length": 10485760
-  },
-  "_id": "a5d05629-c845-4458-a32e-2872ba3be23e",
-  "created_at": ISODate("2019-01-07T03:56:04.794Z"),
-  "modified_at": ISODate("2019-01-07T03:56:04.794Z")
-}
-```
-
-```json
-{
-  "type": "tenant",
-  "tenant": {
-    "tenant_id": "1234567890",
-    "tenant_slug": "tenant123",
-    "title": "Some Title",
-    "description": "some description",
-    "versions": [
-      "taxii-2.0"
-    ],
-    "max_content_length": 10485760
-  },
-  "_id": "a5d05629-c845-4458-a32e-2872ba3be23e",
-  "created_at": "2019-01-07T03:56:04.794Z",
-  "modified_at": "2019-01-07T03:56:04.794Z"
-}
-```
-
-```json
-{
-  "type": "user",
-  "tenant_id": "a5d05629-c845-4458-a32e-2872ba3be23e",
-  "username": "steve",
-  "_id": "f128f3b5-64b5-44fc-89b2-3a103c912bf8",
-  "created_at": "2019-01-07T03:56:14.466Z",
-  "modified_at": "2019-01-07T03:56:14.433Z"
-}
-```
-
-```json
-{
-  "type": "user",
-  "tenant_id": "a5d05629-c845-4458-a32e-2872ba3be23e",
-  "username": "steve",
-  "_id": "f128f3b5-64b5-44fc-89b2-3a103c912bf8",
-  "created_at": ISODate("2019-01-07T03:56:14.466Z"),
-  "modified_at": ISODate("2019-01-07T03:56:14.433Z")
-}
-```
 
 
 # Docker Image

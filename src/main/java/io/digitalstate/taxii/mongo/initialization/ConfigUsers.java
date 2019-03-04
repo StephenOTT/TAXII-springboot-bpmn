@@ -7,6 +7,7 @@ import io.digitalstate.taxii.mongo.model.document.UserDocument;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import io.digitalstate.taxii.mongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -15,6 +16,15 @@ import java.time.Instant;
 
 @Configuration
 public class ConfigUsers {
+
+    @Autowired
+    private ConfigTenants configTenants;
+
+    @Value("${taxii.user.username : admin}")
+    private String defaultUsername;
+
+    @Value("${taxii.user.password : admin}")
+    private String defaultPassword;
 
     @Autowired
     private TenantRepository tenantRepository;
@@ -26,13 +36,13 @@ public class ConfigUsers {
     @DependsOn("setupTenants")
     public void setupUsersBean() {
 
-        TenantDocument tenantDocument = tenantRepository.findTenantBySlug("tenant123")
-                .orElseThrow(()-> new IllegalStateException("Cant find tenant123"));
+        TenantDocument tenantDocument = tenantRepository.findTenantBySlug(configTenants.getDefaultId())
+                .orElseThrow(()-> new IllegalStateException("Cant find tenant" + configTenants.getDefaultId()));
 
         UserDocument user1 = ImmutableUserDocument.builder()
-                .username("steve")
+                .username(defaultUsername)
                 .modifiedAt(Instant.now())
-                .tenantId(tenantDocument.tenant().getTenantId())
+                .tenantId(configTenants.getDefaultId())
                 .build();
 
         userRepository.save(user1);

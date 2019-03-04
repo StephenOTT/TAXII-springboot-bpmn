@@ -20,6 +20,9 @@ import java.util.UUID;
 public class ConfigCollections {
 
     @Autowired
+    ConfigTenants configTenants;
+
+    @Autowired
     private TenantRepository tenantRepository;
 
     @Autowired
@@ -32,8 +35,8 @@ public class ConfigCollections {
     @DependsOn("setupTenants")
     public void setupCollectionsBean() {
 
-        TenantDocument tenantDocument = tenantRepository.findTenantBySlug("tenant123")
-                .orElseThrow(() -> new IllegalStateException("Cant find tenant123"));
+        TenantDocument tenantDocument = tenantRepository.findTenantBySlug(configTenants.getDefaultId())
+                .orElseThrow(() -> new IllegalStateException("Cant find tenant:" + configTenants.getDefaultId()));
 
         TaxiiCollectionResource collection = TaxiiCollection.builder()
                 .title("someTitle")
