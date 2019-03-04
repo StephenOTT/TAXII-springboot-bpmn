@@ -15,20 +15,17 @@ camunda:
       password: admin
       firstName: Admin
 
-# For future usage.  Not currently setup to be used:
 taxii:
-  tenants:
-    - id: "administration"
-      slug: "admin"
-      title: "administration tenant"
-      description: "The admin tenant for overall management of the taxii server"
+  tenant:
+    slug: "admin1"
+    title: "administration tenant1"
+    description: "The admin1 tenant for overall management of the taxii server"
 
   discovery:
-    title: ""
-    description: ""
+    title: "My default Discovery"
+    description: "The default discovery"
 
-  users:
-    - username: "admin"
-      password: "admin"
-      tenantId: "administration"
+  user:
+    username: "admin"
+    password: "admin"
 
