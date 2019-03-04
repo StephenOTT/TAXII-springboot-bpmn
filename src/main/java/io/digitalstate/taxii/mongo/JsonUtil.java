@@ -7,6 +7,11 @@ import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
 import java.util.List;
 
 public class JsonUtil {
+    /**
+     * Converts a List of TaxiiMongoModel objects into a Json list using the Json Mapper
+     * @param list
+     * @return
+     */
     public static String ListToJson(List<? extends TaxiiMongoModel> list){
         try {
             return TaxiiParsers.getJsonMapper().writeValueAsString(list);
