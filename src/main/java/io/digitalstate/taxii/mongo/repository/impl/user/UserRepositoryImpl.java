@@ -1,5 +1,6 @@
 package io.digitalstate.taxii.mongo.repository.impl.user;
 
+import com.mongodb.DuplicateKeyException;
 import io.digitalstate.taxii.mongo.model.document.UserDocument;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         List<UserDocument> users = template.find(query, UserDocument.class);
         return PageableExecutionUtils.getPage(users, pageable,
                 () -> template.count(query, UserDocument.class));
+    }
+
+    public UserDocument createUser(@NotNull UserDocument userDoc) throws DuplicateKeyException{
+        return template.insert(userDoc);
     }
 }

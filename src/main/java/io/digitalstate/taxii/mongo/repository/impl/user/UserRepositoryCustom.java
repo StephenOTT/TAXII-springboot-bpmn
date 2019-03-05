@@ -15,4 +15,7 @@ public interface UserRepositoryCustom {
     List<UserDocument> findAllUsersByTenantSlug(@NotNull String slug);
 
     Page<UserDocument> findAllUsersByTenantId(@NotNull String tenantId, @NotNull Pageable pageable);
+
+    UserDocument createUser(@NotNull UserDocument userDoc);
+
 }
