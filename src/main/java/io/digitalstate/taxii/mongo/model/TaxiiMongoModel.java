@@ -18,22 +18,26 @@ public interface TaxiiMongoModel extends Serializable {
     String type();
 
     @Value.Default
-    @JsonProperty("_id") @Id
-    default String id(){
+    @JsonProperty("_id")
+    @Id
+    default String id() {
         return UUID.randomUUID().toString();
     }
 
     @Value.Default
     @JsonProperty("created_at")
-    default Instant createdAt(){
+    default Instant createdAt() {
         return Instant.now();
     }
 
+    @Value.Default
     @JsonProperty("modified_at")
-    Instant modifiedAt();
+    default Instant modifiedAt() {
+        return Instant.now();
+    }
 
     @Value.Lazy
-    default String toJson(){
+    default String toJson() {
         try {
             return TaxiiParsers.getJsonMapper().writeValueAsString(this);
         } catch (JsonProcessingException e) {
@@ -42,7 +46,7 @@ public interface TaxiiMongoModel extends Serializable {
     }
 
     @Value.Lazy
-    default String toMongoJson(){
+    default String toMongoJson() {
         try {
             return TaxiiParsers.getMongoMapper().writeValueAsString(this);
         } catch (JsonProcessingException e) {
