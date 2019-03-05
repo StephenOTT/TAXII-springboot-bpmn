@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>TAXII Server</name>
-    <description>TAXII Server based on Springboot and backed by BPMN</description>
+    <description>TAXII Server based on Springboot and backed by BPM</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
