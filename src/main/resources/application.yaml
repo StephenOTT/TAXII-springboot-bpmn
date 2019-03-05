@@ -17,6 +17,7 @@ camunda:
 
 taxii:
   tenant:
+    id: "myId"
     slug: "admin1"
     title: "administration tenant1"
     description: "The admin1 tenant for overall management of the taxii server"
