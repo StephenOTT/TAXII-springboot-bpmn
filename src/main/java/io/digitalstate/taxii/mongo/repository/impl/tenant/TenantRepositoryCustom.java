@@ -12,5 +12,7 @@ public interface TenantRepositoryCustom {
 
     Optional<TenantDocument> findTenantBySlug(String slug);
 
+    Optional<TenantDocument> findTenantByTenantId(String tenantId);
+
     List<TenantDocument> findAllTenantsByFilter(String futureFilterGoesHere);
 }

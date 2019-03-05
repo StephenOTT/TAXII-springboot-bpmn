@@ -26,6 +26,13 @@ public class TenantRepositoryImpl implements TenantRepositoryCustom {
     }
 
     @Override
+    public Optional<TenantDocument> findTenantByTenantId(String tenantId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("tenant.tenant_id").is(tenantId));
+        return Optional.ofNullable(template.findOne(query, TenantDocument.class));
+    }
+
+    @Override
     public List<TenantDocument> findAllTenantsByFilter(String futureFilterGoesHere) {
         Query query = new Query();
         //@TODO add criteria based on the filter to be added
