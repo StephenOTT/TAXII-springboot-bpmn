@@ -36,7 +36,7 @@ public class ConfigUsers {
     @DependsOn("setupTenants")
     public void setupUsersBean() {
 
-        TenantDocument tenantDocument = tenantRepository.findTenantBySlug(configTenants.getDefaultId())
+        TenantDocument tenantDocument = tenantRepository.findTenantByTenantId(configTenants.getDefaultId())
                 .orElseThrow(()-> new IllegalStateException("Cant find tenant" + configTenants.getDefaultId()));
 
         UserDocument user1 = ImmutableUserDocument.builder()
@@ -45,7 +45,7 @@ public class ConfigUsers {
                 .tenantId(configTenants.getDefaultId())
                 .build();
 
-        userRepository.save(user1);
+        userRepository.insert(user1);
 
     }
 }

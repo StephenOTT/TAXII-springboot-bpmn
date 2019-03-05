@@ -56,6 +56,6 @@ public class ConfigDiscovery {
                 .serverInfo(discovery)
                 .build();
 
-        discoveryRepository.save(discoveryDocument);
+        discoveryRepository.insert(discoveryDocument);
     }
 }

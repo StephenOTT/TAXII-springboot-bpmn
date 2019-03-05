@@ -19,16 +19,16 @@ import java.util.UUID;
 @Configuration
 public class ConfigTenants {
 
-    @Value("${taxii.tenant.id : admin}")
+    @Value("${taxii.tenant.id:adminFallBack}")
     private String defaultId;
 
-    @Value("${taxii.tenant.slug : admin}")
+    @Value("${taxii.tenant.slug:adminSlugFallBack}")
     private String defaultSlug;
 
-    @Value("${taxii.tenant.title: Admin tenant}")
+    @Value("${taxii.tenant.title:Admin tenant}")
     private String defaultTitle;
 
-    @Value("${taxii.tenant.description: The Admin tenant}")
+    @Value("${taxii.tenant.description:The Admin tenant}")
     private String defaultDescription;
 
     @Autowired
@@ -49,7 +49,7 @@ public class ConfigTenants {
                 .tenant(tenant)
                 .build();
 
-        tenantRepository.save(tenantDoc);
+        tenantRepository.insert(tenantDoc);
     }
 
     public String getDefaultId() {
