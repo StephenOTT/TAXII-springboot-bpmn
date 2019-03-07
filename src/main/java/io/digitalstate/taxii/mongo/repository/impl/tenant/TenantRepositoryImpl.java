@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,14 +20,14 @@ public class TenantRepositoryImpl implements TenantRepositoryCustom {
     }
 
     @Override
-    public Optional<TenantDocument> findTenantBySlug(String slug) {
+    public Optional<TenantDocument> findTenantBySlug(@NotNull String slug) {
         Query query = new Query();
         query.addCriteria(Criteria.where("tenant.tenant_slug").is(slug));
         return Optional.ofNullable(template.findOne(query, TenantDocument.class));
     }
 
     @Override
-    public Optional<TenantDocument> findTenantByTenantId(String tenantId) {
+    public Optional<TenantDocument> findTenantByTenantId(@NotNull String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("tenant.tenant_id").is(tenantId));
         return Optional.ofNullable(template.findOne(query, TenantDocument.class));
@@ -37,5 +38,10 @@ public class TenantRepositoryImpl implements TenantRepositoryCustom {
         Query query = new Query();
         //@TODO add criteria based on the filter to be added
         return template.find(query, TenantDocument.class);
+    }
+
+    @Override
+    public TenantDocument createTenant(@NotNull TenantDocument tenantDoc) {
+        return template.insert(tenantDoc);
     }
 }
