@@ -29,7 +29,7 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1dw80q1" sourceRef="Task_006uoaj" targetRef="Task_1htrjj7" />
     <bpmn:sequenceFlow id="SequenceFlow_1ne9wv1" sourceRef="Task_1htrjj7" targetRef="EndEvent_0xb44mm" />
-    <bpmn:userTask id="Task_1htrjj7">
+    <bpmn:userTask id="Task_1htrjj7" name="placeholder">
       <bpmn:incoming>SequenceFlow_1dw80q1</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1ne9wv1</bpmn:outgoing>
     </bpmn:userTask>
