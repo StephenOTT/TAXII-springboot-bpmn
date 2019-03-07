@@ -55,7 +55,7 @@ public class CreateUserDelegate implements JavaDelegate {
                 String targetVarName = execution.getVariable(RESULT_VARIABLE_NAME).toString();
                 execution.setVariableLocal(targetVarName, Spin.JSON(createdUser.toJson()));
             }
-             
+
         } catch (DuplicateKeyException dk){
             logger.error("Duplicate Key was detected while trying to insert a User", dk);
             throw new BpmnError("existingUser", "Existing User was detected while trying to insert User");
