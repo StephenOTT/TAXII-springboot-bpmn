@@ -161,17 +161,17 @@ public class Collection {
                 .getValue("original_status_document", StatusDocument.class))
                 .orElseThrow(()-> new VariablesReturnedByProcessInstanceException(null, "original_status_document variable was null or did not exist in the variables returned by process instance start."));
 
-        try {
+//        try {
             //@TODO update counts to become lazy set through lookup into Camunda
             //@TODO Add error handling that will remove the ProcessInstance if Save Document Fails
-            statusRepository.save(statusDocument);
+//            statusRepository.save(statusDocument);
 
             return ResponseEntity.accepted()
                     .headers(Headers.getSuccessHeaders())
                     .body(statusDocument.toJson());
 
-        }catch (Exception e){
-            throw new CannotCreateStatusDocumentException(e);
-        }
+//        }catch (Exception e){
+//            throw new CannotCreateStatusDocumentException(e);
+//        }
     }
 }

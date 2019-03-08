@@ -6,15 +6,20 @@ import io.digitalstate.taxii.model.status.TaxiiStatus;
 import io.digitalstate.taxii.model.status.TaxiiStatusResource;
 import io.digitalstate.taxii.mongo.model.document.ImmutableStatusDocument;
 import io.digitalstate.taxii.mongo.model.document.StatusDocument;
+import io.digitalstate.taxii.mongo.repository.StatusRepository;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.spin.json.SpinJsonNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
-@Component
+@Component("prepBundle")
 public class PrepBundle implements JavaDelegate {
+
+    @Autowired
+    private StatusRepository statusRepository;
 
     public void execute(DelegateExecution execution) throws Exception {
 
@@ -54,6 +59,8 @@ public class PrepBundle implements JavaDelegate {
                 .lastReportedStatus("active")
                 .statusResource(taxiiStatusResource)
                 .build();
+
+        statusRepository.createStatus(statusDocument);
 
         execution.setVariable("status_id", taxiiStatusResource.getId());
         execution.setVariable("original_status_document", statusDocument);
