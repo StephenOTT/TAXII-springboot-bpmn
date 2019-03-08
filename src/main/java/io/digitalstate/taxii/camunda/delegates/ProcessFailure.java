@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
+@Component("processFailure")
 public class ProcessFailure implements JavaDelegate {
 
     @Autowired

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
+@Component("processBundleProcessingCompletion")
 public class ProcessBundleProcessingCompletion implements JavaDelegate {
 
     @Autowired

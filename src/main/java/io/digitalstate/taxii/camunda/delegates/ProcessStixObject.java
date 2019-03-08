@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.Optional;
 
-@Component
+@Component("processStixObject")
 public class ProcessStixObject implements JavaDelegate {
 
     @Autowired
