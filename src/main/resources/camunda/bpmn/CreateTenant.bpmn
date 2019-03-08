@@ -4,11 +4,12 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="tenantId" label="Tenant Id" />
-          <camunda:formField id="tenantSlug" label="tenant Slug" />
-          <camunda:formField id="tenantTitle" label="Tenant Title" />
-          <camunda:formField id="tenantDescription" label="Tenant Description" />
-          <camunda:formField id="tenantSupportedVersions" label="Tenant Supported Versions (comma separated list)" defaultValue="taxii-2.0" />
+          <camunda:formField id="tenantId" label="Tenant Id" type="string" />
+          <camunda:formField id="tenantSlug" label="tenant Slug" type="string" />
+          <camunda:formField id="tenantTitle" label="Tenant Title" type="string" />
+          <camunda:formField id="tenantDescription" label="Tenant Description" type="string" />
+          <camunda:formField id="tenantSupportedVersions" label="Tenant Supported Versions (comma separated list)" type="string" defaultValue="taxii-2.0" />
+          <camunda:formField id="tenantMaxContentLength" label="Max Content Length (Long)" type="long" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:outgoing>SequenceFlow_05qlulx</bpmn:outgoing>
@@ -27,6 +28,7 @@
           <camunda:inputParameter name="tenantDescription">${tenantDescription}</camunda:inputParameter>
           <camunda:inputParameter name="tenantSupportedVersions">${tenantSupportedVersions}</camunda:inputParameter>
           <camunda:inputParameter name="resultVariable">cat</camunda:inputParameter>
+          <camunda:inputParameter name="tenantMaxContentLength">${tenantMaxContentLength}</camunda:inputParameter>
           <camunda:outputParameter name="result">${cat}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>

@@ -48,6 +48,9 @@ public class CreateTenantDelegate implements JavaDelegate {
 
         List<String> tenantSupportedVersions = Arrays.asList(tenantSupportedVersionsRaw.split("\\s*,\\s*"));
 
+        long tenantMaxContentLength = Optional.ofNullable((Long)execution.getVariableLocal("tenantMaxContentLength"))
+                .orElseThrow(()-> new MissingVariableConfigException(null,"tenantMaxContentLength local variable cannot be found"));
+
         TenantDocument tenantDocument = ImmutableTenantDocument.builder()
                 .tenant(TaxiiTenant.builder()
                         .tenantId(tenantId)
@@ -55,6 +58,7 @@ public class CreateTenantDelegate implements JavaDelegate {
                         .title(tenantTitle)
                         .description(tenantDescription)
                         .addAllVersions(tenantSupportedVersions)
+                        .maxContentLength(tenantMaxContentLength)
                         .build())
                 .build();
 
