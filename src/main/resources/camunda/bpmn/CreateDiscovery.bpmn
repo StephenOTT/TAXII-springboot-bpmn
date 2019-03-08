@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0x8f7fj" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.2.4">
+  <bpmn:process id="CreateDiscovery" name="Create Discovery" isExecutable="true" camunda:versionTag="v0.1">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="discoveryTitle" label="Discovery Title" type="string" />
+          <camunda:formField id="discoveryDescription" label="Discovery Description" type="string" />
+          <camunda:formField id="discoveryContact" label="Discovery Contact" type="string" />
+          <camunda:formField id="discoveryDefaultApiRoot" label="Discovery Default Api Root" type="string" />
+          <camunda:formField id="discoveryApiRoots" label="Api Roots (comma separated list)" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_05qlulx</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_05qlulx" sourceRef="StartEvent_1" targetRef="Task_0ewr39l" />
+    <bpmn:endEvent id="EndEvent_0jdm8hb">
+      <bpmn:incoming>SequenceFlow_1xp0uf9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_10qx44d" sourceRef="Task_0ewr39l" targetRef="Task_18i0247" />
+    <bpmn:serviceTask id="Task_0ewr39l" name="Create Discovery" camunda:delegateExpression="${createDiscoveryDelegate}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="discoveryTitle">${discoveryTitle}</camunda:inputParameter>
+          <camunda:inputParameter name="discoveryDescription">${discoveryDescription}</camunda:inputParameter>
+          <camunda:inputParameter name="discoveryContact">${discoveryContact}</camunda:inputParameter>
+          <camunda:inputParameter name="discoveryDefaultApiRoot">${discoveryDefaultApiRoot}</camunda:inputParameter>
+          <camunda:inputParameter name="discoveryApiRoots">${discoveryApiRoots}</camunda:inputParameter>
+          <camunda:inputParameter name="resultVariable">cat</camunda:inputParameter>
+          <camunda:outputParameter name="result">${cat}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_05qlulx</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_10qx44d</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1xp0uf9" sourceRef="Task_18i0247" targetRef="EndEvent_0jdm8hb" />
+    <bpmn:userTask id="Task_18i0247" name="placeholder">
+      <bpmn:incoming>SequenceFlow_10qx44d</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1xp0uf9</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CreateDiscovery">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_05qlulx_di" bpmnElement="SequenceFlow_05qlulx">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="303" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0jdm8hb_di" bpmnElement="EndEvent_0jdm8hb">
+        <dc:Bounds x="592" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_10qx44d_di" bpmnElement="SequenceFlow_10qx44d">
+        <di:waypoint x="403" y="120" />
+        <di:waypoint x="450" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1j17ocp_di" bpmnElement="Task_0ewr39l">
+        <dc:Bounds x="303" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1xp0uf9_di" bpmnElement="SequenceFlow_1xp0uf9">
+        <di:waypoint x="550" y="120" />
+        <di:waypoint x="592" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1bzac5v_di" bpmnElement="Task_18i0247">
+        <dc:Bounds x="450" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
