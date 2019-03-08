@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0o7fuuo" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.14.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0o7fuuo" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.2.4">
   <bpmn:process id="ObjectsSubmissionProcessing" name="Objects Submission process" isExecutable="true" camunda:versionTag="v0.1">
     <bpmn:startEvent id="StartEvent_1" name="Receive Bundle">
       <bpmn:outgoing>SequenceFlow_11gobmd</bpmn:outgoing>
@@ -9,7 +9,7 @@
       <bpmn:incoming>SequenceFlow_0ruoxrt</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0b01eeg" sourceRef="Task_1p9v1se" targetRef="SubProcess_082vf08" />
-    <bpmn:serviceTask id="Task_1p9v1se" name="Validate Bundle" camunda:asyncAfter="true" camunda:class="io.digitalstate.taxii.camunda.delegates.PrepBundle">
+    <bpmn:serviceTask id="Task_1p9v1se" name="Validate Bundle" camunda:asyncAfter="true" camunda:delegateExpression="${prepBundle}">
       <bpmn:incoming>SequenceFlow_11gobmd</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0b01eeg</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -25,7 +25,7 @@
         <bpmn:incoming>SequenceFlow_1n0h6ec</bpmn:incoming>
       </bpmn:endEvent>
       <bpmn:sequenceFlow id="SequenceFlow_1rc4l1z" sourceRef="Task_1yzjs5q" targetRef="ExclusiveGateway_0wdlm4a" />
-      <bpmn:serviceTask id="Task_1yzjs5q" name="Process Stix Object" camunda:class="io.digitalstate.taxii.camunda.delegates.ProcessStixObject">
+      <bpmn:serviceTask id="Task_1yzjs5q" name="Process Stix Object" camunda:delegateExpression="${processStixObject}">
         <bpmn:incoming>SequenceFlow_0okiiee</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_1rc4l1z</bpmn:outgoing>
         <bpmn:dataOutputAssociation id="DataOutputAssociation_1rd41pf">
@@ -68,7 +68,7 @@
       <bpmn:sequenceFlow id="SequenceFlow_1w0nrxd" name="Yes" sourceRef="ExclusiveGateway_082w8rp" targetRef="Task_1x9syhn">
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${object.getLabels().contains("anomalous-activity")}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
-      <bpmn:serviceTask id="Task_1x9syhn" name="Process Failure" camunda:modelerTemplate="io.digitalstate.taxii.camunda.delegates.ProcessFailure" camunda:class="io.digitalstate.taxii.camunda.delegates.ProcessFailure">
+      <bpmn:serviceTask id="Task_1x9syhn" name="Process Failure" camunda:delegateExpression="${processFailure}">
         <bpmn:extensionElements>
           <camunda:inputOutput>
             <camunda:inputParameter name="message">Anomalous Activity is not currently accepted</camunda:inputParameter>
@@ -107,7 +107,7 @@
       <bpmn:outgoing>SequenceFlow_0ruoxrt</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_09z4pw1" sourceRef="Task_18j00nj" targetRef="Task_0a23bek" />
-    <bpmn:serviceTask id="Task_18j00nj" name="Update Status with Completion Result" camunda:asyncBefore="true" camunda:class="io.digitalstate.taxii.camunda.delegates.ProcessBundleProcessingCompletion">
+    <bpmn:serviceTask id="Task_18j00nj" name="Update Status with Completion Result" camunda:asyncBefore="true" camunda:delegateExpression="${processBundleProcessingCompletion}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="status">completed</camunda:inputParameter>
