@@ -25,6 +25,12 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
+    @Transactional
+    public StatusDocument createStatus(@NotNull StatusDocument statusDoc) {
+        return template.insert(statusDoc);
+    }
+
+    @Override
     public Optional<StatusDocument> findStatusById(@NotNull String statusId, @Nullable String tenantId) {
         Query query = new Query();
 

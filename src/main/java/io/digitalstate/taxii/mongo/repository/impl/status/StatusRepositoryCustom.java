@@ -19,6 +19,9 @@ public interface StatusRepositoryCustom {
 //    StatusDocument updateStatusById(@NotNull String statusId, @Nullable String tenantId);
 
     @Transactional
+    StatusDocument createStatus(@NotNull StatusDocument statusDoc);
+
+    @Transactional
     Optional<StatusDocument> incrementSuccessCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
 
     @Transactional
