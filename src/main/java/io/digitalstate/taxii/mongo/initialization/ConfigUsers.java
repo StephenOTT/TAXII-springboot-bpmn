@@ -1,6 +1,5 @@
 package io.digitalstate.taxii.mongo.initialization;
 
-
 import io.digitalstate.taxii.mongo.model.document.ImmutableUserDocument;
 import io.digitalstate.taxii.mongo.model.document.TenantDocument;
 import io.digitalstate.taxii.mongo.model.document.UserDocument;
@@ -20,10 +19,10 @@ public class ConfigUsers {
     @Autowired
     private ConfigTenants configTenants;
 
-    @Value("${taxii.user.username : admin}")
+    @Value("${taxii.user.username:admin}")
     private String defaultUsername;
 
-    @Value("${taxii.user.password : admin}")
+    @Value("${taxii.user.password:admin}")
     private String defaultPassword;
 
     @Autowired
