@@ -20,10 +20,10 @@ import java.time.Instant;
 @Configuration
 public class ConfigDiscovery {
 
-    @Value("${taxii.discovery.title : Default Taxii Server}")
+    @Value("${taxii.discovery.title:Default Taxii Server}")
     private String defaultTitle;
 
-    @Value("${taxii.discovery.description : The default Taxii Server}")
+    @Value("${taxii.discovery.description:The default Taxii Server}")
     private String defaultDescription;
 
     @Autowired
