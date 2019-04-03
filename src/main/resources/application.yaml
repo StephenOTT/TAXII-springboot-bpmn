@@ -4,16 +4,16 @@ server:
 spring:
   data:
     mongodb:
-      host: localhost
+      host: "localhost"
       port: 27017
-      database: taxii
+      database: "taxii"
 
 camunda:
   bpm:
     admin-user:
-      id: admin
-      password: admin
-      firstName: Admin
+      id: "admin"
+      password: "admin"
+      firstName: "Admin"
 
 taxii:
   tenant:
@@ -27,6 +27,6 @@ taxii:
     description: "The default discovery"
 
   user:
-    username: "admin"
-    password: "admin"
+    username: "admin1"
+    password: "admin1"
 
