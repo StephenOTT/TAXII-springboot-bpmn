@@ -44,7 +44,7 @@ public class ConfigUsers {
                 .tenantId(configTenants.getDefaultId())
                 .build();
 
-        userRepository.insert(user1);
+        userRepository.createUser(user1);
 
     }
 }
