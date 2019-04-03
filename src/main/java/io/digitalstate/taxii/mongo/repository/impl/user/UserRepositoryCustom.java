@@ -12,6 +12,8 @@ public interface UserRepositoryCustom {
 
     Optional<UserDocument> findUserById(@NotNull String id, @NotNull String tenantId);
 
+    Optional<UserDocument> findUserByUsername(@NotNull String username, @NotNull String tenantId);
+
     List<UserDocument> findAllUsersByTenantSlug(@NotNull String slug);
 
     Page<UserDocument> findAllUsersByTenantId(@NotNull String tenantId, @NotNull Pageable pageable);

@@ -30,3 +30,7 @@ taxii:
     username: "admin1"
     password: "admin1"
 
+  basic-auth:
+    enabled: "false"
+
+

@@ -5,6 +5,7 @@ import io.digitalstate.taxii.mongo.model.document.TenantDocument;
 import io.digitalstate.taxii.mongo.model.document.UserDocument;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import io.digitalstate.taxii.mongo.repository.UserRepository;
+import io.digitalstate.taxii.mongo.repository.impl.user.ImmutablePassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +41,7 @@ public class ConfigUsers {
 
         UserDocument user1 = ImmutableUserDocument.builder()
                 .username(defaultUsername)
+                .passwordInfo(ImmutablePassword.of(defaultPassword, false))
                 .modifiedAt(Instant.now())
                 .tenantId(configTenants.getDefaultId())
                 .build();

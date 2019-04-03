@@ -1,6 +1,8 @@
 package io.digitalstate.taxii.mongo.repository.impl.user;
 
 import com.mongodb.DuplicateKeyException;
+import io.digitalstate.taxii.security.encoder.PasswordEncodingService;
+import io.digitalstate.taxii.mongo.model.document.ImmutableUserDocument;
 import io.digitalstate.taxii.mongo.model.document.UserDocument;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,24 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     @Autowired
     private TenantRepository tenantRepository;
 
+    @Autowired
+    private PasswordEncodingService passwordEncodingService;
+
     @Override
     public Optional<UserDocument> findUserById(@NotNull String id, @Nullable String tenantId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
-        if (tenantId != null){
+        if (tenantId != null) {
+            query.addCriteria(Criteria.where("tenant_id").is(tenantId));
+        }
+        return Optional.ofNullable(template.findOne(query, UserDocument.class));
+    }
+
+    @Override
+    public Optional<UserDocument> findUserByUsername(@NotNull String username, @Nullable String tenantId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("username").is(username));
+        if (tenantId != null) {
             query.addCriteria(Criteria.where("tenant_id").is(tenantId));
         }
         return Optional.ofNullable(template.findOne(query, UserDocument.class));
@@ -64,7 +79,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         return users;
     }
 
-    public Page<UserDocument> findAllUsersByTenantId(@NotNull String tenantId, @NotNull Pageable pageable){
+    public Page<UserDocument> findAllUsersByTenantId(@NotNull String tenantId, @NotNull Pageable pageable) {
         Query query = new Query();
         query.addCriteria(Criteria.where("tenant_id").is(tenantId)).with(pageable);
         List<UserDocument> users = template.find(query, UserDocument.class);
@@ -72,7 +87,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 () -> template.count(query, UserDocument.class));
     }
 
-    public UserDocument createUser(@NotNull UserDocument userDoc) throws DuplicateKeyException{
-        return template.insert(userDoc);
+    public UserDocument createUser(@NotNull UserDocument userDoc) throws DuplicateKeyException {
+        // If password is not encoded then encode using the built in encoder.
+        if (!userDoc.passwordInfo().isEncoded()){
+            //@TODO Review this seciton and abstract it out so the password encoder is not a dep (so the entire security system can be removed if chosen)
+            Password password = ImmutablePassword.of(passwordEncodingService.encodeRawPassword(userDoc.passwordInfo().password()), true);
+            UserDocument docWithEncodedPassword = ImmutableUserDocument.copyOf(userDoc).withPasswordInfo(password);
+            return template.insert(docWithEncodedPassword);
+        } else {
+            return template.insert(userDoc);
+        }
     }
 }

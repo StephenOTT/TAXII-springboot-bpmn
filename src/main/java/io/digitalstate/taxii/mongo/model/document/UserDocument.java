@@ -1,5 +1,6 @@
 package io.digitalstate.taxii.mongo.model.document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.TaxiiParsers;
 import io.digitalstate.taxii.mongo.annotation.Indexed;
 import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
+import io.digitalstate.taxii.mongo.repository.impl.user.Password;
 import org.immutables.serial.Serial;
 import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
@@ -17,6 +19,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 
 @Value.Immutable @Serial.Version(1L)
@@ -33,16 +36,23 @@ public interface UserDocument extends TaxiiMongoModel {
 
     @Override
     @Value.Default
+    @NotBlank
     default String type() {
         return "user";
     }
 
     @JsonProperty("tenant_id")
+    @NotBlank
     String tenantId();
 
     @JsonProperty("username")
     @Indexed(unique = true)
+    @NotBlank
     String username();
+
+    @JsonProperty("password_info")
+    Password passwordInfo();
+
 
     @WritingConverter
     public class MongoWriterConverter implements Converter<UserDocument, org.bson.Document> {
