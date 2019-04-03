@@ -46,6 +46,7 @@ public class CreateUserDelegate implements JavaDelegate {
         UserDocument userDocument = ImmutableUserDocument.builder()
                 .tenantId(tenantId)
                 .username(username)
+                //@TODO Add password support
                 .build();
 
         try {
