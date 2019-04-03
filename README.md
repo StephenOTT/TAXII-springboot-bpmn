@@ -50,6 +50,9 @@ taxii:
   user:
     username: "admin"
     password: "admin"
+   
+  basic-auth:
+    enabled: "true"
 
 ```
 
@@ -92,6 +95,25 @@ Additional processes can be enacted as needed for the specific implementation.
 
 1. Process submitted data into third-party systems that are non-TAXII servers (servers, files, csv, file systems, RPC, HTTP, etc).
 
+
+# Basic-Auth
+
+Basic Authentication is enabled by default.  Authentication uses the Taxii Users' username and encoded passwords.
+
+You can disable it in the application.yaml file with:
+
+```yaml
+taxii:
+  basic-auth:
+    enabled: false
+```
+
+if Basic Auth is disabled there will be a warning message on application startup:
+
+`WARN 5583 --- [           main] i.d.t.security.TaxiiSecurityProvider     : TAXII BASIC-AUTH SECURITY IS DISABLED!!`
+
+
+See the `io.digitalstate.taxii.security` package for further configuration capabilities.
 
 
 # Docker Image
