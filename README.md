@@ -56,6 +56,57 @@ taxii:
 
 ```
 
+# Multi-Tenant Support
+
+Full and flexible Multi-Tenant support is provided.
+This support provides the ability to completely segregate data based on DB, or have hybrid models with shared Shared or partially shared data.
+By default, a partially shared hybrid Multi-Tenant Model is implemented:
+
+- Users, Tenants, Discovery, and User Roles are stored in a centralized "default" database
+- Each Tenant has their data in their own DB with Collections, Collection Objects, Statuses, and Collection Membership Records.
+
+## User Roles
+
+The User Roles represent a User's membership with a Tenant.  The existence of a UserRoleDocument for a specific User for a specific Tenant, represents their membership in that tenant.
+A User may have membership but have no roles in that tenant.
+
+## URL Path Pattern for Tenants
+
+In TAXII spec a tenant is referred to as a "root".  As a example the path becomes for accessing all of the collections for a tenant:
+ 
+GET  `/taxii/tenant/:tenantslug/collections`
+
+## Discovery
+
+The GET `/taxii` endpoint which the TAXII spec defines as the "Discovery" endpoint will search for all Tenant Memberships (UserRoleDocuments) that the current user is apart of and return a response such as:
+
+```json
+{
+    "tenant_id": "tenant1234",
+    "tenant_slug": "mytenant2",
+    "title": "administration tenant2",
+    "description": "The admin2 tenant for overall management of the taxii server",
+    "versions": [
+        "taxii-2.0"
+    ],
+    "max_content_length": 10485760
+}
+```
+
+## TenantId vs TenantSlug
+
+`TenantId` is the unique ID of the tenant which is used in the DB Name, and in cross-document references.
+The id is provided as a configurable value so DB names can have meaningful names rather than generic UUIDs.
+
+`TenantSlug` is the URL path value used to reference the tenant.  The `TenantSlug` is the "human-value".
+
+## TenantId References on all Documents
+
+All DB documents that are stored have TenantID values even when the document is isolated within its own tenant.
+This is done to provide options to implementor for single tenant vs Multi-tenant.
+Any custom document types that are created should follow this same rule.
+
+
 # BPMN Usage examples
 
 Base processes that loaded into the engine to handle typical processing.
