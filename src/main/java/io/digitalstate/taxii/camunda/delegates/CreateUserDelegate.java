@@ -44,13 +44,14 @@ public class CreateUserDelegate implements JavaDelegate {
                 .orElseThrow(()-> new MissingVariableConfigException(null,"tenantId local variable cannot be found"));
 
         UserDocument userDocument = ImmutableUserDocument.builder()
-                .tenantId(tenantId)
+                //@TODO Fix tenant assignment with new tenantMemberships
+//                .tenantId(tenantId)
                 .username(username)
                 //@TODO Add password support
                 .build();
 
         try {
-            UserDocument createdUser = userRepository.createUser(userDocument);
+            UserDocument createdUser = userRepository.createUser(userDocument, userDocument.tenantId());
 
             if (execution.hasVariableLocal(RESULT_VARIABLE_NAME)){
                 String targetVarName = execution.getVariable(RESULT_VARIABLE_NAME).toString();

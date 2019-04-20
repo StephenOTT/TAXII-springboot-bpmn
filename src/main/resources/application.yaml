@@ -15,12 +15,16 @@ camunda:
       password: "admin"
       firstName: "Admin"
 
+#Camunda BPM Engine Core Path:
+spring.jersey.application-path: "/bpm-rest"
+
 taxii:
   tenant:
-    id: "myId"
-    slug: "admin1"
+    id: "tenant123"
+    slug: "mytenant"
     title: "administration tenant1"
     description: "The admin1 tenant for overall management of the taxii server"
+#    tenant_path_pattern:
 
   discovery:
     title: "My default Discovery"
@@ -31,6 +35,6 @@ taxii:
     password: "admin1"
 
   basic-auth:
-    enabled: "false"
+    enabled: "true"
 
 

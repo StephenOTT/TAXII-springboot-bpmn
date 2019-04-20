@@ -17,19 +17,21 @@ import java.util.List;
 public interface CollectionObjectRepositoryCustom {
 
     @Transactional
-    <S extends CollectionObjectDocument> S save(S entity) throws CollectionObjectAlreadyExistsException;
+    CollectionObjectDocument createCollectionObject(@NotNull CollectionObjectDocument collectionObjectDocument,
+                                                    @NotNull String targetTenantId) throws CollectionObjectAlreadyExistsException;
+
 
     Page<CollectionObjectDocument> findAllObjectsByCollectionId(@NotNull String collectionId,
-                                                                @Nullable String tenantId,
+                                                                @NotNull String tenantId,
                                                                 @NotNull Pageable pageable);
 
     List<CollectionObjectDocument> findObjectByObjectId(@NotNull String objectId,
                                                         @Nullable String collectionId,
-                                                        @Nullable String tenantId);
+                                                        @NotNull String tenantId);
 
     boolean objectExists(@NotNull String objectId,
-                                            @Nullable Instant modified,
-                                            @Nullable String collectionId,
-                                            @Nullable String tenantId);
+                         @Nullable Instant modified,
+                         @Nullable String collectionId,
+                         @NotNull String tenantId);
 
 }

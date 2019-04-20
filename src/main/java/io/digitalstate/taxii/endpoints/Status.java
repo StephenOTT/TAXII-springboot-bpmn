@@ -1,6 +1,7 @@
 package io.digitalstate.taxii.endpoints;
 
 import io.digitalstate.taxii.common.Headers;
+import io.digitalstate.taxii.endpoints.context.TenantWebContext;
 import io.digitalstate.taxii.exception.exceptions.CannotParseStatusUpdateParamsException;
 import io.digitalstate.taxii.mongo.exceptions.StatusDoesNotExistException;
 import io.digitalstate.taxii.mongo.exceptions.TenantDoesNotExistException;
@@ -32,19 +33,15 @@ public class Status {
     @Autowired
     private StatusRepository statusRepository;
 
+    @Autowired
+    private TenantWebContext tenantWebContext;
+
     @GetMapping("/{statusId}")
     @ResponseBody
     public ResponseEntity<String> getStatus(@RequestHeader HttpHeaders headers,
-                                            @PathVariable("tenantSlug") String tenantSlug,
                                             @PathVariable("statusId") String statusId) {
 
-        TenantDocument tenant = tenantRepository.findTenantBySlug(tenantSlug)
-                .orElseThrow(() -> new TenantDoesNotExistException(tenantSlug));
-
-//        CollectionDocument collection = collectionRepository.findCollectionById(collectionId, tenant.tenant().getTenantId())
-//                .orElseThrow(() -> new CollectionDoesNotExistException(collectionId));
-
-        StatusDocument status = statusRepository.findStatusById(statusId, tenant.tenant().getTenantId())
+        StatusDocument status = statusRepository.findStatusById(statusId, tenantWebContext.getTenantId())
                 .orElseThrow(() -> new StatusDoesNotExistException(statusId));
 
         return ResponseEntity.ok()
@@ -65,9 +62,6 @@ public class Status {
         //@TODO add operaiton vocab validation annotation
         // @TODO add validations for Values to be proper formats
 
-        TenantDocument tenant = tenantRepository.findTenantBySlug(tenantSlug)
-                .orElseThrow(() -> new TenantDoesNotExistException(tenantSlug));
-
         // @TODO review need for doing a collection id validation:
 //        CollectionDocument collection = collectionRepository.findCollectionById(collectionId, tenant.tenant().getTenantId())
 //                .orElseThrow(() -> new CollectionDoesNotExistException(collectionId));
@@ -78,37 +72,37 @@ public class Status {
         if (operator.equals("add")) {
             switch (property) {
                 case "up_success_count_down_failure_count":
-                    status = statusRepository.incrementSuccessCountWithFailureCountDecrement(Long.valueOf(value), statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.incrementSuccessCountWithFailureCountDecrement(Long.valueOf(value), statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "up_success_count_down_pending_count":
-                    status = statusRepository.incrementSuccessCountWithPendingCountDecrement(Long.valueOf(value), statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.incrementSuccessCountWithPendingCountDecrement(Long.valueOf(value), statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "up_pending_count_down_failure_count":
-                    status = statusRepository.incrementPendingCountWithFailureCountDecrement(Long.valueOf(value), statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.incrementPendingCountWithFailureCountDecrement(Long.valueOf(value), statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "up_failure_count_down_pending_count":
-                    status = statusRepository.incrementFailureCountWithPendingCountDecrement(Long.valueOf(value), statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.incrementFailureCountWithPendingCountDecrement(Long.valueOf(value), statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "failure_count":
-                    status = statusRepository.incrementFailureCount(Long.valueOf(value), statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.incrementFailureCount(Long.valueOf(value), statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "pending_count":
-                    status = statusRepository.incrementPendingCount(Long.valueOf(value), statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.incrementPendingCount(Long.valueOf(value), statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "successes":
-                    status = statusRepository.addSuccess(value, statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.addSuccess(value, statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
@@ -120,7 +114,7 @@ public class Status {
 //                    break;
 
                 case "pendings":
-                    status = statusRepository.addPending(value, statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.addPending(value, statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
@@ -131,22 +125,22 @@ public class Status {
         } else if (operator.equals("subtract")) {
             switch (property) {
                 case "failure_count":
-                    status = statusRepository.decrementFailureCount(Long.valueOf(value), statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.decrementFailureCount(Long.valueOf(value), statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "pending_count":
-                    status = statusRepository.decrementPendingCount(Long.valueOf(value), statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.decrementPendingCount(Long.valueOf(value), statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "failures":
-                    status = statusRepository.removeFailure(value, statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.removeFailure(value, statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 
                 case "pending":
-                    status = statusRepository.removePending(value, statusId, tenant.tenant().getTenantId())
+                    status = statusRepository.removePending(value, statusId, tenantWebContext.getTenantId())
                             .orElseThrow(() -> new StatusDoesNotExistException(statusId));
                     break;
 

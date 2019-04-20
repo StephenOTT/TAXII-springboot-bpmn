@@ -1,14 +1,15 @@
-package io.digitalstate.taxii.mongo.repository.impl.user;
+package io.digitalstate.taxii.mongo.model.document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.serial.Serial;
 import org.immutables.value.Value;
 
 /**
  * Password class for storing raw and encoded passwords
  */
-@Value.Immutable(builder = false)
+@Value.Immutable(builder = false) @Serial.Version(1L)
 @JsonSerialize(as = ImmutablePassword.class) @JsonDeserialize(as = ImmutablePassword.class)
 public abstract class Password {
 

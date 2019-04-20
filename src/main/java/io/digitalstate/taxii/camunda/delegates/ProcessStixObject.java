@@ -47,7 +47,7 @@ public class ProcessStixObject implements JavaDelegate {
 
         // @TODO add transactional error handling
         // @TODO look to transfer these into individual tasks:
-        collectionObjectRepository.save(collectionObjectDocument);
+        collectionObjectRepository.createCollectionObject(collectionObjectDocument, collectionObjectDocument.tenantId());
         statusRepository.incrementSuccessCountWithPendingCountDecrement(1, statusId, tenantId);
         statusRepository.addSuccess(bundleableObject.getId(), statusId, tenantId);
 

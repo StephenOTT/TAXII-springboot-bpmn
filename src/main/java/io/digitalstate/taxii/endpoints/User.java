@@ -1,6 +1,7 @@
 package io.digitalstate.taxii.endpoints;
 
 import io.digitalstate.taxii.common.Headers;
+import io.digitalstate.taxii.endpoints.context.TenantWebContext;
 import io.digitalstate.taxii.mongo.exceptions.TenantDoesNotExistException;
 import io.digitalstate.taxii.mongo.exceptions.UserDoesNotExistException;
 import io.digitalstate.taxii.mongo.JsonUtil;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,18 +32,20 @@ public class User {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TenantWebContext tenantWebContext;
+
     @GetMapping("/users")
+    @PreAuthorize("hasRole('ROLE_USERS_VIEWER')")
     public ResponseEntity<String> getUser(@RequestHeader HttpHeaders headers,
-                                            @PathVariable("tenantSlug") String tenantSlug,
-                                            @RequestParam(name = "page", defaultValue = "0") Integer page
+                                          @RequestParam(name = "page", defaultValue = "0") Integer page
     ) throws TenantDoesNotExistException {
 
         //@TODO process headers for validation
 
-        TenantDocument tenant = tenantRepository.findTenantBySlug(tenantSlug)
-                .orElseThrow(() -> new TenantDoesNotExistException(tenantSlug));
-
-        Page<UserDocument> users = userRepository.findAllUsersByTenantId(tenant.tenant().getTenantId(), PageRequest.of(page, 100));
+        tenantWebContext.setDatabaseToDefaultTenantForCurrentThread();
+        Page<UserDocument> users = userRepository.findAllUsersByTenantId(tenantWebContext.getTenantId(), PageRequest.of(page, 100));
+        tenantWebContext.setDatabaseToTenantIdForCurrentThread();
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
@@ -49,17 +53,15 @@ public class User {
     }
 
     @GetMapping("/users/{userId}")
+    @PreAuthorize("hasRole('ROLE_USERS_VIEWER') or principal.username == #userId")
     public ResponseEntity<String> getUser(@RequestHeader HttpHeaders headers,
-                                            @PathVariable("tenantSlug") String tenantSlug,
-                                            @PathVariable("userId") String userId) throws TenantDoesNotExistException, UserDoesNotExistException {
+                                          @PathVariable("userId") String userId) throws TenantDoesNotExistException, UserDoesNotExistException {
 
         //@TODO process headers for validation
-
-        TenantDocument tenant = tenantRepository.findTenantBySlug(tenantSlug)
-                .orElseThrow(() -> new TenantDoesNotExistException(tenantSlug));
-
-        UserDocument user = userRepository.findUserById(userId, tenant.tenant().getTenantId())
+        tenantWebContext.setDatabaseToDefaultTenantForCurrentThread();
+        UserDocument user = userRepository.findUserByUsername(userId, tenantWebContext.getTenantId())
                 .orElseThrow(() -> new UserDoesNotExistException(userId));
+        tenantWebContext.setDatabaseToTenantIdForCurrentThread();
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())

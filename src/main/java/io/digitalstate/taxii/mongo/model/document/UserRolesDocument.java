@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.TaxiiParsers;
-import io.digitalstate.taxii.model.collection.TaxiiCollectionResource;
 import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
 import org.immutables.serial.Serial;
 import org.immutables.value.Value;
@@ -19,46 +18,51 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import java.io.IOException;
+import java.util.Set;
 
 @Value.Immutable @Serial.Version(1L)
 @Value.Style(passAnnotations = {Document.class, CompoundIndexes.class})
-@JsonSerialize(as=ImmutableCollectionDocument.class) @JsonDeserialize(builder = ImmutableCollectionDocument.Builder.class)
-@Document(collection = "collections")
-@JsonTypeName("collection")
-@JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "collection" })
+@JsonSerialize(as= ImmutableUserRolesDocument.class) @JsonDeserialize(builder = ImmutableUserRolesDocument.Builder.class)
+@Document(collection = "user_roles")
+@JsonTypeName("user_roles")
 @CompoundIndexes({
-        @CompoundIndex(name = "tenant_id", def = "{ 'tenant_id': 1 }"),
-        @CompoundIndex(name = "collection_id", def = "{ 'collection.id': 1 }", unique = true)
+        @CompoundIndex(name = "tenant_id_username", def = "{ 'tenant_id': 1, 'username':1 }", unique = true),
 })
-public interface CollectionDocument extends TaxiiMongoModel {
+@JsonPropertyOrder({"_id", "type", "created_at", "modified_at", "tenant_id", "username", "roles" })
+public interface UserRolesDocument extends TaxiiMongoModel {
 
     @Override
     @Value.Default
     default String type() {
-        return "collection";
+        return "user_roles";
     }
 
     @JsonProperty("tenant_id")
     @NotBlank
     String tenantId();
 
-    @JsonProperty("collection")
-    TaxiiCollectionResource collection();
+    @JsonProperty("user_id")
+    @NotBlank
+    String getUserId();
+
+    @JsonProperty("roles")
+    @NotBlank
+    Set<String> getRoles();
 
 
     @WritingConverter
-    public class MongoWriterConverter implements Converter<CollectionDocument, org.bson.Document> {
-        public org.bson.Document convert(final CollectionDocument object) {
+    public class MongoWriterConverter implements Converter<UserRolesDocument, org.bson.Document> {
+        public org.bson.Document convert(final UserRolesDocument object) {
             org.bson.Document doc = org.bson.Document.parse(object.toMongoJson());
             return doc;
         }
     }
 
     @ReadingConverter
-    public class MongoReaderConverter implements Converter<org.bson.Document, CollectionDocument> {
-        public CollectionDocument convert(final org.bson.Document object) {
+    public class MongoReaderConverter implements Converter<org.bson.Document, UserRolesDocument> {
+        public UserRolesDocument convert(final org.bson.Document object) {
             try {
-                return TaxiiParsers.getMongoMapper().readValue(object.toJson(), CollectionDocument.class);
+                return TaxiiParsers.getMongoMapper().readValue(object.toJson(), UserRolesDocument.class);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

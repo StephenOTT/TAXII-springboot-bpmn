@@ -8,6 +8,4 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface CollectionObjectRepository extends MongoRepository<CollectionObjectDocument, String>, CollectionObjectRepositoryCustom {
 
-    @Override
-    <S extends CollectionObjectDocument> S save(S entity) throws CollectionObjectAlreadyExistsException;
 }

@@ -5,9 +5,8 @@ import io.digitalstate.stix.sdo.objects.AttackPatternSdo;
 import io.digitalstate.taxii.model.collection.TaxiiCollection;
 import io.digitalstate.taxii.model.collection.TaxiiCollectionResource;
 import io.digitalstate.taxii.mongo.model.document.*;
-import io.digitalstate.taxii.mongo.repository.CollectionObjectRepository;
-import io.digitalstate.taxii.mongo.repository.CollectionRepository;
-import io.digitalstate.taxii.mongo.repository.TenantRepository;
+import io.digitalstate.taxii.mongo.repository.*;
+import io.digitalstate.taxii.mongo.TenantDbContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +22,9 @@ public class ConfigCollections {
     private ConfigTenants configTenants;
 
     @Autowired
+    private ConfigUsers configUsers;
+
+    @Autowired
     private TenantRepository tenantRepository;
 
     @Autowired
@@ -31,17 +33,31 @@ public class ConfigCollections {
     @Autowired
     private CollectionObjectRepository collectionObjectRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CollectionMembershipsRepository collectionMembershipsRepository;
+
+    @Autowired
+    private TenantDbContext tenantDbContext;
+
     @Bean("setupCollections")
-    @DependsOn("setupTenants")
+    @DependsOn("setupUsers")
     public void setupCollectionsBean() {
+
+        UserDocument userDocument = userRepository.findUserByUsername(configUsers.getDefaultUsername(), configTenants.getDefaultId())
+                .orElseThrow(() -> new IllegalStateException("Cant find username: " + configUsers.getDefaultUsername()));
 
         TenantDocument tenantDocument = tenantRepository.findTenantByTenantId(configTenants.getDefaultId())
                 .orElseThrow(() -> new IllegalStateException("Cant find tenant: " + configTenants.getDefaultId()));
 
+        tenantDbContext.setDatabaseNameForCurrentThread(tenantDocument.tenant().getTenantId());
+
         TaxiiCollectionResource collection = TaxiiCollection.builder()
                 .title("someTitle")
                 .description("some description of a collection")
-                .canRead(true)
+                .canRead(false)
                 .canWrite(false)
                 .build();
 
@@ -65,17 +81,31 @@ public class ConfigCollections {
                 .object(attackPatternSdo)
                 .build();
 
-        collectionObjectRepository.save(collectionObjectDocument);
+        collectionObjectRepository.createCollectionObject(collectionObjectDocument, collectionObjectDocument.tenantId());
 
         CollectionObjectDocument collectionObjectDocumentWithDiffModified =
                 ImmutableCollectionObjectDocument.copyOf(collectionObjectDocument)
                         .withId(UUID.randomUUID().toString())
                         .withObject(
                                 AttackPattern.copyOf(attackPatternSdo)
-                                .withModified(Instant.now().plusSeconds(500000)));
+                                        .withModified(Instant.now().plusSeconds(500000)));
 
 
-        collectionObjectRepository.insert(collectionObjectDocumentWithDiffModified);
+        collectionObjectRepository.createCollectionObject(collectionObjectDocumentWithDiffModified, collectionObjectDocumentWithDiffModified.tenantId());
+
+        // Setup Collection membership
+        CollectionMembershipDocument collectionMembershipDocument =
+                ImmutableCollectionMembershipDocument.builder()
+                        .tenantId(tenantDocument.tenant().getTenantId())
+                        .userId(userDocument.id())
+                        .collectionId(collectionDocument.collection().getId())
+                        .canRead(true)
+                        .canWrite(true)
+                        .build();
+        collectionMembershipsRepository.createCollectionMembership(collectionMembershipDocument,
+                collectionMembershipDocument.tenantId());
+
+        tenantDbContext.setDatabaseNameToDefaultForCurrentThread();
 
     }
 }

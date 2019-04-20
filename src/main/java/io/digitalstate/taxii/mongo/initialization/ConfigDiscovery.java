@@ -2,6 +2,7 @@ package io.digitalstate.taxii.mongo.initialization;
 
 import io.digitalstate.taxii.model.discovery.TaxiiDiscovery;
 import io.digitalstate.taxii.model.discovery.TaxiiDiscoveryResource;
+import io.digitalstate.taxii.mongo.MultiTenantMongoDbFactory;
 import io.digitalstate.taxii.mongo.model.document.DiscoveryDocument;
 import io.digitalstate.taxii.mongo.model.document.ImmutableDiscoveryDocument;
 import io.digitalstate.taxii.mongo.repository.DiscoveryRepository;

@@ -15,6 +15,8 @@ public interface TenantRepositoryCustom {
 
     Optional<TenantDocument> findTenantByTenantId(@NotNull String tenantId);
 
+    List<TenantDocument> findAllTenantsByTenantId(@NotNull String... tenantId);
+
     List<TenantDocument> findAllTenantsByFilter(String futureFilterGoesHere);
 
     TenantDocument createTenant(@NotNull TenantDocument tenantDoc);

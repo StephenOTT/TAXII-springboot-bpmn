@@ -2,19 +2,15 @@ package io.digitalstate.taxii.mongo.initialization;
 
 
 import io.digitalstate.taxii.model.tenant.TaxiiTenant;
-import io.digitalstate.taxii.model.tenant.TaxiiTenantResource;
 import io.digitalstate.taxii.mongo.model.document.*;
 import io.digitalstate.taxii.mongo.repository.TenantRepository;
+import io.digitalstate.taxii.mongo.TenantDbContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Instant;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 @Configuration
 public class ConfigTenants {
@@ -31,8 +27,14 @@ public class ConfigTenants {
     @Value("${taxii.tenant.description:The Admin tenant}")
     private String defaultDescription;
 
+    @Value("${taxii.tenant.db_connection_string:1111}")
+    private String defaultDbConnectionString;
+
     @Autowired
     private TenantRepository tenantRepository;
+
+    @Autowired
+    private TenantDbContext tenantDbContext;
 
     @Bean("setupTenants")
     public void setupTenantsBean() {
@@ -49,10 +51,19 @@ public class ConfigTenants {
                 .tenant(tenant)
                 .build();
 
+        tenantDbContext.setDatabaseNameToDefaultForCurrentThread();
         tenantRepository.insert(tenantDoc);
     }
 
     public String getDefaultId() {
         return defaultId;
+    }
+
+    public String getDefaultSlug() {
+        return defaultSlug;
+    }
+
+    public String getDefaultDbConnectionString() {
+        return defaultDbConnectionString;
     }
 }

@@ -39,15 +39,18 @@ public class CollectionObjectRepositoryImpl implements CollectionObjectRepositor
     private CollectionObjectRepository collectionObjectRepository;
 
     @Override
-    public <S extends CollectionObjectDocument> S save(S entity) throws CollectionObjectAlreadyExistsException {
+    public CollectionObjectDocument createCollectionObject(@NotNull CollectionObjectDocument collectionObjectDocument, @NotNull String targetTenantId) throws CollectionObjectAlreadyExistsException {
+        if (!collectionObjectDocument.tenantId().equals(targetTenantId)){
+            throw new IllegalArgumentException("CollectionObjectDocument's tenantId does not match the targetTenantId.  Document's tenantId and TargetTenantId constraint exists to ensure documents are not added into unexpected tenants");
+        }
 
-        Class<? extends BundleableObject> bundleableObjectClass = entity.object().getClass();
+        Class<? extends BundleableObject> bundleableObjectClass = collectionObjectDocument.object().getClass();
         String MODIFIED_METHOD_NAME = "getModified";
 
         Optional<Instant> modified;
         try {
             Method hasModified = bundleableObjectClass.getMethod(MODIFIED_METHOD_NAME);
-            modified = Optional.of((Instant) hasModified.invoke(entity.object()));
+            modified = Optional.of((Instant) hasModified.invoke(collectionObjectDocument.object()));
         } catch (NoSuchMethodException ignore) {
             modified = Optional.empty();
         } catch (IllegalAccessException e) {
@@ -58,15 +61,15 @@ public class CollectionObjectRepositoryImpl implements CollectionObjectRepositor
 
         boolean objectAlreadyExists;
         if (modified.isPresent()){
-            objectAlreadyExists = this.objectExists(entity.object().getId(), modified.get(), entity.collectionId(), entity.tenantId());
+            objectAlreadyExists = this.objectExists(collectionObjectDocument.object().getId(), modified.get(), collectionObjectDocument.collectionId(), collectionObjectDocument.tenantId());
         } else {
-            objectAlreadyExists = this.objectExists(entity.object().getId(), null, entity.collectionId(), entity.tenantId());
+            objectAlreadyExists = this.objectExists(collectionObjectDocument.object().getId(), null, collectionObjectDocument.collectionId(), collectionObjectDocument.tenantId());
         }
 
         if (objectAlreadyExists) {
-            throw new CollectionObjectAlreadyExistsException(entity.collectionId(), entity.object().getId());
+            throw new CollectionObjectAlreadyExistsException(collectionObjectDocument.collectionId(), collectionObjectDocument.object().getId());
         } else {
-            return template.save(entity);
+            return template.save(collectionObjectDocument);
         }
     }
 

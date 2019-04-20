@@ -1,6 +1,5 @@
 package io.digitalstate.taxii.mongo.model.document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -9,7 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.digitalstate.taxii.common.TaxiiParsers;
 import io.digitalstate.taxii.mongo.annotation.Indexed;
 import io.digitalstate.taxii.mongo.model.TaxiiMongoModel;
-import io.digitalstate.taxii.mongo.repository.impl.user.Password;
 import org.immutables.serial.Serial;
 import org.immutables.value.Value;
 import org.springframework.core.convert.converter.Converter;
@@ -27,9 +25,8 @@ import java.io.IOException;
 @JsonSerialize(as=ImmutableUserDocument.class) @JsonDeserialize(builder = ImmutableUserDocument.Builder.class)
 @Document(collection = "users")
 @JsonTypeName("user")
-@JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "username" })
+@JsonPropertyOrder({"_id", "type", "tenant_id", "created_at", "modified_at", "username", "password_info", "tenant_memberships" })
 @CompoundIndexes({
-        @CompoundIndex(name = "tenant_id", def = "{ 'tenant_id': 1 }"),
         @CompoundIndex(name = "username", def = "{ 'username': 1 }", unique = true)
 })
 public interface UserDocument extends TaxiiMongoModel {
@@ -53,7 +50,6 @@ public interface UserDocument extends TaxiiMongoModel {
     @JsonProperty("password_info")
     Password passwordInfo();
 
-
     @WritingConverter
     public class MongoWriterConverter implements Converter<UserDocument, org.bson.Document> {
         public org.bson.Document convert(final UserDocument object) {
@@ -72,5 +68,4 @@ public interface UserDocument extends TaxiiMongoModel {
             }
         }
     }
-
 }

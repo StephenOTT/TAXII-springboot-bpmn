@@ -60,7 +60,7 @@ public class PrepBundle implements JavaDelegate {
                 .statusResource(taxiiStatusResource)
                 .build();
 
-        statusRepository.createStatus(statusDocument);
+        statusRepository.createStatus(statusDocument, statusDocument.tenantId());
 
         execution.setVariable("status_id", taxiiStatusResource.getId());
         execution.setVariable("original_status_document", statusDocument);

@@ -14,56 +14,56 @@ import java.util.Optional;
  */
 public interface StatusRepositoryCustom {
 
-    Optional<StatusDocument> findStatusById(@NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> findStatusById(@NotNull String statusId, @NotNull String tenantId);
 
 //    StatusDocument updateStatusById(@NotNull String statusId, @Nullable String tenantId);
 
     @Transactional
-    StatusDocument createStatus(@NotNull StatusDocument statusDoc);
+    StatusDocument createStatus(@NotNull StatusDocument statusDoc, @NotNull String targetTenantId);
 
     @Transactional
-    Optional<StatusDocument> incrementSuccessCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> incrementSuccessCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> incrementFailureCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> incrementFailureCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> decrementFailureCount(@NotNull @Min(0) long subtractAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> decrementFailureCount(@NotNull @Min(0) long subtractAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> incrementPendingCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> incrementPendingCount(@NotNull @Min(0) long addAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> decrementPendingCount(@NotNull @Min(0) long subtractAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> decrementPendingCount(@NotNull @Min(0) long subtractAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> addSuccess(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> addSuccess(@NotNull String objectId, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> addFailure(@NotNull TaxiiStatusFailureResource failureResource, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> addFailure(@NotNull TaxiiStatusFailureResource failureResource, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> removeFailure(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> removeFailure(@NotNull String objectId, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> addPending(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> addPending(@NotNull String objectId, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> removePending(@NotNull String objectId, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> removePending(@NotNull String objectId, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> incrementSuccessCountWithPendingCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> incrementSuccessCountWithPendingCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> incrementSuccessCountWithFailureCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> incrementSuccessCountWithFailureCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> incrementFailureCountWithPendingCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> incrementFailureCountWithPendingCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    Optional<StatusDocument> incrementPendingCountWithFailureCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @Nullable String tenantId);
+    Optional<StatusDocument> incrementPendingCountWithFailureCountDecrement(@NotNull @Min(0) long addAmt, @NotNull String statusId, @NotNull String tenantId);
 
     @Transactional
-    boolean updateStatusValue(@NotNull String newStatus, @NotNull String statusId, @Nullable String tenantId);
+    boolean updateStatusValue(@NotNull String newStatus, @NotNull String statusId, @NotNull String tenantId);
 
 }

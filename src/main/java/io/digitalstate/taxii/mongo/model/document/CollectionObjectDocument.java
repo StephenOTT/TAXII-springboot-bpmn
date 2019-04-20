@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.time.Instant;
 
@@ -42,6 +43,7 @@ public interface CollectionObjectDocument extends TaxiiMongoModel {
     }
 
     @JsonProperty("tenant_id")
+    @NotBlank
     String tenantId();
 
     @JsonProperty("collection_id")
