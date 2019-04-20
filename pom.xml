@@ -5,11 +5,11 @@
 
     <groupId>io.digitalstate.taxii</groupId>
     <artifactId>taxii-springboot-bpmn</artifactId>
-    <version>v0.1</version>
+    <version>v0.2</version>
     <packaging>jar</packaging>
 
     <name>TAXII Server</name>
-    <description>TAXII Server based on Springboot and backed by BPM</description>
+    <description>TAXII Server based on SpringBoot and backed by BPM</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
