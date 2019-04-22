@@ -17,6 +17,8 @@ import java.io.IOException;
  * a Status Failure is a Object which is injected into a existing Status Document, and thus we do not
  * need any of the extra development structures such as Immutables or _id, etc.
  *
+ * This interface is required for scenarios where you want to inject a Failure into a exist Mongo Document that is in the DB.
+ * A document must be used to enclose the data being sent into existing DB, even if that data is within a Array (such as the case for failures)
  * This interface remains in the document package as its part of the converters that are used.
  */
 public interface StatusFailureDocument  {
