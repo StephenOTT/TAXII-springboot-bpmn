@@ -80,6 +80,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         return users;
     }
 
+    @Override
     public Page<UserDocument> findAllUsersByTenantId(@NotNull String tenantId, @NotNull Pageable pageable) {
         Query query = new Query();
         query.addCriteria(Criteria.where("tenant_id").is(tenantId)).with(pageable);
@@ -88,6 +89,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 () -> template.count(query, UserDocument.class));
     }
 
+    @Override
     public UserDocument createUser(@NotNull UserDocument userDoc, @NotNull String targetTenantId) throws DuplicateKeyException, IllegalArgumentException {
         // If password is not encoded then encode using the built in encoder.
         if (!userDoc.tenantId().equals(targetTenantId)){

@@ -72,7 +72,7 @@ public class ConfigUsers {
                 .tenantId(tenantDocument.tenant().getTenantId())
                 .build();
 
-        userRolesRepository.insertUserRole(rolesDocument);
+        userRolesRepository.createUserRole(rolesDocument);
     }
 
     public String getDefaultUsername() {

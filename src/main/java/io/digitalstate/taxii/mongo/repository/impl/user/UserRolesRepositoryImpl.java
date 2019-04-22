@@ -61,7 +61,7 @@ public class UserRolesRepositoryImpl implements UserRolesRepositoryCustom {
     }
 
     @Override
-    public UserRolesDocument insertUserRole(@NotNull UserRolesDocument userRolesDocument) throws DuplicateKeyException {
+    public UserRolesDocument createUserRole(@NotNull UserRolesDocument userRolesDocument) throws DuplicateKeyException {
         return template.insert(userRolesDocument);
     }
 

@@ -40,7 +40,7 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
             throw new IllegalArgumentException("StatusDocument's tenantId does not match the targetTenantId.  Document's tenantId and TargetTenantId constraint exists to ensure documents are not added into unexpected tenants");
         }
 
-        return template.save(statusDoc);
+        return template.insert(statusDoc);
     }
 
     @Override

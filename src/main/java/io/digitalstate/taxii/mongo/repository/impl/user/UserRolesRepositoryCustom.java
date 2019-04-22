@@ -13,5 +13,5 @@ public interface UserRolesRepositoryCustom {
 
     List<UserRolesDocument> findAllTenantRolesByUsername(@NotNull String username);
 
-    UserRolesDocument insertUserRole(@NotNull UserRolesDocument userRolesDocument) throws DuplicateKeyException;
+    UserRolesDocument createUserRole(@NotNull UserRolesDocument userRolesDocument) throws DuplicateKeyException;
 }
