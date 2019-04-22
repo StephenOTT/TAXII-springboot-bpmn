@@ -3,7 +3,6 @@ package io.digitalstate.taxii.mongo.repository.impl.user;
 import io.digitalstate.taxii.mongo.model.document.UserDocument;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

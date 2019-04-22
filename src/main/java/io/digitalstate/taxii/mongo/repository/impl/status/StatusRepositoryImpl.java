@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.lang.Nullable;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -34,7 +32,6 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public StatusDocument createStatus(@NotNull StatusDocument statusDoc, @NotNull String targetTenantId) {
         if (!statusDoc.tenantId().equals(targetTenantId)){
             throw new IllegalArgumentException("StatusDocument's tenantId does not match the targetTenantId.  Document's tenantId and TargetTenantId constraint exists to ensure documents are not added into unexpected tenants");
