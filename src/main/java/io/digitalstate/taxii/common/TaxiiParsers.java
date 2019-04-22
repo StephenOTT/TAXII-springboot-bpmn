@@ -44,10 +44,12 @@ public class TaxiiParsers {
     public static void registerSubTypes(ObjectMapper objectMapper){
         objectMapper.registerSubtypes(TenantDocument.class);
         objectMapper.registerSubtypes(UserDocument.class);
+        objectMapper.registerSubtypes(UserRolesDocument.class);
         objectMapper.registerSubtypes(StatusDocument.class);
         objectMapper.registerSubtypes(DiscoveryDocument.class);
         objectMapper.registerSubtypes(CollectionDocument.class);
         objectMapper.registerSubtypes(CollectionObjectDocument.class);
+        objectMapper.registerSubtypes(CollectionMembershipDocument.class);
     }
 
     public static SimpleModule generateMongoInstantModule(){
