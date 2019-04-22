@@ -29,6 +29,7 @@ public class StatusRepositoryImpl implements StatusRepositoryCustom {
 
         query.addCriteria(Criteria.where("status_resource.id").is(statusId));
         query.addCriteria(Criteria.where("tenant_id").is(tenantId));
+
         return query;
     }
 
