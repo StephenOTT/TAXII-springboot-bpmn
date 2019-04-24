@@ -63,8 +63,7 @@ public class TaxiiSecurityProvider extends WebSecurityConfigurerAdapter {
         if (isBasicAuthEnabled) {
             logger.info("TAXII BASIC-AUTH SECURITY IS ENABLED.");
             http.csrf().disable()
-                    .authorizeRequests().anyRequest().permitAll().and()
-                    .authorizeRequests().antMatchers("/taxii/**").authenticated()
+                    .authorizeRequests().anyRequest().authenticated()
                     .and().httpBasic().authenticationEntryPoint(authenticationEntryPoint)
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

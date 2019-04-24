@@ -7,16 +7,16 @@ spring:
       host: "localhost"
       port: 27017
       database: "taxii"
+  datasource:
+    url: jdbc:h2:~/camunda;DB_CLOSE_ON_EXIT=false;AUTO_SERVER=TRUE;
 
 camunda:
   bpm:
+    process-engine-name: taxii
     admin-user:
       id: "admin"
       password: "admin"
       firstName: "Admin"
-
-#Camunda BPM Engine Core Path:
-spring.jersey.application-path: "/bpm-rest"
 
 taxii:
   tenant:
