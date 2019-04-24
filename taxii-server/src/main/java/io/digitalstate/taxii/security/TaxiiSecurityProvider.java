@@ -68,8 +68,6 @@ public class TaxiiSecurityProvider extends WebSecurityConfigurerAdapter {
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
             http.addFilterBefore(preAuthTenantFilter, BasicAuthenticationFilter.class);
-//            http.addFilterAfter(postAuthTenantContextFilter, BasicAuthenticationFilter.class);
-
 
         } else {
             logger.warn("TAXII BASIC-AUTH SECURITY IS DISABLED.");
