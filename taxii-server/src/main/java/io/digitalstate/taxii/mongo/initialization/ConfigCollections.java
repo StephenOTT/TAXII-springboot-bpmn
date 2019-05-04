@@ -1,5 +1,6 @@
 package io.digitalstate.taxii.mongo.initialization;
 
+import io.digitalstate.stix.common.StixInstant;
 import io.digitalstate.stix.sdo.objects.AttackPattern;
 import io.digitalstate.stix.sdo.objects.AttackPatternSdo;
 import io.digitalstate.taxii.model.collection.TaxiiCollection;
@@ -75,7 +76,6 @@ public class ConfigCollections {
                 .build();
 
         CollectionObjectDocument collectionObjectDocument = ImmutableCollectionObjectDocument.builder()
-                .modifiedAt(Instant.now())
                 .collectionId(collectionDocument.collection().getId())
                 .tenantId(collectionDocument.tenantId())
                 .object(attackPatternSdo)
@@ -88,7 +88,7 @@ public class ConfigCollections {
                         .withId(UUID.randomUUID().toString())
                         .withObject(
                                 AttackPattern.copyOf(attackPatternSdo)
-                                        .withModified(Instant.now().plusSeconds(500000)));
+                                        .withModified(new StixInstant(Instant.now().plusSeconds(500000), 3)));
 
 
         collectionObjectRepository.createCollectionObject(collectionObjectDocumentWithDiffModified, collectionObjectDocumentWithDiffModified.tenantId());
