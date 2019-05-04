@@ -1,60 +1,77 @@
 # TAXII-springboot
+
 SpringBoot implementation of TAXII server
 
-This provides a full spec compliant TAXII implementation based on SpringBoot and a workflow engine.
+This provides a full spec compliant TAXII implementation based on SpringBoot and a bpm engine.
 
-This library is used as the primary building block for TAXII server implementations.  
-Most implementations implement customized security configurations and workflow configurations.  
+This library is used as the primary building block for TAXII Server implementations.  
+Most implementations will have customized security configurations and bpm configurations.  
 These configurations typically do not require changes to core code, rather are BPMN deployments within the workflow 
-engine (Camunda), and Spring Security configurations.
+engine (Camunda), and Spring Security configurations propagated through configuration.
 
-This TAXII server is designed to be used as a configurable microservice that can scale and configure for simple and complex processing requirements.
+TAXII-Springboot-BPMN is setup for clustering of the Taxii server and the BPM server.  Each Taxii-server can also be a BPM node, or you can deploy BPM nodes independently.
+The BPM services also contain a Web-Apps (Tasklist, Cockpit, Admin) and a REST application that can be deployed independently of the Taxii server.
+
+To further scale the BPM execution capabilities, use the TAXII-Worker project as a configurable execution worker for scripting and binary code execution.
+Using the TAXII-Worker is the best option for building your TAXII server at scale for processing large and frequent amounts of data.  
 
 # Related Projects
 
 1. See [TAXII-Worker](https://github.com/StephenOTT/TAXII-Worker) for a Vertx based polymophic External Task worker that is non-blocking, scalable and cluster ready.  This lib can be used as a base to build a customized workers or can be used as a Main Verticle to deploy other verticles and establish a central Vertx hub. 
 2. See [STIX-Java](https://github.com/StephenOTT/STIX-Java) for the STIX library that this TAXII server is based on.
 
-# Configuration
+# Sub-second Precision Support
 
-Configuration is part of the Springboot application.yaml:
-
-```yaml
-server:
-  port: 8090
-
-spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: taxii
-
-camunda:
-  bpm:
-    admin-user:
-      id: admin
-      password: admin
-      firstName: Admin
-
-taxii:
-  tenant:
-    slug: "admin"
-    title: "administration tenant"
-    description: "The admin tenant for overall management of the taxii server"
-
-  discovery:
-    title: "My default Discovery"
-    description: "The default discovery"
-
-  user:
-    username: "admin"
-    password: "admin"
-   
-  basic-auth:
-    enabled: "true"
-
+ Full Sub-Second precision support is provided through STIX-Java library.
+ STIX objects are stored within the MongoDB and Mongo only supports up to 3 digits of sub-second precision.
+ To provide further supports for a full 9 digits of subsecond support, the database will store additional metadata about any StixInstant date.
+ Example:
+ 
+ ```json
+{
+    "_id" : "803c5732-c85c-4d91-a004-d0ccd7c094cb",
+    "type" : "collection_object",
+    "tenant_id" : "tenant123",
+    "created_at" : ISODate("2019-05-04T20:26:51.076Z"),
+    "modified_at" : ISODate("2019-05-04T20:26:51.076Z"),
+    "collection_id" : "1388f915-97b6-43d6-930d-cdf6593a4c89",
+    "object" : {
+        "type" : "attack-pattern",
+        "id" : "attack-pattern--63bb4e59-75c4-48b2-a1e5-bb488de934f1",
+        "created" : {
+            "mongo_date" : ISODate("2019-05-04T20:26:49.988Z"),
+            "subsecond_precision" : 3,
+            "value" : "2019-05-04T20:26:49.988Z"
+        },
+        "modified" : {
+            "mongo_date" : ISODate("2019-05-04T20:26:49.988Z"),
+            "subsecond_precision" : 9,
+            "value" : "2019-05-04T20:26:49.988000000Z"
+        },
+        "revoked" : false,
+        "name" : "some AttackPattern"
+    }
+}
 ```
+
+See the section:
+
+```json
+...
+"modified" : {
+    "mongo_date" : ISODate("2019-05-04T20:26:49.988Z"),
+    "subsecond_precision" : 9,
+    "value" : "2019-05-04T20:26:49.988000000Z"
+}
+...
+```
+
+The `mongo_data` will store the data in the native mongo format but be limited to 3 digits of sub-second precision.
+The `value` property will store the full original string value of the date, and the `subsecond_precision` property will 
+hold the digit count of precision (0 to 9).  `subsecond_precision` allows future queries to find data with specific 
+precision, and the `mongo_date` property is provided so you have full mongo date query functions without the 
+need for further processing or effort.
+
 
 # Multi-Tenant Support
 
@@ -106,6 +123,59 @@ All DB documents that are stored have TenantID values even when the document is 
 This is done to provide options to implementor for single tenant vs Multi-tenant.
 Any custom document types that are created should follow this same rule.
 
+
+
+
+# Configuration
+
+Example configuration:
+
+```yaml
+server:
+  port: 8090
+
+spring:
+  data:
+    mongodb:
+      host: "localhost"
+      port: 27017
+#      username: ""
+#      password: ""
+
+  datasource:
+    url: jdbc:h2:~/camunda;DB_CLOSE_ON_EXIT=false;AUTO_SERVER=TRUE;
+    username: sa
+    password: ""
+
+camunda:
+  bpm:
+    process-engine-name: taxii
+    admin-user:
+      id: "taxii-admin"
+      password: "taxii-admin"
+      firstName: "Taxii"
+      lastName: "Admin"
+
+taxii:
+  tenant:
+    id: "tenant123"
+    slug: "mytenant"
+    title: "administration tenant1"
+    description: "The admin1 tenant for overall management of the taxii server"
+#    tenant_path_pattern:
+
+  discovery:
+    title: "My default Discovery"
+    description: "The default discovery"
+
+  user:
+    username: "admin1"
+    password: "admin1"
+
+  basic-auth:
+    enabled: "true"
+
+```
 
 # BPMN Usage examples
 
