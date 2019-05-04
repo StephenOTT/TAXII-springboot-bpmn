@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import java.io.IOException;
-import java.time.Instant;
 
 @Value.Immutable @Serial.Version(1L)
 @Value.Style(passAnnotations = {Document.class, CompoundIndexes.class})
