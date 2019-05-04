@@ -1,6 +1,7 @@
 package io.digitalstate.taxii.mongo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.digitalstate.taxii.common.TaxiiParsers;
@@ -12,6 +13,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Value.Style(additionalJsonAnnotations = {JsonTypeName.class})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", include = JsonTypeInfo.As.EXISTING_PROPERTY)
 public interface TaxiiMongoModel extends Serializable {
 
     @JsonProperty("type")
@@ -33,7 +35,7 @@ public interface TaxiiMongoModel extends Serializable {
     @Value.Default
     @JsonProperty("modified_at")
     default Instant modifiedAt() {
-        return Instant.now();
+        return createdAt();
     }
 
     @Value.Lazy
