@@ -2,15 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>taxii-springboot-bpmn</artifactId>
         <groupId>io.digitalstate.taxii</groupId>
         <version>v0.2</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>taxii-server</artifactId>
-
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,7 +64,7 @@
         <dependency>
             <groupId>com.github.StephenOTT</groupId>
             <artifactId>STIX-Java</artifactId>
-            <version>0.6.1</version>
+            <version>0.8.6</version>
         </dependency>
 
         <dependency>
@@ -71,6 +72,7 @@
             <artifactId>camunda-bpm-spring-boot-starter</artifactId>
             <version>${camunda.springboot.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -80,22 +82,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine-plugin-spin</artifactId>
-            <version>${camunda.version}</version>
+            <!--<version>${camunda.version}</version>-->
         </dependency>
 
         <dependency>
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
-            <version>${camunda.spin.version}</version>
+            <!--<version>${camunda.spin.version}</version>-->
         </dependency>
 
         <dependency>
