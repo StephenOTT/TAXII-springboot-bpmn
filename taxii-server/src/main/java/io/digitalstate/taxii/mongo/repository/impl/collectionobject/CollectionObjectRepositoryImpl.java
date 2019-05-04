@@ -1,6 +1,7 @@
 package io.digitalstate.taxii.mongo.repository.impl.collectionobject;
 
 import io.digitalstate.stix.bundle.BundleableObject;
+import io.digitalstate.stix.common.StixInstant;
 import io.digitalstate.stix.helpers.StixDataFormats;
 import io.digitalstate.taxii.mongo.exceptions.CollectionObjectAlreadyExistsException;
 import io.digitalstate.taxii.mongo.model.document.CollectionObjectDocument;
@@ -47,10 +48,10 @@ public class CollectionObjectRepositoryImpl implements CollectionObjectRepositor
         Class<? extends BundleableObject> bundleableObjectClass = collectionObjectDocument.object().getClass();
         String MODIFIED_METHOD_NAME = "getModified";
 
-        Optional<Instant> modified;
+        Optional<StixInstant> modified;
         try {
             Method hasModified = bundleableObjectClass.getMethod(MODIFIED_METHOD_NAME);
-            modified = Optional.of((Instant) hasModified.invoke(collectionObjectDocument.object()));
+            modified = Optional.of((StixInstant) hasModified.invoke(collectionObjectDocument.object()));
         } catch (NoSuchMethodException ignore) {
             modified = Optional.empty();
         } catch (IllegalAccessException e) {
@@ -61,7 +62,7 @@ public class CollectionObjectRepositoryImpl implements CollectionObjectRepositor
 
         boolean objectAlreadyExists;
         if (modified.isPresent()){
-            objectAlreadyExists = this.objectExists(collectionObjectDocument.object().getId(), modified.get(), collectionObjectDocument.collectionId(), collectionObjectDocument.tenantId());
+            objectAlreadyExists = this.objectExists(collectionObjectDocument.object().getId(), modified.get().getInstant(), collectionObjectDocument.collectionId(), collectionObjectDocument.tenantId());
         } else {
             objectAlreadyExists = this.objectExists(collectionObjectDocument.object().getId(), null, collectionObjectDocument.collectionId(), collectionObjectDocument.tenantId());
         }
@@ -69,7 +70,7 @@ public class CollectionObjectRepositoryImpl implements CollectionObjectRepositor
         if (objectAlreadyExists) {
             throw new CollectionObjectAlreadyExistsException(collectionObjectDocument.collectionId(), collectionObjectDocument.object().getId());
         } else {
-            return template.save(collectionObjectDocument);
+            return template.insert(collectionObjectDocument);
         }
     }
 
