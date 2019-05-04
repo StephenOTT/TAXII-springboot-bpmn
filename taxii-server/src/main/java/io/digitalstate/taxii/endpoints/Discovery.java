@@ -82,7 +82,7 @@ public class Discovery {
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(newDoc.toJson());
+                .body(newDoc.serverInfo().toJson());
     }
 
 }

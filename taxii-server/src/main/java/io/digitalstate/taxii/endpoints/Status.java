@@ -46,7 +46,7 @@ public class Status {
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(status.toJson());
+                .body(status.statusResource().toJson());
     }
 
     @PutMapping("/{statusId}/operations")

@@ -43,7 +43,7 @@ public class Tenant{
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(tenant.toJson());
+                .body(tenant.tenant().toJson());
     }
 
 }
