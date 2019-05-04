@@ -11,16 +11,17 @@ spring:
 
   datasource:
     url: jdbc:h2:~/camunda;DB_CLOSE_ON_EXIT=false;AUTO_SERVER=TRUE;
-#    username: ""
-#    password: ""
+    username: sa
+    password: ""
 
 camunda:
   bpm:
     process-engine-name: taxii
     admin-user:
-      id: "admin"
-      password: "admin"
-      firstName: "Admin"
+      id: "taxii-admin"
+      password: "taxii-admin"
+      firstName: "Taxii"
+      lastName: "Admin"
 
 taxii:
   tenant:
