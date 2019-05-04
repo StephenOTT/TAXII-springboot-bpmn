@@ -6,9 +6,13 @@ spring:
     mongodb:
       host: "localhost"
       port: 27017
-      database: "taxii"
+#      username: ""
+#      password: ""
+
   datasource:
     url: jdbc:h2:~/camunda;DB_CLOSE_ON_EXIT=false;AUTO_SERVER=TRUE;
+#    username: ""
+#    password: ""
 
 camunda:
   bpm:
