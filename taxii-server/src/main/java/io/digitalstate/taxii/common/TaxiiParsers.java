@@ -2,60 +2,62 @@ package io.digitalstate.taxii.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import io.digitalstate.stix.helpers.StixDataFormats;
+import io.digitalstate.stix.common.StixInstant;
 import io.digitalstate.stix.json.StixParsers;
 import io.digitalstate.taxii.mongo.model.document.*;
-import io.digitalstate.taxii.mongo.serialization.InstantMongoDeserializer;
-import io.digitalstate.taxii.mongo.serialization.InstantMongoSerializer;
-import io.digitalstate.taxii.mongo.serialization.LongMongoDeserializer;
-import io.digitalstate.taxii.mongo.serialization.LongMongoSerializer;
+import io.digitalstate.taxii.mongo.serialization.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 
 public class TaxiiParsers {
 
-    static ObjectMapper objectMapperMongo = generateMongoMapper();
-    static ObjectMapper objectMapperJson = generateJsonMapper();
+    private static final Logger log = LoggerFactory.getLogger(TaxiiParsers.class);
+
+    private static ObjectMapper mongoMapper = StixParsers.generateJsonMapperBase()
+            .registerModule(StixParsers.generateStixSubTypesModule())
+            .registerModule(generateTaxiiMongoDocSubTypesModule())
+            .registerModule(generateMongoStixInstantModule())
+            .registerModule(generateMongoInstantModule())
+            .registerModule(generateMongoLongModule());
+
+    private static ObjectMapper jsonMapper = StixParsers.getJsonMapper()
+            .registerModule(generateTaxiiMongoDocSubTypesModule());
+
 
     public static ObjectMapper getJsonMapper(){
-        return objectMapperJson;
+        return jsonMapper;
     }
 
     public static ObjectMapper getMongoMapper(){
-        return objectMapperMongo;
+        return mongoMapper;
     }
 
-    public static ObjectMapper generateMongoMapper(){
-        ObjectMapper mapper = StixParsers.getJsonMapper(true).copy();
-        registerSubTypes(mapper);
-        mapper.registerModule(generateMongoInstantModule());
-        mapper.registerModule(generateMongoLongModule());
-        return mapper;
-    }
-
-    public static ObjectMapper generateJsonMapper(){
-        ObjectMapper mapper = StixParsers.getJsonMapper(true).copy();
-        registerSubTypes(mapper);
-        mapper.setDateFormat(new SimpleDateFormat(StixDataFormats.TIMESTAMP_PATTERN));
-        return mapper;
-    }
-
-    public static void registerSubTypes(ObjectMapper objectMapper){
-        objectMapper.registerSubtypes(TenantDocument.class);
-        objectMapper.registerSubtypes(UserDocument.class);
-        objectMapper.registerSubtypes(UserRolesDocument.class);
-        objectMapper.registerSubtypes(StatusDocument.class);
-        objectMapper.registerSubtypes(DiscoveryDocument.class);
-        objectMapper.registerSubtypes(CollectionDocument.class);
-        objectMapper.registerSubtypes(CollectionObjectDocument.class);
-        objectMapper.registerSubtypes(CollectionMembershipDocument.class);
+    public static SimpleModule generateTaxiiMongoDocSubTypesModule(){
+        SimpleModule module = new SimpleModule();
+        module.registerSubtypes(TenantDocument.class,
+                UserDocument.class,
+                UserRolesDocument.class,
+                StatusDocument.class,
+                DiscoveryDocument.class,
+                CollectionDocument.class,
+                CollectionObjectDocument.class,
+                CollectionMembershipDocument.class);
+        return module;
     }
 
     public static SimpleModule generateMongoInstantModule(){
         SimpleModule module = new SimpleModule();
         module.addSerializer(Instant.class, new InstantMongoSerializer());
         module.addDeserializer(Instant.class, new InstantMongoDeserializer());
+        return module;
+    }
+
+    public static SimpleModule generateMongoStixInstantModule(){
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(StixInstant.class, new StixInstantMongoSerializer());
+        module.addDeserializer(StixInstant.class, new StixInstantMongoDeserializer());
         return module;
     }
 
