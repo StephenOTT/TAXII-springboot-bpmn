@@ -543,3 +543,17 @@ and the resulting JSON would be:
 ```
 
 Note the change in the `status` property.
+
+
+
+# Database Support
+
+The default support/build for databases is as described below.
+There are two conceptual systems/services that have two distinct databases: TAXII Server and the BPM Engine
+
+1. TAXII DB: 
+  1. MongoDB
+1. BPM DB: 
+  1. H2
+  1. MySQL
+  1. PostgreSQL
