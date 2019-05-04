@@ -2,12 +2,14 @@ package io.digitalstate.taxii.endpoints;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.digitalstate.stix.bundle.BundleObject;
+import io.digitalstate.stix.bundle.BundleableObject;
 import io.digitalstate.stix.json.StixParsers;
 import io.digitalstate.taxii.camunda.exception.VariablesReturnedByProcessInstanceException;
 import io.digitalstate.taxii.camunda.utils.TaxiiWorkflowService;
 import io.digitalstate.taxii.common.Headers;
 import io.digitalstate.taxii.endpoints.context.TenantWebContext;
 import io.digitalstate.taxii.exception.exceptions.CannotParseBundleStringException;
+import io.digitalstate.taxii.model.collection.TaxiiCollectionResource;
 import io.digitalstate.taxii.mongo.JsonUtil;
 import io.digitalstate.taxii.mongo.exceptions.CollectionDoesNotExistException;
 import io.digitalstate.taxii.mongo.exceptions.CollectionObjectDoesNotExistException;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/taxii/tenant/{tenantSlug}")
@@ -60,10 +63,11 @@ public class Collection {
                                                     @PathVariable("tenantSlug") String tenantSlug) throws JsonProcessingException {
 
         List<CollectionDocument> collections = collectionRepository.findAllCollections(tenantWebContext.getTenantId());
+        List<TaxiiCollectionResource> taxiiCollectionResources = collections.parallelStream().map(CollectionDocument::collection).collect(Collectors.toList());
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(JsonUtil.ListToJson(collections));
+                .body(JsonUtil.ListToJson(taxiiCollectionResources));
     }
 
 
@@ -78,7 +82,7 @@ public class Collection {
 
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(collection.toJson());
+                .body(collection.collection().toJson());
     }
 
     @GetMapping("/collections/{collectionId}/objects")
@@ -96,9 +100,12 @@ public class Collection {
                 tenantWebContext.getTenantId(),
                 PageRequest.of(page, 100)).getContent();
 
+        List<BundleableObject> bundleableObjects = objects.parallelStream()
+                .map(CollectionObjectDocument::object).collect(Collectors.toList());
+
         return ResponseEntity.ok()
                 .headers(Headers.getSuccessHeaders())
-                .body(JsonUtil.ListToJson(objects));
+                .body(JsonUtil.ListToJson(bundleableObjects));
     }
 
 
@@ -113,16 +120,20 @@ public class Collection {
                 .orElseThrow(() -> new CollectionDoesNotExistException(collectionId));
 
         //@TODO setup .map to only return the inner objects which is the spec.
+        // Add Query FIlter Advice impl
         List<CollectionObjectDocument> objects = collectionObjectRepository.findObjectByObjectId(objectId,
                 collection.collection().getId(),
                 tenantWebContext.getTenantId());
+
+        List<BundleableObject> bundleableObjects = objects.parallelStream()
+                .map(CollectionObjectDocument::object).collect(Collectors.toList());
 
         if (objects.size() == 0) {
             throw new CollectionObjectDoesNotExistException(collectionId, objectId);
         } else {
             return ResponseEntity.ok()
                     .headers(Headers.getSuccessHeaders())
-                    .body(JsonUtil.ListToJson(objects));
+                    .body(JsonUtil.ListToJson(bundleableObjects));
         }
     }
 
