@@ -20,8 +20,7 @@ import java.time.temporal.TemporalAccessor;
 
 public class InstantMongoDeserializer extends StdDeserializer<Instant> {
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StixDataFormats.TIMESTAMP_PATTERN)
-            .withZone(ZoneId.of(StixDataFormats.TIMEZONE));
+    private DateTimeFormatter formatter = StixDataFormats.getReaderStixDateTimeFormatter();
 
     public InstantMongoDeserializer() {
         super(Instant.class);

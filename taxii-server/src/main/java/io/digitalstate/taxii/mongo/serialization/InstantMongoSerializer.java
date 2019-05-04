@@ -13,8 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 public class InstantMongoSerializer extends StdSerializer<Instant> {
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StixDataFormats.TIMESTAMP_PATTERN)
-            .withZone(ZoneId.of(StixDataFormats.TIMEZONE));
+    private DateTimeFormatter formatter = StixDataFormats.getWriterStixDateTimeFormatter(3);
 
     public InstantMongoSerializer() {
         this(null);
