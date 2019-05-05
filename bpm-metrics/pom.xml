@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bpm-web-apps</artifactId>
+    <artifactId>bpm-metrics</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,8 +20,15 @@
         <camunda.version>7.10.0</camunda.version>
         <camunda.springboot.version>3.2.0</camunda.springboot.version>
         <camunda.spin.version>1.6.4</camunda.spin.version>
-        <start-class>io.digitalstate.taxii.camunda.webapps.Application</start-class>
+        <start-class>io.digitalstate.taxii.camunda.metrics.Application</start-class>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -29,8 +36,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>2.1.1.RELEASE</version>
-                <type>pom</type>
                 <scope>import</scope>
+                <type>pom</type>
             </dependency>
             <dependency>
                 <!-- Import dependency management from camunda -->
@@ -53,8 +60,14 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.github.StephenOTT</groupId>
+            <artifactId>camunda-prometheus-process-engine-plugin</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
-            <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+            <artifactId>camunda-bpm-spring-boot-starter</artifactId>
             <version>${camunda.springboot.version}</version>
         </dependency>
 
@@ -71,13 +84,11 @@
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine-plugin-spin</artifactId>
-            <!--<version>${camunda.version}</version>-->
         </dependency>
 
         <dependency>
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
-            <!--<version>${camunda.spin.version}</version>-->
         </dependency>
 
         <!--Dependencies for Unit Test with Spock Framework:-->

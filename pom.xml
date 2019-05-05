@@ -10,10 +10,13 @@
         <module>taxii-server</module>
         <module>bpm-rest</module>
         <module>bpm-web-apps</module>
+        <module>bpm-node</module>
+        <module>bpm-metrics</module>
     </modules>
+
     <packaging>pom</packaging>
 
-    <name>TAXII Server</name>
-    <description>TAXII Server based on SpringBoot and backed by BPM</description>
+    <name>TAXII Platform</name>
+    <description>TAXII Platform based on SpringBoot and backed by BPM</description>
 
 </project>

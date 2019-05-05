@@ -11,8 +11,6 @@
 
     <artifactId>bpm-rest</artifactId>
 
-
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -22,6 +20,7 @@
         <camunda.version>7.10.0</camunda.version>
         <camunda.springboot.version>3.2.0</camunda.springboot.version>
         <camunda.spin.version>1.6.4</camunda.spin.version>
+        <start-class>io.digitalstate.taxii.camunda.rest.Application</start-class>
     </properties>
 
     <dependencyManagement>
@@ -122,6 +121,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.1.0.RELEASE</version>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Mandatory plugins for using Spock -->
