@@ -1,0 +1,31 @@
+server:
+  port: 8091
+#  servlet:
+#    contextPath: /dog
+# Needs fix: https://forum.camunda.org/t/custom-contextpath-no-longer-working-in-springbootprocessapplication-3-2-0-with-spring-boot-2-1-1-release/12359
+
+spring:
+  datasource:
+    url: jdbc:h2:~/camunda;DB_CLOSE_ON_EXIT=false;AUTO_SERVER=TRUE
+
+camunda:
+  bpm:
+    process-engine-name: taxii
+    auto-deployment-enabled: false
+    history-level: FULL
+
+  job-execution:
+    enabled: false
+
+  database:
+    schema-update: false
+
+  webapp:
+    index-redirect-enabled: true
+
+joinfaces:
+  jsf:
+    PROJECT_STAGE: Development
+  primefaces:
+    theme: overcast
+

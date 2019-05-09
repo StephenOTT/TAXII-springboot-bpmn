@@ -12,6 +12,7 @@
         <module>bpm-web-apps</module>
         <module>bpm-node</module>
         <module>bpm-metrics</module>
+        <module>taxii-ui</module>
     </modules>
 
     <packaging>pom</packaging>
