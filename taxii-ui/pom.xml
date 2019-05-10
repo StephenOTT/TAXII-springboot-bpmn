@@ -20,7 +20,7 @@
         <camunda.version>7.10.0</camunda.version>
         <camunda.springboot.version>3.2.0</camunda.springboot.version>
         <camunda.spin.version>1.6.4</camunda.spin.version>
-        <start-class>io.digitalstate.taxii.ui.Application</start-class>
+        <start-class>io.digitalstate.taxii.ui.TaxiiUiApplication</start-class>
         <joinfaces.version>4.0.1</joinfaces.version>
     </properties>
 
