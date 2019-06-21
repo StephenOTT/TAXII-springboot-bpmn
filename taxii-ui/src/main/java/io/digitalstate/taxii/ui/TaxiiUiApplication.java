@@ -1,4 +1,4 @@
-package main.java.io.digitalstate.taxii.ui;
+package io.digitalstate.taxii.ui;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

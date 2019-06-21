@@ -5,14 +5,13 @@
 
     <groupId>io.digitalstate.taxii</groupId>
     <artifactId>taxii-springboot-bpmn</artifactId>
-    <version>v0.2</version>
+    <version>0.2</version>
     <modules>
         <module>taxii-server</module>
         <module>bpm-rest</module>
-        <module>bpm-web-apps</module>
+        <module>bpm-webapps</module>
         <module>bpm-node</module>
         <module>bpm-metrics</module>
-        <module>taxii-ui</module>
     </modules>
 
     <packaging>pom</packaging>

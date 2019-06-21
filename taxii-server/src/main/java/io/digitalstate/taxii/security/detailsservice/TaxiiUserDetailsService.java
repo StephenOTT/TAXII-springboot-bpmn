@@ -27,20 +27,28 @@ public class TaxiiUserDetailsService implements UserDetailsService {
 
     private static final Logger logger = LoggerFactory.getLogger(TaxiiUserDetailsService.class);
 
-    @Autowired
-    private ConfigTenants configTenants;
+    private final ConfigTenants configTenants;
 
-    @Autowired
-    private TenantRepository tenantRepository;
+    private final TenantRepository tenantRepository;
 
-    @Autowired
-    private TenantWebContext tenantWebContext;
+    private final TenantWebContext tenantWebContext;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRolesRepository userRolesRepository;
+    private final UserRolesRepository userRolesRepository;
+
+    public TaxiiUserDetailsService(ConfigTenants configTenants,
+                                   TenantRepository tenantRepository,
+                                   TenantWebContext tenantWebContext,
+                                   UserRepository userRepository,
+                                   UserRolesRepository userRolesRepository) {
+
+        this.configTenants = configTenants;
+        this.tenantRepository = tenantRepository;
+        this.tenantWebContext = tenantWebContext;
+        this.userRepository = userRepository;
+        this.userRolesRepository = userRolesRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

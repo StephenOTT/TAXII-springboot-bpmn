@@ -14,14 +14,14 @@ camunda:
     auto-deployment-enabled: false
     history-level: FULL
 
-  job-execution:
-    enabled: false
+    job-execution:
+      enabled: false
 
-  database:
-    schema-update: false
+    database:
+      schema-update: false
 
-  webapp:
-    index-redirect-enabled: true
+    webapp:
+      index-redirect-enabled: true
 
 joinfaces:
   jsf:

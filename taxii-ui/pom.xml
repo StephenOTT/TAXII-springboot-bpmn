@@ -71,6 +71,11 @@
             <artifactId>STIX-Java</artifactId>
             <version>0.8.6</version>
         </dependency>
+        <dependency>
+            <groupId>io.digitalstate.taxii</groupId>
+            <artifactId>taxii-server</artifactId>
+            <version>0.2</version>
+        </dependency>
 
         <dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
@@ -121,6 +126,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!--PrimeFaces Deps-->
         <dependency>
             <groupId>org.joinfaces</groupId>
             <artifactId>primefaces-spring-boot-starter</artifactId>

@@ -11,17 +11,17 @@ spring:
 camunda:
   bpm:
     process-engine-name: taxii
-    auto-deployment-enabled: false
-    history-level: FULL
+    auto-deployment-enabled: true
+#    history-level: FULL
 
-  job-execution:
-    enabled: false
+#    job-execution:
+#      enabled: true
 
-  database:
-    schema-update: false
+#  database:
+#    schema-update: false
 
-  webapp:
-    index-redirect-enabled: true
+#    webapp:
+#     index-redirect-enabled: true
 
 
 
