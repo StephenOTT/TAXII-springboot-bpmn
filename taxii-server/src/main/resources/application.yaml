@@ -1,6 +1,12 @@
 server:
   port: 8090
 
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+
 spring:
   data:
     mongodb:

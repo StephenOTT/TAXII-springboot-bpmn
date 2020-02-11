@@ -57,6 +57,13 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
 
@@ -171,7 +178,6 @@
             <version>1.3</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
